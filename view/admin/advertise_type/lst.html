@@ -1,0 +1,214 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}
+<style>
+    .common_search {
+        margin: 10px auto;
+    }
+    .page_size_select{
+        width: 105px;
+        float: right;
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 10px;
+        border-radius: 4px;
+        padding: 6px 12px;
+        /*text-align: right;*/
+    }
+    .common_search input,.common_search select{
+        margin-bottom: 10px;
+    }
+</style>
+{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        广告栏位列表
+        <small> <a href="/admin/advertiseType/add" class="pull-right">广告栏位添加</a></small>
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="common_search">
+        <form class="form-inline" action="/admin/advertiseType/lst" id="form_search">
+            <input type="text" class="form-control" name="name" placeholder="栏位名称" value="{:input('name')}">
+
+
+            <input  type="hidden" name="page_size" id="cur_show_page" value="{$pageSize}"/>
+            <input class="btn btn-flat btn-primary" type="submit" value="搜索">
+            <!--<input class="btn btn-flat btn-primary m_10" onclick="location.href='{:url(\'lst\')}'" type="button" value="显示全部">-->
+            <input class="btn btn-flat btn-warning multi_del" type="button" value="批量删除">
+            <select name="export_data_change"  class="form-control  btn-info">
+                <option value='0'>导出数据</option>
+                <option value='1'>导出选中数据</option>
+                <option value='2'>导出全部数据</option>
+            </select>
+<!--            <a class="btn btn-flat btn-success m_10 f_r" href="/admin/advertiseType/add"><i class="fa fa-plus m-r-10"></i>添 加</a>-->
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" >
+                <div class="box-header">
+                    <h3 class="box-title">
+                    </h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center"> <input type="checkbox" name="is_multi_select"  class="is_multi_select"> </th>
+                            <th style="text-align: center">ID</th>
+                            <th style="text-align: center">分类名称</th>
+                            <th style="text-align: center">描述</th>
+                            <th style="text-align: center">标识符</th>
+                            <th style="text-align: center">排序</th>
+                            <th style="text-align: center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($data as $v):?>
+                        <tr style="text-align: center">
+                            <td><input type="checkbox" class="multi_select_input" name="multi_select[]" value="{$v['id']}"/></td>
+                            <td>{$v['id']}</td>
+                            <td>{$v['name']}</td>
+                            <td>{$v['desc']}</td>
+                            <td>{$v['identify_en']}</td>
+                            <td><input type="text" class="edit_sort_id" data-id="{$v['id']}" value="{$v['sort_id']}" style="text-align: center"></td>
+                            <td>
+                                <a href="<?php echo url('/admin/advertiseType/edit?id='.$v['id'],[], false); ?>" class="btn btn-flat btn-info btn-xs" title="编辑">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </a>
+                                <a href="javascript:void(0)" data-id="{$v['id']}" class="cur_del btn btn-flat btn-warning btn-xs" title="移除">
+                                    <i class="fa fa-trash-o"></i> 删除
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach;?>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        {$pageShow|raw}
+                        {$pageSizeSelect|raw}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+
+
+<script>
+
+    $(function () {
+
+        /**
+         * 导出
+         */
+        $("select[name='export_data_change']").on('change', function () {
+            var export_type = parseInt($(this).val());
+            var url = "/admin/advertiseType/exportData?";
+            switch (export_type) {
+                case 0 :
+                  break;
+                case 1 :
+                    var has_checked  = [];
+                    $("input[name='multi_select[]']:checked").each(function () {
+                        has_checked.push($(this).val());
+                    });
+                    var has_checked_str = has_checked.join(',');
+                    if (has_checked_str == '' || has_checked_str.length == 0) {
+                        alert('请勾选导出项！');
+                        return false;
+                    }
+                    url = url + 'exportType=1&id=' + has_checked_str;
+                    window.open(url);
+                    break;
+                case 2 :
+                    var params = "<?php echo http_build_query(array_merge(request()->param(),['exportType' => 2]),'', '&'); ?>";
+                    url = url + params;
+                    window.open(url);
+                    break;
+            }
+            $("select[name='export_data_change']").val(0);
+            // $("select[name='export_data_change']").find("option[value='0']").attr('selected','selected');
+            return false;
+        });
+
+
+        /**
+         * 全选或全不选
+         */
+        $('.is_multi_select').on('click',function () {
+            if ($(this).is(':checked')) {
+                $("input[name='multi_select[]']").each(function () {
+                    $(this).prop("checked","checked");
+                });
+            } else {
+                $("input[name='multi_select[]']").each(function () {
+                    $(this).prop('checked',false);
+                });
+            }
+        });
+        /**
+         * 修改排序
+         */
+        $('.edit_sort_id').on('blur',function () {
+            var id = $(this).attr('data-id');
+            var sort_id = $.trim($(this).val());
+            var url = '/admin/advertiseType/editSort';
+            edit_sort(url, id, sort_id);
+        });
+
+        /**
+         * 删除单个
+         */
+        $(".cur_del").on('click',function () {
+            var id = $(this).attr('data-id');
+            var url = "/admin/advertiseType/delete";
+            delete_one(url, id);
+        });
+
+        /**
+         * 批量删除
+         */
+        $('.multi_del').on('click',function () {
+            var has_checked  = [];
+            $("input[name='multi_select[]']:checked").each(function () {
+                has_checked.push($(this).val());
+            });
+            var has_checked_str = has_checked.join(',');
+            if (has_checked_str == '' || has_checked_str.length == 0) {
+                alert('请勾选删除项！');
+                return false;
+            }
+            var url = "/admin/advertiseType/delete";
+            delete_multiply(url, has_checked_str);
+        });
+
+        // 修改每页显示数量
+        $(".page_size_select").on('change',function() {
+            var page_size = $(this).val();
+            $('#cur_show_page').val(page_size);
+            $('#form_search').trigger('submit');
+            return false;
+        });
+
+    });
+
+
+
+</script>
+{/block}

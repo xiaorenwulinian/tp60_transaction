@@ -1,0 +1,109 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}
+
+{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        商品分类列表
+        <small> <a href="/admin/goodsCategory/add" class="pull-right">商品分类添加</a></small>
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" >
+                <div class="box-header">
+                    <h3 class="box-title">
+                    </h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">id</th>
+                            <th style="text-align: center">parent_id</th>
+                            <th style="text-align: center">分类名称</th>
+                            <th style="text-align: center">是否显示</th>
+                            <th style="text-align: center">排序</th>
+                            <th style="text-align: center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($data as $v):?>
+                        <tr style="text-align: center">
+                            <td>{$v['id']}</td>
+                            <td>{$v['parent_id']}</td>
+                            <td><?php echo str_repeat('-', 8*$v['level']); ?>{$v['cate_name']}</td>
+                            <td>
+                                <a href="javascript:void(0);" class="change_show" data-id="{$v['id']}">
+                                    <?php if ($v['is_show'] == 1) :?>
+                                        <span>显示</span>
+                                    <?php else:?>
+                                        <span style="color: red">隐藏</span>
+                                    <?php endif;?>
+                                </a>
+                            </td>
+                            <td><input type="text" class="edit_sort_id" data-id="{$v['id']}" value="{$v['sort_order']}" style="text-align: center"></td>
+                            <td>
+                                <a href="<?php echo url('/admin/goodsCategory/edit?id='.$v['id'],[], false); ?>" title="编辑">编辑</a> |
+                                <a href="javascript:void(0)" data-id="{$v['id']}" class="cur_del" title="移除">删除</a>
+                            </td>
+                        </tr>
+                        <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+
+
+<script>
+    $(function () {
+        /**
+         * 切换展示状态
+         */
+        $(".change_show").on('click', function () {
+            var id = $(this).attr('data-id');
+            var url = "<?php echo url('/admin/goodsCategory/changeShow',[],false);?>";
+            change_show_status(url, id);
+        });
+
+        /**
+         * 修改排序
+         */
+        $('.edit_sort_id').on('blur',function () {
+            var id = $(this).attr('data-id');
+            var sort_id = $.trim($(this).val());
+            var url = '/admin/goodsCategory/editSort';
+            edit_sort(url, id, sort_id);
+        });
+
+
+        /**
+         * 删除单个
+         */
+        $(".cur_del").on('click',function () {
+            var id = $(this).attr('data-id');
+            var url = "/admin/goodsCategory/delete";
+            delete_one(url, id);
+        });
+    });
+
+
+</script>
+{/block}

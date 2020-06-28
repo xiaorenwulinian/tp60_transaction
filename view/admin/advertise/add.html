@@ -1,0 +1,244 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}
+
+<link href="/static/admin/jquery-file-upload-9.28.0/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
+
+<style>
+    .thumb_img{
+        width: 200px;
+    }
+</style>
+
+{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        广告添加
+        <small> <a href="javascript:void(0);" onclick="window.history.back();" class="pull-right">广告列表</a></small>
+    </h1>
+
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"></h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal" id="formSubmit" action="">
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">广告名称：</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="title" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">广告栏位：</label>
+                            <div class="col-sm-3">
+                                <select name="adv_type_id" id="adv_type_id" class="form-control">
+                                    <option value="">选择栏位</option>
+                                    <?php foreach ($data as $k => $v): ?>
+                                    <option value="<?php echo $v['id']; ?>">
+                                        <?php echo $v['name']; ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">图片：</label>
+                            <div class="col-sm-5" >
+                                <button type="button" class="btn btn-primary upload_logo_button "> 上传图片 </button>
+                                <div class="img_show_content" style="margin-top: 10px;">
+
+                                </div>
+                                <input name="adv_img" type="text" style="display: none">
+                                <input name="adv_img_thumb"  type="text" style="display: none">
+                                <input id="common_upload_file" name="common_upload_file" class="common_upload_file" type="file" style="display: none">
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">描述：</label>
+                            <div class="col-sm-3">
+                                <textarea class="form-control" rows="3" name="adv_desc" ></textarea>
+                            </div>
+                            <label for="" class="col-sm-2 control-label">跳转路径：</label>
+                            <div class="col-sm-3">
+                                <textarea class="form-control" rows="3" name="adv_url" ></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">是否显示：</label>
+                            <div class="col-sm-3">
+                                <label class="radio-inline">
+                                    <input type="radio" name="is_show" value="1" checked="checked" > 显示
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="is_show" value="2"  > 隐藏
+                                </label>
+                            </div>
+
+                            <label for="" class="col-sm-2 control-label">排序：</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="sort_id" value="1">
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div style="text-align: center; margin-top: 40px">
+                                <button type="submit" class="curSubmit btn btn-primary btn-lg">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<div style="margin-bottom: 100px;"></div>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+
+<script src="/static/admin/jquery-file-upload-9.28.0/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="/static/admin/jquery-file-upload-9.28.0/js/jquery.fileupload.js" type="text/javascript"></script>
+<script src="/static/admin/jquery-file-upload-9.28.0/js/jquery.iframe-transport.js" type="text/javascript"></script>
+
+
+<script>
+    var has_submit = false;
+    $(function () {
+
+        //广告图片，单文件上传
+        $('.upload_logo_button').on('click',function(){
+            $('#common_upload_file').click();
+        });
+        $('#common_upload_file').fileupload({
+            autoUpload: true,//是否自动上传
+            url: "{:url('/admin/common/addUpload',[],false)}",
+            dataType: 'json',
+            add: function (e,data) {
+                $("#common_upload_file").fileupload(
+                    'option',
+                    'formData',
+                    {
+                        'second_dir': 'advertise', // 二级文件目录，可不传
+                        'has_thumb' : 1,           // 是否生成缩略图， 1 生成缩略图，2 不生成
+                        'file_type' : 2,           // 1是文件，2 是图片
+                    }
+                ); // 传参不能放在初始化语句中，否则只能传递参数的初始化值
+                data.submit();
+            },
+            done: function (e, data) {
+                var result = data.result;
+                console.log(data);
+                if(result.code == 0) {
+                    var _data = result.payload;
+                    $("input[name='adv_img']").val(_data.file_path);
+                    $("input[name='adv_img_thumb']").val(_data.file_path_thumb);
+
+                    var _html ="";
+                    _html +="<div>";
+                    _html +="<a src='javascript:void(0);'data-path='"+_data.file_path+"' data-path-thumb='"+_data.file_path_thumb+"' onclick='delete_file(this);'  >删除</a><br>";
+                    _html +="<img class='thumb_img' src='/uploads/"+_data.file_path+"'/>";
+                    _html +="</div>";
+
+                    $('.img_show_content').html(_html);
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+
+
+        $('.curSubmit').on('click',function () {
+            var url = "/admin/advertise/add";
+            var form_param = $('#formSubmit').serialize();
+            // var other_param = $.param({file_path:file_path,file_path:file_path});
+            // var combine_param  =  other_param+'&'+form_param;
+
+            if (has_submit == true) {
+                return  false;
+            }
+            has_submit = true;
+            $.ajax({
+                type: 'post',
+                url:  url,
+                dataType: 'json',
+                data: form_param,
+                success: function(ret){
+                    console.log(ret);
+                    if(ret.code == 0) {
+                        layer.msg('添加成功',{
+                            time:1000,
+                            icon: 6,
+                            end:function () {
+                                location.href = "/admin/advertise/lst";
+                            }
+                        })
+                    } else {
+                        has_submit = false;
+                        alert(ret.msg);
+                        return false;
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+
+    //删除单 图片
+    function delete_file(cur_this){
+        var cur_file_path = $(cur_this).attr('data-path');
+        var cur_file_path_thumb = $(cur_this).attr('data-path-thumb');
+        var url = "<?php echo url('/admin/common/addDeleteFile',[],false);?>";
+        var _this = cur_this;
+        if(confirm('确定要删除吗?')) {
+            // 清空本地被遗弃的文件，防止占用资源
+            $.ajax({
+                type: 'get',
+                url:  url,
+                dataType: 'json',
+                data: {
+                    file_path : cur_file_path,
+                    file_path_thumb : cur_file_path_thumb,
+                },
+                success: function(ret){
+                    console.log(ret);
+                    if(ret.code == 0) {
+                        $(_this).parent().remove();
+                        $("input[name='adv_img']").val('');
+                        $("input[name='adv_img_thumb']").val('');
+                    } else {
+                        alert(ret.msg);
+                        return false;
+                    }
+                }
+            });
+        }
+        return false;
+    }
+</script>
+{/block}

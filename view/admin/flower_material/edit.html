@@ -1,0 +1,114 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}
+
+
+{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        鲜花花材编辑
+        <small> <a href="javascript:void(0);" onclick="window.history.back();" class="pull-right">鲜花花材列表</a></small>
+    </h1>
+
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"></h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal" id="formSubmit" action="">
+
+                        <input type="hidden" name="id" value="{$data.id}">
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label"> 鲜花花材名称：</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="title" value="{$data['title']}">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">排序：</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="sort_id" value="{$data['sort_id']}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div style="text-align: center; margin-top: 40px">
+                                <button type="submit" class="curSubmit btn btn-primary btn-lg">提交</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<div style="margin-bottom: 100px;"></div>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+
+
+<script>
+    var has_submit = false;
+    $(function () {
+
+        $('.curSubmit').on('click',function () {
+            var url = "/admin/flowerMaterial/edit";
+            var form_param = $('#formSubmit').serialize();
+            if (has_submit == true) {
+                return  false;
+            }
+            has_submit = true;
+            $.ajax({
+                type: 'post',
+                url:  url,
+                dataType: 'json',
+                data: form_param,
+                success: function(ret){
+                    console.log(ret);
+                    if(ret.code == 0) {
+                        layer.msg('编辑成功',{
+                            time:1000,
+                            icon: 6,
+                            end:function () {
+                                window.location.href = document.referrer;
+                            }
+                        })
+                    } else {
+                        has_submit = false;
+                        alert(ret.msg);
+                        return false;
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    has_submit = false;
+                    console.log(XMLHttpRequest);
+                    return false;
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>
+{/block}
