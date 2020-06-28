@@ -35,10 +35,10 @@
     <div class="common_search">
         <form class="form-inline" action="/admin/goods/lst" id="form_search">
             <input type="text" class="form-control" name="goods_name" placeholder="商品名称" value="{:input('goods_name')}">
-            <select name="flower_use_id" class="form-control">
-                <option value="">请选择鲜花用途</option>
-                <?php foreach($flowerUse as $k => $v): ?>
-                    <?php $selected = $k == input('flower_use_id','') ? 'selected="selected"': ''; ?>
+            <select name="goods_category_id" class="form-control">
+                <option value="">请选择商品分类</option>
+                <?php foreach($category as $k => $v): ?>
+                    <?php $selected = $k == input('goods_category_id','') ? 'selected="selected"': ''; ?>
                     <option value="{$k}" {$selected}>
                         {$v}
                     </option>
@@ -73,13 +73,10 @@
                             <th style="text-align: center">ID</th>
                             <th style="text-align: center">商品名称</th>
                             <th style="text-align: center">原价</th>
-                            <th style="text-align: center">现价</th>
                             <th style="text-align: center">商品图片</th>
-                            <th style="text-align: center">是否商户推荐</th>
-                            <th style="text-align: center">是否热卖</th>
-                            <th style="text-align: center">是否新品</th>
+
                             <th style="text-align: center">是否上架</th>
-                            <th style="text-align: center">是否促销</th>
+
                             <th style="text-align: center; max-width: 40px;">排序</th>
                             <th style="text-align: center">操作</th>
                         </tr>
@@ -91,13 +88,8 @@
                             <td style="vertical-align: middle">{$v['id']}</td>
                             <td style="vertical-align: middle">{$v['goods_name']}</td>
                             <td style="vertical-align: middle">{$v['goods_price']}</td>
-                            <td style="vertical-align: middle">{$v['discount_price']}</td>
                             <td style="vertical-align: middle"><?php echo  show_image($v['goods_img'], 50);?></td>
-                            <td style="vertical-align: middle"><?php echo $v['is_best'] == 1 ? '否' : '是'; ?></td>
-                            <td style="vertical-align: middle"><?php echo $v['is_hot'] == 1 ? '否' : '是'; ?></td>
-                            <td style="vertical-align: middle"><?php echo $v['is_new'] == 1 ? '否' : '是'; ?></td>
                             <td style="vertical-align: middle"><?php echo $v['is_on_sale'] == 1 ? '否' : '是'; ?></td>
-                            <td style="vertical-align: middle">{$v['is_promote']}</td>
 
                             <td style="vertical-align: middle"><input type="text" class="edit_sort_id" data-id="{$v['id']}" value="{$v['sort_id']}" style="text-align: center;width: 40px;"></td>
                             <td style="vertical-align: middle">

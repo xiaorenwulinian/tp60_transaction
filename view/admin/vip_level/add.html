@@ -1,0 +1,136 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        vip级别添加
+        <small> <a href="javascript:void(0);" onclick="window.history.back();" class="pull-right">vip级别列表</a></small>
+    </h1>
+
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"></h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal" id="formSubmit" action="">
+
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">vip名称：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="vip_name" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">vip享有功能：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="vip_welfare" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">vip描述：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="vip_desc" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">vip费用：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="vip_fee" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">是否使用</label>
+                            <div class="col-sm-8">
+                                <label class="radio-inline">
+                                    <input type="radio" name="is_use"  value="1" checked="checked" > 使用
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="is_use"  value="2"  > 废弃
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="curSubmit btn btn-primary  btn-lg">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<div style="margin-bottom: 100px;"></div>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+<script>
+    $(function () {
+        $('.curSubmit').on('click',function () {
+
+            var url = "/admin/vipLevel/add";
+            var form_param = $('#formSubmit').serialize();
+            $.ajax({
+                type: 'post',
+                url:  url,
+                dataType: 'json',
+                data: form_param,
+                success: function(ret){
+                    console.log(ret);
+                    if(ret.code == 0) {
+                        layer.msg('添加成功',{
+                            time:1000,
+                            icon: 6,
+                            end:function () {
+//                               location.reload();
+                                location.href = "<?php echo url('/admin/vipLevel/lst',[],false);?>";;
+                            }
+                        })
+                    } else {
+                        layer.msg(ret.msg, {icon: 5,time:1000,});
+                        return false;
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('---error----\n');
+                    console.log(XMLHttpRequest);
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(XMLHttpRequest.responseJSON);
+                    console.log(XMLHttpRequest.responseText);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    layer.msg(XMLHttpRequest.responseJSON.msg, {icon: 5,time:1000,});
+                    return false;
+
+                }
+
+            });
+            return false;
+        });
+
+    })
+</script>
+{/block}

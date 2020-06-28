@@ -8,8 +8,8 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        商品分类列表
-        <small> <a href="/admin/goodsCategory/add" class="pull-right">商品分类添加</a></small>
+        vip级别列表
+        <small> <a href="/admin/vipLevel/add" class="pull-right">vip级别添加</a></small>
     </h1>
 </section>
 
@@ -28,10 +28,11 @@
                         <thead>
                         <tr>
                             <th style="text-align: center">id</th>
-<!--                            <th style="text-align: center">父级分类id</th>-->
-                            <th style="text-align: center">分类名称</th>
-                            <th style="text-align: center">是否显示</th>
-                            <th style="text-align: center;">排序</th>
+                            <th style="text-align: center">级别名称</th>
+                            <th style="text-align: center">级别描述</th>
+                            <th style="text-align: center">级别福利</th>
+                            <th style="text-align: center">级别费用</th>
+                            <th style="text-align: center">是否使用</th>
                             <th style="text-align: center">操作</th>
                         </tr>
                         </thead>
@@ -39,10 +40,12 @@
                         <?php foreach($data as $v):?>
                         <tr style="text-align: center">
                             <td>{$v['id']}</td>
-<!--                            <td>{$v['parent_id']}</td>-->
-                            <td><?php echo str_repeat('-', 8*$v['level']); ?>{$v['cate_name']}</td>
+                            <td>{$v['vip_name']}</td>
+                            <td>{$v['vip_desc']}</td>
+                            <td>{$v['vip_welfare']}</td>
+                            <td>{$v['vip_fee']}</td>
                             <td>
-                                <?php if ($v['is_show'] == 1) :?>
+                                <?php if ($v['is_use'] == 1) :?>
                                     <a href="javascript:void(0);" class="btn btn-info btn-sm change_show" data-id="{$v['id']}">
                                         显示
                                     </a>
@@ -53,15 +56,10 @@
                                 <?php endif;?>
                             </td>
                             <td>
-                                <input type="text" class="edit_sort_id" data-id="{$v['id']}" value="{$v['sort_order']}" style="text-align: center; width: 60px">
-                            </td>
-                            <td>
-                                <a  class="btn btn-primary btn-sm" href="<?php echo url('/admin/goodsCategory/edit?id='.$v['id'],[], false); ?>" title="编辑">
+                                <a  class="btn btn-primary btn-sm" href="<?php echo url('/admin/vipLevel/edit?id='.$v['id'],[], false); ?>" title="编辑">
                                     编辑
                                 </a> &nbsp;
-<!--                                <a href="javascript:void(0)" data-id="{$v['id']}" class="cur_del btn btn-danger btn-sm" title="移除">-->
-<!--                                    删除-->
-<!--                                </a>-->
+<!--
                             </td>
                         </tr>
                         <?php endforeach;?>
@@ -87,7 +85,7 @@
          */
         $(".change_show").on('click', function () {
             var id = $(this).attr('data-id');
-            var url = "<?php echo url('/admin/goodsCategory/changeShow',[],false);?>";
+            var url = "<?php echo url('/admin/vipLevel/changeShow',[],false);?>";
             change_show_status(url, id);
         });
 
@@ -97,7 +95,7 @@
         $('.edit_sort_id').on('blur',function () {
             var id = $(this).attr('data-id');
             var sort_id = $.trim($(this).val());
-            var url = '/admin/goodsCategory/editSort';
+            var url = '/admin/vipLevel/editSort';
             edit_sort(url, id, sort_id);
         });
 
@@ -107,7 +105,7 @@
          */
         $(".cur_del").on('click',function () {
             var id = $(this).attr('data-id');
-            var url = "/admin/goodsCategory/delete";
+            var url = "/admin/vipLevel/delete";
             delete_one(url, id);
         });
     });

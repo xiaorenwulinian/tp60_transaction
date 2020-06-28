@@ -43,9 +43,14 @@ class Goods extends Model
 //PRIMARY KEY (`id`)
 //) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     protected $field = [
-        'goods_name', 'goods_price', 'discount_price', 'is_promote', 'promote_price', 'promote_begin_time','promote_end_time','goods_img','goods_img_thumb',
-        'is_best', 'is_hot', 'is_new', 'is_on_sale', 'flower_material', 'flower_use', 'flower_combine', 'flower_moral','remark','has_sale_num','flower_stock',
-        'flower_package', 'sort_id', 'add_time', 'is_delete'
+        'goods_name', 'goods_price',
+        'goods_img','goods_img_thumb',
+        'is_on_sale', 'goods_category_id',
+        'send_info','remark',
+        'has_sale_num','stock_num',
+        'flower_package', 'sort_id',
+        'goods_desc', 'seo_keyword','seo_description',
+        'add_time', 'is_delete','edit_time',
     ];
     protected $disuse = [];
 
@@ -54,34 +59,24 @@ class Goods extends Model
         $where = [];
         $where[] = ['is_delete', '=', 1];
         $goodsName = input('goods_name', '');
+
         if (!empty($goodsName)) {
             $where[] = ['goods_name', 'like', "%{$goodsName}%"];
         }
+
+        $categoryId = input('goods_category_id', '');
+        if (!empty($categoryId)) {
+            $where[] = ['goods_category_id', '=', "$categoryId"];
+        }
+
+
         $data = self::where($where)
             ->order('id','desc')
             ->paginate($pageSize);
         return $data;
     }
 
-    public function setFlowerUseAttr($value)
-    {
-        if (!empty($value)) {
-            $value = implode(',', $value);
-        } else {
-            $value = '';
-        }
-        return $value;
-    }
 
-    public function setFlowerMaterialAttr($value)
-    {
-        if (!empty($value)) {
-            $value = implode(',', $value);
-        } else {
-            $value = '';
-        }
-        return $value;
-    }
 
 
     /**
@@ -91,10 +86,10 @@ class Goods extends Model
      */
     public static function onBeforeInsert($goods)
     {
-        if ($goods->is_promote == 2) {
-            $goods->promote_begin_time =  strtotime($goods->promote_begin_time);
-            $goods->promote_end_time =  strtotime($goods->promote_end_time);
-        }
+//        if ($goods->is_promote == 2) {
+//            $goods->promote_begin_time =  strtotime($goods->promote_begin_time);
+//            $goods->promote_end_time =  strtotime($goods->promote_end_time);
+//        }
         $goods->add_time = time();
     }
 

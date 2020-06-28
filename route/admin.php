@@ -29,6 +29,13 @@ Route::group('/admin', function(){
         Route::any('editSort', 'admin.GoodsCategory/editSort');
     });
 
+    // vip级别
+    Route::group('vipLevel', function () {
+        Route::get('lst', 'admin.vipLevel/lst');
+        Route::any('add', 'admin.vipLevel/add');
+        Route::any('edit', 'admin.vipLevel/edit');
+        Route::any('changeShow', 'admin.vipLevel/changeShow');
+    });
 
     // 广告分类
     Route::group('advertiseType', function () {

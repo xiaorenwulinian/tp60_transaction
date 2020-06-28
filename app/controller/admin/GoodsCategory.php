@@ -75,9 +75,9 @@ class GoodsCategory extends AdminBase
                     $goodsCate->parent_id = $reqParam['parent_id'];
                 }
                 $goodsCate->cate_name   =  $reqParam['cate_name'];
-                $goodsCate->mobile_name =  $reqParam['mobile_name'];
+//                $goodsCate->mobile_name =  $reqParam['mobile_name'];
                 $goodsCate->is_show     =  $reqParam['is_show'];
-                $goodsCate->sort_order  =  $reqParam['sort_order'];
+                $goodsCate->sort_order  =  $reqParam['sort_order'] ?? 1;
                 $goodsCate ->save();
                 Db::commit();
             } catch (\Exception $e) {

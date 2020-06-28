@@ -17,16 +17,14 @@ class GoodsValidate extends Validate
 	    'id'                   => 'require|integer',
 	    'goods_name'           => 'require|max:255',
 	    'goods_price'          => 'require|float',
-	    'discount_price'       => 'require|float',
-	    'is_promote'           => 'require|in:1,2',
 	    'goods_img'            => 'require|max:255',
-        'flower_material'      => 'require|max:255',
-        'flower_use'           => 'require|max:255',
-        'flower_combine'       => 'require|max:255',
+        'goods_category_id'    => 'require|integer',
+        'send_info'            => 'require|max:255',
         'has_sale_num'         => 'require|integer',
-        'flower_stock'         => 'require|integer',
+        'stock_num'            => 'require|integer',
 	    'sort_id'              => 'require|integer',
 	    'goods_introduce_img'  => 'require',
+	    'goods_desc'           => 'require',
     ];
 
     
@@ -39,17 +37,16 @@ class GoodsValidate extends Validate
     protected $message = [
         'goods_name.require'          => '商品名称必填',
         'goods_name.max'              => '商品名称最多不能超过255个字符',
-        'goods_price.require'         => '商品原价必填',
-        'discount_price.require'      => '商品现价必填',
+        'goods_price.require'         => '商品价格必填',
         'goods_img.require'           => '请上传商品图片',
-        'flower_material.require'     => '鲜花材料必选',
-        'flower_use.require'          => '鲜花用途必选',
-        'flower_combine.require'      => '组合材料必填',
+        'goods_category_id.require'   => '商品分类必选',
+        'send_info.require'           => '发货信息必填',
+        'goods_desc.require'          => '商品描述必填',
         'goods_introduce_img.require' => '请上传商品介绍图片',
         'sort_id.integer'             => '排序为正整数',
     ];
     protected $scene = [
-        'add'  =>  ['goods_name', 'goods_price', 'discount_price', 'goods_img', 'flower_material', 'flower_use', 'flower_combine', 'sort_id'],
-        'edit' =>  ['id', 'goods_name', 'goods_price', 'discount_price', 'goods_img', 'flower_material', 'flower_use', 'flower_combine', 'sort_id'],
+        'add'  =>  ['goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc', 'sort_id'],
+        'edit' =>  ['id', 'goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc', 'sort_id'],
     ];
 }

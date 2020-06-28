@@ -30,7 +30,7 @@ class GoodsCategoryValidate extends Validate
         'cate_name.max'     => '分类名称最多不能超过60个字符',
     ];
     protected $scene = [
-        'add'  =>  ['cate_name','mobile_name'],
-        'edit' =>  ['id','cate_name','mobile_name'],
+        'add'  =>  ['cate_name'],
+        'edit' =>  ['id','cate_name'],
     ];
 }
