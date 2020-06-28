@@ -16,7 +16,18 @@ class User extends IndexBase
             return redirect("/index/user/login");
         }
 
-        return "index/user/index";
+        $user = Db::table("user")->where('id', session('user_id'))->find();
+        $vipLevel = Db::table("vip_level")
+            ->where('is_use','=',1)
+            ->order('sort_order')
+            ->select();
+
+        $ret = [
+            'user' => $user,
+            'vipLevel' => $vipLevel,
+        ];
+
+        return view("index/user/index", $ret);
     }
 
     public function login()

@@ -16,10 +16,38 @@ class User extends Model
     protected $field = [
         'account','phone', 'password',
         'nickname', 'head_photo',
+        'user_money',
         'create_time', 'update_time'
     ];
     protected $disuse = [];
 
 
+    public static function search($pageSize)
+    {
+        $where = [];
+//        $where[] = ['is_delete', '=', 1];
+
+        $account = input('account', '');
+
+        if (!empty($account)) {
+            $where[] = ['account', 'like', "%{$account}%"];
+        }
+
+        $add_begin_time = input('add_begin_time', '');
+        $add_end_time = input('add_end_time', '');
+        if (!empty($add_begin_time)) {
+            $where[] = ['create_time', '>=', "$add_begin_time"];
+        }
+
+        if (!empty($add_begin_time)) {
+            $where[] = ['create_time', '<=', "$add_end_time"];
+        }
+
+
+        $data = self::where($where)
+            ->order('id','desc')
+            ->paginate($pageSize);
+        return $data;
+    }
     
 }

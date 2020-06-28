@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>个人中心_源码交易平台_www.wazyb.com - 源码交易平台_www.wazyb.com</title>
+    <meta name="keywords" content="虚拟交易系统,付费下载系统," />
+    <meta name="description" content="数字化内容交易系统、源码/素材/模板交易系统、付费下载系统" />
+    <link rel="stylesheet" href="/static/index/default/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/index/default/css/me.css" />
+    <link rel="stylesheet" href="/static/index/icomoon/style.css" />
+    <script src="/static/index/default/js/jquery.js"></script>
+    <script src="/static/index/default/js/bootstrap.min.js"></script>
+    <script>var webdir = '/' , weburl = 'http://www.wazyb.com/', memurl = '/member';</script>
+    <script src="/static/index/js/layer/layer.js"></script>
+    <script src="/static/index/default/js/all.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/static/index/default/js/html5.js"></script>
+    <script src="/static/index/default/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container bg-white">
+    <div class="row">
+        <div class="col-sm-6 hidden-xs">
+            <a class="nopadding" href="http://www.wazyb.com/"><img src="/static/index/default/img/logo2.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-right" id="memnav">
+            <a href="javascript:;">您好，<strong>aaaaaa</strong> </a>
+            <a href="/member/"><span class="icon-users"></span>管理中心</a>
+            <a href="/member/index.php?u=public-logout"><span class="icon-switch"></span> 退出</a>
+        </div>
+    </div>
+</div>
+<nav class="navbar mr0 mb0 bg-header" id="navbar">
+    <div class="container">
+        <div class="navbar-header visible-xs">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false"><span class="sr-only">Toggle navigation</span> <span class="icon-circle-down"></span></button>
+            <a class="navbar-brand nopadding" href="/"><img src="/static/index/default/img/logo.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="collapse navbar-collapse" id="topnav">
+            <ul class="nav navbar-nav" id="navbar-nav">
+                <li class="active"><a href="/"><span class="icon-home"></span> 网站首页</a></li>
+            </ul>
+            <form role="search" class="navbar-form navbar-right search hidden-xs" method="GET" action="/index.php" id="search_form">
+                <div class="input-group">
+                    <input class="form-control" id="search_keyword" type="text" name="keyword" value="" aria-describedby="submitso" />
+                    <input type="hidden" name="mid" value="2" />
+                    <input type="hidden" name="u" value="search-index" />
+                    <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="icon-search"></i></button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container mt20">
+    <div class="row clearfix" style="padding-bottom:20px;">
+        <div class="col-sm-2 mt20 mb20">
+            <div class="list-group">
+                <a href="#" class="list-group-item active disabled">管理导航</a>
+                <a class="list-group-item  list-group-item-info" href="index.php?u=index-index"><span class="icon-home"></span> 会员首页</a>
+                <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
+                <a class="list-group-item " href="index.php?u=book-index"><span class="icon-list"></span>  已购买的资源</a>
+                <a class="list-group-item " href="index.php?u=record-index"><span class="icon-credit-card"></span>  资金流水</a>
+                <a class="list-group-item " href="index.php?u=record-order"><span class="icon-coin-yen"></span>  在线充值</a>
+                <a class="list-group-item " href="index.php?u=withdraw-index"><span class="icon-pig"></span>  快速提现</a>
+                <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
+                <a class="list-group-item " href="index.php?u=index-profile"><span class="icon-pencil"></span>  修改资料</a>
+                <a class="list-group-item " href="index.php?u=index-password"><span class="icon-key"></span>  修改密码</a>
+                <a class="list-group-item " href="index.php?u=comment-index"><span class="icon-bubble"></span>  我的评价</a>
+                <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
+                <a class="list-group-item" href="index.php?u=public-logout"><span class="icon-exit"></span> 安全退出</a>
+            </div>
+            <div class="input-group hidden-xs">
+                <span class="input-group-addon"><span class="icon-yen text-success"></span></span>
+                <input class="form-control" type="text" value="0.00" />
+            </div>
+        </div>
+        <div class="col-sm-10 mt20">
+            <style>
+                .btn-group{position: relative;}
+                .btn-group #qdfaq{position: absolute;top:11px;right:11px;}
+            </style>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-success text-center" role="alert">{$user["account"]}　欢迎回来！</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">账号信息</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-right" style="width:50%">用户名</td>
+                                    <td class="">
+                                        {$user["account"]}
+                                        (<span class="">
+                                           <?php
+                                                if ($user['vip_level_id'] == 0 ) {
+                                                    echo "普通用户";
+                                                } else {
+                                                    if ($user['vip_deadline'] > time()) {
+                                                        echo "VIP用户";
+                                                    } else {
+                                                         echo "VIP到期";
+                                                    }
+                                                }
+                                           ?>
+                                        </span>
+                                        )
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">注册时间</td>
+                                    <td class=""> {$user['create_time']}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">上次登录时间</td>
+                                    <td class=""> 2020-06-28 19:12</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">上次登录IP</td>
+                                    <td class="">127.0.0.1</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">最后登录时间</td>
+                                    <td class="">2020-06-28 20:40</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">最后登录IP</td>
+                                    <td class="">127.0.0.1</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="alert alert-info text-center" role="alert">
+                        当前可用金额：￥{$user["user_monery"]}
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">详细资料 <a href="/index/user/edit">修改</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-right">邮箱</td>
+                                    <td class="">  <a id="email_btn" class="btn btn-info btn-xs" href="javascript:;">绑定</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">手机号</td>
+                                    <td class="">{$user["phone"]}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">QQ</td>
+                                    <td class=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">支付宝</td>
+                                    <td class=""> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <h4 style="margin-top: 10px; margin-bottom: 10px;">
+                            你当前 VIP 剩余时长： 3个月
+                        </h4>
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <th class="text-center">会员组名称</th>
+                                <th class="text-center">类型</th>
+                                <th class="text-center">享受优惠</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+
+                            <?php foreach($vipLevel as $v):?>
+                            <tr class="">
+                                <td class="text-center">{$v["vip_name"]}</td>
+                                <td class="text-center">
+                                    {$v["vip_desc"]}
+                                </td>
+                                <td class="text-center">
+                                    {$v["vip_welfare"]}
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-danger btn-xs" href="javascript:;"
+                                                           onclick="up_group({$v['id']},66);">
+                                        {$v["vip_fee"]}元 开通
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach;?>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info" id="active_email" style="display:none;border:0 none;">
+                <div class="panel-body form-inline">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">邮箱地址：</label>
+                        <input type="text" class="form-control" id="email" name="email" value=""  />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary btn-sm" id="submit_email" value="发送认证邮件" />
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info" id="active_sms" style="display:none;border:0 none;">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">手机号码：</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="mobile" name="mobile" value="" />
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="button" class="btn btn-default" id="sendcode" value="发送验证码" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">验证码：</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="code" name="code" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    $('#sms_btn').click(function (){
+                        layer.open({
+                            type: 1,
+                            title: ['绑定手机号码', 'font-weight:bold;color:green'],
+                            area: '500px',
+                            btn: ['提交验证', '取消'],
+                            yes: function(index, layero){
+                                if($('#code').val().length == '') {
+                                    layer.msg('验证码不能为空', function(){});
+                                    return false;
+                                }
+                                $.ajax({
+                                    url: '/member/index.php?u=public-sms_active',
+                                    type: 'POST',
+                                    data:{'code':$('#code').val(),'mobile':$('#mobile').val(),'rnum':Math.random()},
+                                    dataType: 'json',
+                                    success: function(res){
+                                        if(res.err==0){
+                                            layer.msg(res.msg, {icon: 1,time: 2000,shade: 0.6}, function(){window.location.reload();});
+                                        }else{
+                                            layer.msg(res.msg, function(){});
+                                        }
+                                    }
+                                });
+                            },cancel: function(index){
+                            },
+                            shadeClose: true,
+                            scrollbar: false,
+                            content: $('#active_sms')
+                        });
+                    });
+                    $('#email_btn').click(function (){
+                        layer.open({
+                            type: 1,
+                            title: ['绑定电子邮箱', 'font-weight:bold;color:green'],
+                            area: '500px',
+                            shadeClose: true,
+                            scrollbar: false,
+                            content: $('#active_email')
+                        });
+                    });
+                    $('#submit_email').click(function (){
+                        if($('#email').val().length == '') {
+                            layer.msg('邮箱地址不能为空', function(){});
+                            return false;
+                        }
+                        $.ajax({
+                            url: '/member/index.php?u=public-send_email_code',
+                            type: 'POST',
+                            data:{'email':$('#email').val(),'username':'aaaaaa','rnum':Math.random()},
+                            dataType: 'json',
+                            success: function(res){
+                                if(res.err==0){
+                                    layer.msg(res.msg);
+                                }else{
+                                    layer.msg(res.msg);
+                                }
+                            }
+                        });
+                        var count = 60;
+                        var countemail = setInterval(CountDown_email, 1000);
+                        function CountDown_email() {
+                            $("#submit_email").attr("disabled", true);
+                            $("#submit_email").val(count + " 秒后可重发");
+                            if (count == 0) {
+                                $("#submit_email").val("重新发送").removeAttr("disabled");
+                                clearInterval(countemail);
+                            }
+                            count--;
+                        }
+                    });
+                    $('#sendcode').click(function (){
+                        if($('#mobile').val().length == '') {
+                            layer.msg('手机号码不能为空', function(){});
+                            return false;
+                        }
+                        $.ajax({
+                            url: '/member/index.php?u=public-send_sms_code',
+                            type: 'POST',
+                            data:{'mobile':$('#mobile').val(),'username':'aaaaaa','rnum':Math.random()},
+                            dataType: 'json',
+                            success: function(res){
+                                if(res.err>1){
+                                    $("#mobile").attr("readonly", true);
+                                    layer.msg(res.msg);
+                                }else{
+                                    layer.msg(res.msg);
+                                    return false;
+                                }
+                            }
+                        });
+                        $("#sendcode").attr("disabled", true);
+                        var count = 60;
+                        var countdown = setInterval(CountDown_sms, 1000);
+                        function CountDown_sms(){
+                            $("#sendcode").attr("disabled", true);
+                            $("#sendcode").val(count + " 秒后可重发");
+                            if (count == 0) {
+                                $("#sendcode").val("重新发送").removeAttr("disabled");
+                                $("#mobile").removeAttr("readonly");
+                                clearInterval(countdown);
+                            }
+                            count--;
+                        }
+                    });
+                });
+                function up_group(groupid,price){
+                    if(price > 0.00){
+                        layer.open({
+                            type: 1,
+                            title: ['友情提醒', 'font-weight:bold;color:green'],
+                            btn: ['去充值', '取消'],
+                            yes: function(index, layero){
+                                window.location.href	= '/member/index.php?u=record-order-price-' + (price-0.00);
+                            },cancel: function(index){
+                            },
+                            shadeClose: true,
+                            content: "<p class='alert text-danger'>余额不足！您至少需要充值："+(price-0.00)+"</p>"
+                        });
+                        return false;
+                    }else{
+                        layer.open({
+                            title: ['友情提醒', 'font-weight:bold;color:green'],
+                            btn:['确认','取消'],
+                            yes:function(index,layero){
+                                $.ajax({
+                                    type	: "POST",
+                                    cache	: false,
+                                    url		: "/member/index.php?u=index-up_group-ajax-1",
+                                    data	: {"groupid":groupid,"price":price},
+                                    success	: function(data){
+                                        ppAjax.alert(data);
+                                        if(window.ppData.err==0){
+                                            layer.msg('会员组升级成功，请稍后！', {icon: 1,time: 2000,shade: 0.6}, function(){window.location.reload();});
+                                        }else{
+                                            layer.alert(window.ppData.msg, {icon: 5,shade: 0.6}) ;
+                                        }
+                                    },
+                                    error : function(html){
+                                        layer.alert("提交数据失败，代码:"+ html.status +"，请稍候再试", {icon: 0,shade: 0.6}) ;
+                                    }
+                                });
+                            },
+                            cancel:function(index){
+                                layer.close(index);
+                            },
+                            shadeClose: true,
+                            content: "您确定要升级吗？此操作将扣除您<strong class='text-danger'>"+price+"元！"
+                        });
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<footer class="footer mt20">
+    <div class="container">
+        <p class="text-center small">
+            Copyright &copy; 2020 <a href="http://www.wazyb.com/">源码交易平台_www.wazyb.com</a> ALL RIGHT RESERVED
+        </p>
+    </div>
+</footer>
+</body>
+</html>
