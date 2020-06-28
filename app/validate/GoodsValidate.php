@@ -22,7 +22,7 @@ class GoodsValidate extends Validate
         'send_info'            => 'require|max:255',
         'has_sale_num'         => 'require|integer',
         'stock_num'            => 'require|integer',
-	    'sort_id'              => 'require|integer',
+//	    'sort_id'              => 'require|integer',
 	    'goods_introduce_img'  => 'require',
 	    'goods_desc'           => 'require',
     ];
@@ -46,7 +46,7 @@ class GoodsValidate extends Validate
         'sort_id.integer'             => '排序为正整数',
     ];
     protected $scene = [
-        'add'  =>  ['goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc', 'sort_id'],
-        'edit' =>  ['id', 'goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc', 'sort_id'],
+        'add'  =>  ['goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc'],
+        'edit' =>  ['id', 'goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc'],
     ];
 }

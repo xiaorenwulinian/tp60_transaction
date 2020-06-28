@@ -14,7 +14,9 @@ class User extends Model
     protected $table = 'user';
 
     protected $field = [
-        'phone', 'password', 'nickname', 'head_photo', 'create_time', 'update_time'
+        'account','phone', 'password',
+        'nickname', 'head_photo',
+        'create_time', 'update_time'
     ];
     protected $disuse = [];
 

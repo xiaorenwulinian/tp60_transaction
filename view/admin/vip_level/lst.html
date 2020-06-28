@@ -29,10 +29,11 @@
                         <tr>
                             <th style="text-align: center">id</th>
                             <th style="text-align: center">级别名称</th>
-                            <th style="text-align: center">级别描述</th>
-                            <th style="text-align: center">级别福利</th>
-                            <th style="text-align: center">级别费用</th>
+                            <th style="text-align: center">享有功能</th>
+                            <th style="text-align: center">描述</th>
+                            <th style="text-align: center">开通费用</th>
                             <th style="text-align: center">是否使用</th>
+                            <th style="text-align: center;">排序</th>
                             <th style="text-align: center">操作</th>
                         </tr>
                         </thead>
@@ -41,25 +42,31 @@
                         <tr style="text-align: center">
                             <td>{$v['id']}</td>
                             <td>{$v['vip_name']}</td>
-                            <td>{$v['vip_desc']}</td>
                             <td>{$v['vip_welfare']}</td>
+                            <td>{$v['vip_desc']}</td>
                             <td>{$v['vip_fee']}</td>
+
                             <td>
                                 <?php if ($v['is_use'] == 1) :?>
                                     <a href="javascript:void(0);" class="btn btn-info btn-sm change_show" data-id="{$v['id']}">
-                                        显示
+                                        使用
                                     </a>
                                 <?php else:?>
                                     <a href="javascript:void(0);" class="btn btn-danger btn-sm change_show" data-id="{$v['id']}">
-                                       隐藏
+                                       废弃
                                     </a>
                                 <?php endif;?>
                             </td>
+
+                            <td>
+                                <input type="text" class="edit_sort_id" data-id="{$v['id']}" value="{$v['sort_order']}" style="text-align: center; width: 60px">
+                            </td>
+
                             <td>
                                 <a  class="btn btn-primary btn-sm" href="<?php echo url('/admin/vipLevel/edit?id='.$v['id'],[], false); ?>" title="编辑">
                                     编辑
                                 </a> &nbsp;
-<!--
+
                             </td>
                         </tr>
                         <?php endforeach;?>

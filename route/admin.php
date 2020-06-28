@@ -16,8 +16,8 @@ Route::group('/admin', function(){
             Route::get('lst', 'admin.GoodsCategory/lst');
         });
 
-//    })->middleware([app\middleware\AdminAuthCheck::class]);
-    });
+    })->middleware([app\middleware\AdminAuthCheck::class]);
+//    });
 
     // 商品分类，暂未使用
     Route::group('goodsCategory', function () {
@@ -35,7 +35,20 @@ Route::group('/admin', function(){
         Route::any('add', 'admin.vipLevel/add');
         Route::any('edit', 'admin.vipLevel/edit');
         Route::any('changeShow', 'admin.vipLevel/changeShow');
+        Route::any('editSort', 'admin.vipLevel/editSort');
+
     });
+
+    // vip级别
+    Route::group('user', function () {
+        Route::get('lst', 'admin.User/lst');
+        Route::any('add', 'admin.User/add');
+        Route::any('edit', 'admin.User/edit');
+        Route::any('changeShow', 'admin.User/changeShow');
+        Route::any('editSort', 'admin.User/editSort');
+
+    });
+
 
     // 广告分类
     Route::group('advertiseType', function () {

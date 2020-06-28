@@ -10,7 +10,10 @@ class VipLevel extends AdminBase
 {
     public function lst()
     {
-        $vip_level = Db::table('vip_level')->order('id','asc')->select()->toArray();
+        $vip_level = Db::table('vip_level')
+            ->order('sort_order','asc')
+            ->select()
+            ->toArray();
 
         return view('admin/vip_level/lst',['data' => $vip_level]);
     }
@@ -81,26 +84,11 @@ class VipLevel extends AdminBase
     public function changeShow()
     {
         $id = $this->request->param('id');
-        $goodsCat = \app\model\GoodsCategory::where('id', $id)->find();
-        $isShow   = $goodsCat->is_show == 1 ? 2 : 1;
-        $goodsCat->is_show = $isShow;
+        $goodsCat = \app\model\VipLevel::where('id', $id)->find();
+        $isShow   = $goodsCat->is_use == 1 ? 2 : 1;
+        $goodsCat->is_use = $isShow;
         $goodsCat->save();
         return success_response();
-    }
-
-    /**
-     * 删除或批量删除
-     * @return \think\response\Json
-     */
-    public function delete()
-    {
-        $ids = $this->request->param('id');
-        $idArr = explode(',', $ids);
-        if (count($idArr) > 1) {
-            return failed_response('不支持批量删除！');
-        }
-        return success_response();
-
     }
 
     /**
@@ -111,7 +99,9 @@ class VipLevel extends AdminBase
     {
         $id = $this->request->param('id');
         $sortId = $this->request->param('sort_id');
-        \app\model\GoodsCategory::where('id','=', $id)->update(['sort_order' => $sortId ]);
+        \app\model\VipLevel::where('id','=', $id)->update(['sort_order' => $sortId ]);
         return success_response();
     }
+
+
 }

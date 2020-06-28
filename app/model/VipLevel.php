@@ -14,8 +14,12 @@ class VipLevel extends Model
     protected $table = 'vip_level';
 
     protected $field = [
-        'vip_name', 'vip_desc', 'vip_fee',
-        'is_use', 'vip_welfare',
+        'vip_name',
+        'vip_desc',
+        'vip_fee',
+        'is_use',
+        'vip_welfare',
+        'sort_order',
         ];
     protected $disuse = [];
 }

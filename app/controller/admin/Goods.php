@@ -90,32 +90,17 @@ class Goods extends AdminBase
 
                 $goods->goods_name      = $reqParam['goods_name'];
                 $goods->goods_price     = $reqParam['goods_price'];
-                $goods->discount_price  = $reqParam['discount_price'];
                 $goods->goods_img       = $reqParam['goods_img'];
                 $goods->goods_img_thumb = $reqParam['goods_img_thumb'];
-                $goods->is_best         = $reqParam['is_best'];
-                $goods->is_hot          = $reqParam['is_hot'];
-                $goods->is_new          = $reqParam['is_new'];
+
                 $goods->is_on_sale      = $reqParam['is_on_sale'];
-                $goods->flower_combine  = $reqParam['flower_combine'];
-                $goods->flower_moral    = $reqParam['flower_moral'];
-                $goods->remark          = $reqParam['remark'];
-                $goods->flower_package  = $reqParam['flower_package'];
-                $goods->flower_stock    = $reqParam['flower_stock'];
-                $goods->sort_id         = $reqParam['sort_id'];
-                $goods->flower_use      = $reqParam['flower_use'];
-                $goods->flower_material = $reqParam['flower_material'];
-                if ($reqParam['is_promote'] == 2) {
-                    $goods->is_promote = 2;
-                    $goods->promote_price =  $reqParam['promote_price'];
-                    $goods->promote_begin_time =  strtotime($reqParam['promote_begin_time']);
-                    $goods->promote_end_time =  strtotime($reqParam['promote_end_time']);
-                } else {
-                    $goods->is_promote = 1;
-                    $goods->promote_begin_time =  0;
-                    $goods->promote_end_time =  0;
-                    $goods->promote_price =  0;
-                }
+//                $goods->remark          = $reqParam['remark'];
+                $goods->stock_num    = $reqParam['stock_num'];
+//                $goods->sort_id         = $reqParam['sort_id'];
+                $goods->goods_category_id      = $reqParam['goods_category_id'];
+                $goods->goods_desc      = $reqParam['goods_desc'];
+                $goods->seo_description      = $reqParam['seo_description'];
+
                 $goods->save();
                 Db::commit();
             } catch (\Exception $e) {

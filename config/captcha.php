@@ -13,13 +13,13 @@ return [
     // 是否使用中文验证码
     'useZh'    => false,
     // 是否使用算术验证码
-    'math'     => false,
+    'math'     => true,
     // 是否使用背景图
     'useImgBg' => false,
     //验证码字符大小
     'fontSize' => 25,
     // 是否使用混淆曲线
-    'useCurve' => true,
+    'useCurve' => false,
     //是否添加杂点
     'useNoise' => true,
     // 验证码字体 不设置则随机
@@ -36,4 +36,20 @@ return [
     //     'length'=>4,
     //    ...
     //],
+
+     'indexlogin' => [
+         'length'   => 4,
+         'bg'       => [243, 251, 254],
+         // 验证码图片高度
+         'imageH'   => 38,
+         // 验证码图片宽度
+         'imageW'   => 120,
+         'useCurve' => false,
+         //是否添加杂点
+         'useNoise' => false,
+         //验证码字符大小
+         'fontSize' => 15,
+         'math'     => true,
+    ],
+
 ];

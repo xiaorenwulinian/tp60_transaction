@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>会员登陆 - 源码交易平台_www.wazyb.com</title>
+    <meta name="keywords" content="虚拟交易系统,付费下载系统," />
+    <meta name="description" content="数字化内容交易系统、源码/素材/模板交易系统、付费下载系统" />
+    <link rel="stylesheet" href="/static/index/default/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/index/default/css/me.css" />
+    <link rel="stylesheet" href="/static/index/icomoon/style.css" />
+    <script src="/static/index/default/js/jquery.js"></script>
+    <script src="/static/index/default/js/bootstrap.min.js"></script>
+    <script>var webdir = '/' , weburl = 'http://www.wazyb.com/', memurl = '/member';</script>
+    <script src="/static/index/js/layer/layer.js"></script>
+    <script src="/static/index/default/js/all.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/static/index/default/js/html5.js"></script>
+    <script src="/static/index/default/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container bg-white">
+    <div class="row">
+        <div class="col-sm-6 hidden-xs">
+            <a class="nopadding" href="http://www.wazyb.com/"><img src="/static/index/default/img/logo2.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-right" id="memnav">
+            <a href="/member/index.php?u=public-register" rel="nofollow"><span class="icon-pencil"></span> 注册</a>
+            <a href="/member/index.php?u=public-login" rel="nofollow"><span class="icon-users"></span> 登录</a>
+        </div>
+    </div>
+</div>
+<nav class="navbar mr0 mb0 bg-header" id="navbar">
+    <div class="container">
+        <div class="navbar-header visible-xs">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false"><span class="sr-only">Toggle navigation</span> <span class="icon-circle-down"></span></button>
+            <a class="navbar-brand nopadding" href="/"><img src="/static/index/default/img/logo.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="collapse navbar-collapse" id="topnav">
+            <ul class="nav navbar-nav" id="navbar-nav">
+                <li class="active"><a href="http://www.wazyb.com/"><span class="icon-home"></span> 网站首页</a></li>
+            </ul>
+            <form role="search" class="navbar-form navbar-right search hidden-xs" method="GET" action="/index.php" id="search_form">
+                <div class="input-group">
+                    <input class="form-control" id="search_keyword" type="text" name="keyword" value="" aria-describedby="submitso" />
+                    <input type="hidden" name="mid" value="2" />
+                    <input type="hidden" name="u" value="search-index" />
+                    <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="icon-search"></i></button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container mt20">
+    <div class="row clearfix" style="padding-bottom:20px;">
+        <div class="col-sm-2 mt20 mb20">
+            <div class="list-group hidden-xs">
+                <a href="#" class="list-group-item active disabled">管理导航</a>
+                <a class="list-group-item" href="/index/user/register"><span class="icon-pencil"></span> 会员注册</a>
+                <a class="list-group-item" href="/index/user/login"><span class="icon-enter"></span> 会员登陆</a>
+                <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
+                <a class="list-group-item" href="/index/user/logout"><span class="icon-exit"></span> 安全退出</a>
+            </div>
+        </div>
+        <div class="col-sm-10 mt20">
+            <div class="panel panel-default">
+                <div class="panel-heading">会员登陆</div>
+                <div class="panel-body">
+                    <form action="" method="" id="loginform"  class="form-horizontal">
+                        <input type="hidden" name="FORM_HASH" value="6a8ff4390bec8b97" />
+                        <div class="row">
+                            <div class="col-sm-4 text-center">
+                                <span class="icon-users text-ddd" style="font-size:128px;"></span>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">用户名：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"  name="account"  />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">密　码：</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control"  name="password" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">验证码：</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <input type="text"  name="verify" class="form-control" style="height:39px;" />
+                                            <span class="input-group-addon" style="padding: 0px!important;">
+                                                <img src="{:url('/index/user/verify',[], false)}"
+                                                     onclick="this.src='<?php echo url('/index/user/verify',[], false); ?>?'+Math.random();" alt="captcha" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="submit"></label>
+                                    <div class="col-sm-9">
+                                        <input type="submit" class="btn btn-primary" id="submit" value="提交登陆" /> <span class="text-warning" id="warning"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="login"></label>
+                                    <div class="col-sm-9">
+                                        <a href="/index/user/register"><span class="icon-user"></span> 注册会员</a>
+                                        <a href="/index/user/forgetPassword"><span class="icon-question"></span> 忘记密码</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $("#submit").on('click', function () {
+                    var url = "/index/user/login";
+                    var param = $("#loginform").serialize();
+                    $.ajax({
+                        type: 'post',
+                        url:  url,
+                        dataType: 'json',
+                        // cache : false,
+                        data : param,
+                        success : function (ret) {
+                            console.log(ret);
+                            if (ret.code == 0) {
+                                layer.msg('登录成功',
+                                    {icon: 1,time: 2000,shade: 0.6},
+                                    function(){
+                                        window.location = "{:url('/index/user/index',[], false)}";
+                                    }
+                                );
+                            } else {
+                                layer.msg(ret.msg);
+                                return false;
+                            }
+
+                        },
+                        error : function (html) {
+                            layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+    </div>
+</div>
+</div>
+<footer class="footer mt20">
+    <div class="container">
+        <p class="text-center small">
+            Copyright &copy; 2020 <a href="http://www.wazyb.com/">源码交易平台_www.wazyb.com</a> ALL RIGHT RESERVED
+        </p>
+    </div>
+</footer>
+</body>
+</html>

@@ -3,105 +3,44 @@
 namespace app\controller\admin;
 
 
-use app\common\tools\ArrayTool;
+use think\captcha\facade\Captcha;
 use think\facade\Db;
 
-class VipLevel extends AdminBase
+
+class Login extends AdminBase
 {
-    public function lst()
+    public function login()
     {
-        $vip_level = Db::table('vip_level')
-            ->order('sort_order','asc')
-            ->select()
-            ->toArray();
 
-        return view('admin/vip_level/lst',['data' => $vip_level]);
-    }
-
-    public function add()
-    {
-        if ($this->request->isPost()) {
+        if($this->request->isPost()) {
             $reqParam = $this->request->param();
-            validate(\app\validate\VipLevelValidate::class)->scene('add')->check($reqParam);
+            validate(\app\validate\AdminUserValidate::class)->scene('login')->check($reqParam);
 
-
-            try {
-                 \app\model\VipLevel::create($reqParam);
-
-            } catch (\Exception $e) {
-
-                return failed_response($e->getMessage());
+            $flag = captcha_check($reqParam['verify']);
+            if(!$flag) {
+                return failed_response('验证码错误');
             }
-            return success_response();
-        }
 
-        $ret = [
-
-        ];
-        return view('admin/vip_level/add', $ret);
-
-    }
-
-    public function edit()
-    {
-        $id = $this->request->param('id');
-        if ($this->request->isPost()) {
-
-            $reqParam = $this->request->param();
-            validate(\app\validate\VipLevelValidate::class)->scene('edit')->check($reqParam);
-
-
-            try {
-                $vip  = \app\model\VipLevel::where('id', $id)->find();
-
-                $vip->vip_name   =  $reqParam['vip_name'];
-                $vip->vip_desc =  $reqParam['vip_desc'];
-                $vip->vip_welfare  =  $reqParam['vip_welfare'];
-                $vip->vip_fee  =  $reqParam['vip_fee'];
-                $vip->is_use  =  $reqParam['is_use'];
-                $vip ->save();
-            } catch (\Exception $e) {
-                return failed_response($e->getMessage());
+            $adminData = \app\model\AdminUser::where('account', '=', $reqParam['account'])->find();
+            if (empty($adminData)) {
+                return failed_response('未发现该账号！');
             }
-            return success_response();
+
+            if($adminData['id'] == 1 || $adminData['is_use'] == 1) {
+                if($adminData['password'] == md5($reqParam['password'])) {
+                    session('admin_user_id', $adminData['id']);
+                    session('admin_user_name', $adminData['username']);
+                    return success_response();
+                }
+                return failed_response('用户名或密码错误');
+            }
+            return failed_response('账号被禁用');
         }
-
-        $data = Db::table('vip_level')->where('id', $id)->find();
-
-        $ret = [
-            'data'       => $data,
-        ];
-        return view('admin/vip_level/edit', $ret);
+        return view('admin/login/login');
     }
 
-    /**
-     * 修改显示状态
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function changeShow()
+    public function verify()
     {
-        $id = $this->request->param('id');
-        $goodsCat = \app\model\VipLevel::where('id', $id)->find();
-        $isShow   = $goodsCat->is_use == 1 ? 2 : 1;
-        $goodsCat->is_use = $isShow;
-        $goodsCat->save();
-        return success_response();
+        return Captcha::create();
     }
-
-    /**
-     * 修改排序
-     * @return \think\response\Json
-     */
-    public function editSort()
-    {
-        $id = $this->request->param('id');
-        $sortId = $this->request->param('sort_id');
-        \app\model\VipLevel::where('id','=', $id)->update(['sort_order' => $sortId ]);
-        return success_response();
-    }
-
-
 }

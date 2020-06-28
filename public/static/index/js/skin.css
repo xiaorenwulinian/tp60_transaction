@@ -1,0 +1,63 @@
+﻿
+/*验证失败后,元素项本身样式*/
+.validato_input{
+	background-color:#FFCC33;	
+	border:red 1px solid;
+}
+
+em{font-weight:normal;font-style:normal;}
+.validator_msg_tip{ 
+	background-color: #FFFFE9; 
+	border: 1px solid #FFDE8E; 
+	padding: 5px 25px 5px 10px; 
+	margin:10px; 
+	position: absolute; 
+	z-index: 999999999; 
+	font-size:12px; 
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px; 
+	border-radius:5px; 
+	-moz-box-shadow:1px 1px 2px rgba(0,0,0,.2); 
+	-webkit-box-shadow:1px 1px 2px rgba(0,0,0,.2); 
+	box-shadow:1px 1px 2px rgba(0,0,0,.2);
+}
+
+.validator_msg_tip .tip-success-ico,.validator_msg_tip .tip-error-ico{
+	position:absolute; 
+	pdding-left:1px;
+	top:5px;
+	left:6px; 
+	display:block; 
+	width:16px;
+	height:16px;
+	text-indent:-900px; 
+	overflow:hidden; 
+}
+
+.validator_msg_tip .tip-success-ico{
+	background-image:url(../images/success.gif); 
+}
+.validator_msg_tip .tip-error-ico {
+	background-image:url(../images/error.gif); 
+
+}
+
+.validator_msg_tip p{ line-height:1.5;padding:0;margin:0; }
+.validator_msg_tip .validator_msg_tip_direction{position: absolute; }
+.validator_msg_tip .validator_msg_tip_direction em,.validator_msg_tip .validator_msg_tip_direction span{ 
+	height: 19px; 
+	width: 14px; 
+	font-family: Simsun;
+	font-size: 16px;
+	line-height: 21px;
+	overflow: hidden;
+	position: absolute;
+}
+.validator_msg_tip .validator_tip_msg_content{
+	margin-left:11px;
+	color:#666666;
+}
+.validator_msg_tip .validator_msg_tip_direction em{color: #FFDE8E; }
+.validator_msg_tip .validator_msg_tip_direction span{color: #FFFFE9; }
+.validator_msg_tip .validator_msg_tip_left{top: 50%; margin-top:-8px; left:-8px; }
+.validator_msg_tip .validator_msg_tip_left span{ left:1px}
