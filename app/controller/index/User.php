@@ -3,6 +3,7 @@
 namespace app\controller\index;
 
 
+use app\common\tools\StringTool;
 use think\captcha\facade\Captcha;
 use think\facade\Db;
 
@@ -73,15 +74,29 @@ class User extends IndexBase
                 return  failed_response("两次密码不一致！");
             }
 
-            $adminData = \app\model\User::where('account', '=', $reqParam['account'])->find();
-            if ($adminData) {
+            $isExist = \app\model\User::where('account', '=', $reqParam['account'])->find();
+            if ($isExist) {
                 return failed_response('该账号已存在，请更换！');
             }
 
+            $maxId = \app\model\User::max('id');
+            if (!$maxId) {
+                $maxId = 0;
+            }
+            $maxId++;
+            $uniqueCode = $maxId . '-' . date("Ymd-Hi") . '-' . StringTool::random(6);
+            if (!empty($reqParam['invite_code'])) {
+                $hasCount = \app\model\User::where('unique_code', '=', $reqParam['invite_code'])->count();
+                if ($hasCount < 1) {
+                    return failed_response("该邀请码不存在！");
+                }
+            }
             try {
                 $data = [
-                    'account' => $reqParam['account'],
-                    'password' => md5($reqParam['password']),
+                    'account'     => $reqParam['account'],
+                    'password'    => md5($reqParam['password']),
+                    'unique_code' => $uniqueCode,
+                    'invite_code' => $reqParam['invite_code'],
                 ];
                 $user = \app\model\User::create($data);
             } catch (\Exception $e) {

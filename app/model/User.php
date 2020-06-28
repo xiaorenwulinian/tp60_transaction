@@ -17,7 +17,9 @@ class User extends Model
         'account','phone', 'password',
         'nickname', 'head_photo',
         'user_money',
-        'create_time', 'update_time'
+        'create_time', 'update_time',
+        'unique_code', 'invite_code',
+
     ];
     protected $disuse = [];
 
