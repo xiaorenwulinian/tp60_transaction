@@ -10,7 +10,20 @@ class Index extends IndexBase
 {
     public function index()
     {
-      return \view('index/index/index');
+        $uid = session('user_id');
+        if (empty($uid)) {
+            $uid = 0;
+            $userData = [];
+        } else {
+            $userData = \app\model\User::where("id", '=', $uid)->find();
+        }
+
+        $ret = [
+            'userIndexData' => $userData,
+            'uid' => $uid,
+        ];
+
+        return \view('index/index/index', $ret);
     }
 
 

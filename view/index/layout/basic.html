@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>个人中心_源码交易平台_ - 源码交易平台</title>
+    <meta name="keywords" content="虚拟交易系统,付费下载系统," />
+    <meta name="description" content="数字化内容交易系统、源码/素材/模板交易系统、付费下载系统" />
+    <link rel="stylesheet" href="/static/index/default/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/index/default/css/me.css" />
+    <link rel="stylesheet" href="/static/index/icomoon/style.css" />
+    <script src="/static/index/default/js/jquery.js"></script>
+    <script src="/static/index/default/js/bootstrap.min.js"></script>
+    <script>var webdir = '/' , weburl = '/', memurl = '/index/user/index';</script>
+    <script src="/static/index/js/layer/layer.js"></script>
+    <script src="/static/index/default/js/all.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/static/index/default/js/html5.js"></script>
+    <script src="/static/index/default/js/respond.min.js"></script>
+    <![endif]-->
+
+    {block name="style"}
+
+    {/block}
+</head>
+<body>
+
+<?php
+    $uid = session('user_id');
+    if (empty($uid)) {
+        $uid = 0;
+        $userIndexData = [];
+    } else {
+        $userIndexData = \app\model\User::where("id", '=', $uid)->find();
+    }
+
+?>
+
+<div class="container bg-white">
+    <div class="row">
+        <div class="col-sm-6 hidden-xs">
+            <a class="nopadding" href="/"><img src="/static/index/default/img/logo2.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <?php if ($uid > 0):?>
+
+            <div class="col-xs-12 col-sm-6 text-right" id="memnav">
+                <a href="javascript:;">您好，<strong>{$userIndexData['account']}</strong> </a>
+                <a href="/index/user/index"><span class="icon-users"></span>管理中心</a>
+                <a href="/index/user/logout"><span class="icon-switch"></span> 退出</a>
+            </div>
+
+
+        <?php else: ?>
+        <div class="col-xs-12 col-sm-6 text-right" id="memnav">
+            <a href="/index/user/register" rel="nofollow"><span class="icon-pencil"></span> 注册</a>
+            <a href="/index/user/login" rel="nofollow"><span class="icon-users"></span> 登录</a>
+        </div>
+
+        <?php endif;?>
+    </div>
+</div>
+
+<div>
+    {block name="content"}
+
+    {/block}
+</div>
+
+
+
+{block name="script"}
+{/block}
+
+</body>
+</html>
