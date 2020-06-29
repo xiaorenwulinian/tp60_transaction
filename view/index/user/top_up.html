@@ -1,0 +1,141 @@
+
+{extend name="index/layout/basic" /}
+
+
+{block name="content"}
+
+<nav class="navbar mr0 mb0 bg-header" id="navbar">
+    <div class="container">
+        <div class="navbar-header visible-xs">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false"><span class="sr-only">Toggle navigation</span> <span class="icon-circle-down"></span></button>
+            <a class="navbar-brand nopadding" href="http://www.wazyb.com/"><img src="/static/index/default/img/logo.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="collapse navbar-collapse" id="topnav">
+            <ul class="nav navbar-nav" id="navbar-nav">
+                <li class="active"><a href="http://www.wazyb.com/"><span class="icon-home"></span> 网站首页</a></li>
+            </ul>
+            <form role="search" class="navbar-form navbar-right search hidden-xs" method="GET" action="/index.php" id="search_form">
+                <div class="input-group">
+                    <input class="form-control" id="search_keyword" type="text" name="keyword" value="" aria-describedby="submitso" />
+                    <input type="hidden" name="mid" value="2" />
+                    <input type="hidden" name="u" value="search-index" />
+                    <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="icon-search"></i></button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<style>#lifealipay_info{font-size: 0.9em;}</style>
+<div class="container mt20">
+    <div class="row clearfix" style="padding-bottom:20px;">
+
+<!--        左侧导航栏-->
+        {include file="index/layout/left_manager" /}
+
+        <div class="col-sm-10 mt20">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-success"><span class="icon-location"></span> 当前位置：在线充值</div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form id="order_form" action="index.php?u=record-order" method="post" class="form-horizontal no-margin" target="_blank">
+                                <div class="form-group" id="price_info">
+                                    <label for="price" class="col-sm-2 control-label">充值金额</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">￥</span>
+                                            <input type="text" class="form-control text-right" id="price" value="0" name="price" />
+                                            <span class="input-group-addon">元</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"  id="paybank_types">
+                                    <label class="control-label col-sm-2" for="paybank">充值途径</label>
+                                    <div class="col-sm-10">
+                                        <div class="radio">
+                                            <label><input type="radio" name="paybank" value="lifealipay" onclick="changeItemType()" /> 支付宝转帐 <span class='text-red'>转帐成功后请联系站长，以便及时确认！</span></label>
+                                        </div>
+                                        <blockquote class="paybank_info" id="lifealipay_info" style="display:none;margin-top:20px;">
+                                            <p>
+                                                1、支付宝收款帐号：<mark></mark><br /><br />
+                                                2、支付宝扫码支付：<br />
+                                                <img src="/static/index/img/alipay.jpg" /><br /><br />
+
+                                            </p>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2"></label>
+                                    <div class="col-sm-10">
+                                        <button type="button"  class="btn btn-info" id="order_submit">前去付款</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">充值提交</div>
+                        <div class="panel-body text-success">
+                            友情提示：充值成功后，填写资料，进行审核。
+                        </div>
+                        <div class="table-responsive">
+                            <form action="">
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<footer class="footer mt20">
+    <div class="container">
+        <p class="text-center small">
+            Copyright &copy; 2020 <a href="http://www.wazyb.com/">源码交易平台_www.wazyb.com</a> ALL RIGHT RESERVED
+        </p>
+    </div>
+</footer>
+
+<script>
+    $(document).ready(function(){
+        $("#paybank_types input[type='radio']").eq(0).attr('checked','checked');
+        var type = $("#paybank_types input[name='paybank']:checked").val();
+        $('#' + type +'_info').show('fast');
+        if($("input[name='paybank']").length ==1 && $("input[name='paybank']").val() == "teegon"){
+            $("#teegon").hide();
+        }
+        if(type == "lifealipay"){
+            $("#order_submit").hide();
+        }
+        if($("input[name='paybank']").length > 0){
+            $('#order_submit').attr('disabled',false);
+            $("#order_submit").click(function(){
+                if($('#price').val() <= 0){
+                    layer.msg('金额不正确！', function(){});
+                    return false;
+                }
+                $('#order_form').submit();
+            });
+        }else{
+            $('#order_submit').attr('disabled',true).val('线上充值渠道尚未开通');
+        }
+    });
+    function changeItemType(){
+        var type = $("#paybank_types input[name='paybank']:checked").val();
+        $('.paybank_info').hide('fast');
+        $('#' + type +'_info').show('fast');
+        if(type == "lifealipay"){
+            $("#order_submit").hide();
+        }else{
+            $("#order_submit").show();
+        }
+    }
+</script>
+
+{/block}

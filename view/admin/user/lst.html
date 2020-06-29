@@ -74,6 +74,8 @@
                             <th style="text-align: center">账号</th>
                             <th style="text-align: center">余额</th>
                             <th style="text-align: center">手机</th>
+                            <th style="text-align: center">唯一码</th>
+                            <th style="text-align: center">邀请码</th>
 
                             <th style="text-align: center">是否vip</th>
                             <th style="text-align: center">注册时间</th>
@@ -89,6 +91,8 @@
                             <td style="vertical-align: middle">{$v['account']}</td>
                             <td style="vertical-align: middle">{$v['user_money']}</td>
                             <td style="vertical-align: middle">{$v['phone']}</td>
+                            <td style="vertical-align: middle">{$v['unique_code']}</td>
+                            <td style="vertical-align: middle">{$v['invite_code']}</td>
 、                           <td style="vertical-align: middle">
                                 <?php echo $v['vip_level_id'] == 0 ? '普通用户' : 'vip会员'; ?>
                              </td>

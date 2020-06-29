@@ -31,6 +31,35 @@ class User extends IndexBase
         return view("index/user/index", $ret);
     }
 
+    /**
+     * 充值
+     */
+    public function topUp()
+    {
+        if (!session('user_id')) {
+            return redirect("/index/user/login");
+        }
+        return view("index/user/top_up");
+    }
+
+    /**
+     * 提现
+     */
+    public function withdraw()
+    {
+        if (!session('user_id')) {
+            return redirect("/index/user/login");
+        }
+        return view("index/user/withdraw");
+    }
+
+    /**
+     * 登录
+     * @return \think\response\Json|\think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function login()
     {
 

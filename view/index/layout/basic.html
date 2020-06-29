@@ -40,25 +40,32 @@
 
 <div class="container bg-white">
     <div class="row">
-        <div class="col-sm-6 hidden-xs">
+        <div class="col-sm-4 hidden-xs">
             <a class="nopadding" href="/"><img src="/static/index/default/img/logo2.png" alt="源码交易平台_www.wazyb.com"/></a>
         </div>
+
+        <div class="col-xs-12 col-sm-8 text-right" id="memnav">
+            <a href="/index/user/topUp"><span class=""></span> 充值 </a>
+            <a href="/index/user/withdraw"><span class=""></span> 提现 </a>
+            <a href="/index/user/orderRecord"><span class=""></span> 交易记录 </a>
+            <a href="/index/user/myPublish"><span class=""></span> 我的发布 </a>
+            <a href="/index/user/promotion"><span class=""></span> 推广 </a>
+            <a href="/index/user/useInfo"><span class=""></span> 使用说明 </a>
+
         <?php if ($uid > 0):?>
 
-            <div class="col-xs-12 col-sm-6 text-right" id="memnav">
-                <a href="javascript:;">您好，<strong>{$userIndexData['account']}</strong> </a>
-                <a href="/index/user/index"><span class="icon-users"></span>管理中心</a>
-                <a href="/index/user/logout"><span class="icon-switch"></span> 退出</a>
-            </div>
+            <a href="javascript:;">您好，<strong>{$userIndexData['account']}</strong> </a>
+            <a href="/index/user/index"><span class="icon-users"></span>管理中心</a>
+            <a href="/index/user/logout"><span class="icon-switch"></span> 退出</a>
 
 
         <?php else: ?>
-        <div class="col-xs-12 col-sm-6 text-right" id="memnav">
+
             <a href="/index/user/register" rel="nofollow"><span class="icon-pencil"></span> 注册</a>
             <a href="/index/user/login" rel="nofollow"><span class="icon-users"></span> 登录</a>
-        </div>
 
         <?php endif;?>
+        </div>
     </div>
 </div>
 

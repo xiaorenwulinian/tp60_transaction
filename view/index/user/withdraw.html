@@ -1,0 +1,212 @@
+
+{extend name="index/layout/basic" /}
+
+
+{block name="content"}
+
+<nav class="navbar mr0 mb0 bg-header" id="navbar">
+    <div class="container">
+        <div class="navbar-header visible-xs">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false"><span class="sr-only">Toggle navigation</span> <span class="icon-circle-down"></span></button>
+            <a class="navbar-brand nopadding" href="http://www.wazyb.com/"><img src="/static/default/img/logo.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="collapse navbar-collapse" id="topnav">
+            <ul class="nav navbar-nav" id="navbar-nav">
+                <li class="active"><a href="http://www.wazyb.com/"><span class="icon-home"></span> 网站首页</a></li>
+            </ul>
+            <form role="search" class="navbar-form navbar-right search hidden-xs" method="GET" action="/index.php" id="search_form">
+                <div class="input-group">
+                    <input class="form-control" id="search_keyword" type="text" name="keyword" value="" aria-describedby="submitso" />
+                    <input type="hidden" name="mid" value="2" />
+                    <input type="hidden" name="u" value="search-index" />
+                    <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="icon-search"></i></button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container mt20">
+    <div class="row clearfix" style="padding-bottom:20px;">
+
+        <!--        左侧导航栏-->
+        {include file="index/layout/left_manager" /}
+        
+        <div class="col-sm-10 mt20">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-success"><span class="icon-location"></span> 当前位置：提现</div>
+                </div>
+                <div class="col-sm-12">
+                    <ul class="nav nav-tabs no-margin myTabBeauty">
+                        <li class="active"> <a href="index.php?u=withdraw-index">快速提现</a> </li>
+                        <li class=""> <a href="index.php?u=withdraw-mylist">提现历史</a> </li>
+                    </ul>
+                    <div class="panel panel-default mt10">
+                        <div class="panel-body">
+                            <p class="alert alert-warning"><span class="icon-bell"></span> 小提示:单笔提现金额不少于100元，手续费1%，24小时内处理申请。</p>
+                            <form id="form" action="index.php?u=withdraw-index" method="post" class="form-horizontal no-margin" target="_blank">
+                                <div class="form-group">
+                                    <label for="price" class="col-sm-2 control-label">可用金额</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">￥</span>
+                                            <input type="text" class="form-control text-right" value="0.00" disabled="disabled" autocomplete="off" />
+                                            <span class="input-group-addon">元</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="money" class="col-sm-2 control-label">提现金额</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">￥</span>
+                                            <input type="text" class="form-control text-right" id="money" value="" name="money" autocomplete="off" />
+                                            <span class="input-group-addon">元</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="charge" class="col-sm-2 control-label">手续费</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">￥</span>
+                                            <input type="text" class="form-control text-right" id="charge" value="" name="charge" disabled="disabled" autocomplete="off" />
+                                            <span class="input-group-addon">1%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="money" class="col-sm-2 control-label">到帐金额</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">￥</span>
+                                            <input type="text" class="form-control text-right" id="overmoney" value="" disabled="disabled" autocomplete="off" />
+                                            <span class="input-group-addon">元</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="alipay" class="col-sm-2 control-label">支付宝信息</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"></span>
+                                            <input type="text" class="form-control" id="alipay" value=""  disabled="disabled" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <a href="javascript:;" class="btn btn-warning btn-sm" id="editalipay">修改支付宝信息</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2"></label>
+                                    <div class="col-sm-10">
+                                        <input type="hidden" value="alipay" name="paybank" />
+                                        <input type="submit"  class="btn btn-info" value="申请提现" id="submit" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info" id="edit_alipay" style="display:none;width:300px;border:0 none;">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">支付宝姓名(可选)：</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="e_alipay_name" name="alipay_name" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">支付宝帐号：</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="e_alipay" name="alipay" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-info btn-block" id="submit_alipay" value="确认保存" />
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    $('#editalipay').click(function (){
+                        layer.open({
+                            type: 1,
+                            title: ['修改支付宝信息', 'font-weight:bold;color:green'],
+                            shadeClose: true,
+                            scrollbar: false,
+                            content: $('#edit_alipay')
+                        });
+                    });
+                    $('#submit_alipay').click(function (){
+                        $.ajax({
+                            url: '/member/index.php?u=withdraw-edit_alipay',
+                            type: 'POST',
+                            data:{'alipay_name':$('#e_alipay_name').val(),'alipay':$('#e_alipay').val(),'rnum':Math.random()},
+                            dataType: 'json',
+                            success: function(res){
+                                if(res.err==0){
+                                    layer.msg(res.msg, {icon: 1,time: 2000,shade: 0.6}, function(){window.location.reload();});
+                                }else{
+                                    layer.msg(res.msg, {icon: 5,time: 1000,shade: 0.6}, function(){window.location.reload();});
+                                }
+                            }
+                        });
+                    });
+                    $('#money').change(function(){
+                        var charge = $(this).val() * 1 / 100;
+                        var err = 0 , msg = '';
+                        if($(this).val().length <= 0){
+                            err = err + 1;
+                            msg += '提现金额不能为0或空<br />';
+                        }
+                        if($("#alipay").val().length <= 0){
+                            err = err + 1;
+                            msg += '支付宝帐号不能为空<br />';
+                        }
+                        if($(this).val() > 0.00){
+                            err = err + 1;
+                            msg += '提现金额('+$(this).val()+')不能大于可用金额(0.00)<br />';
+                        }
+                        if($(this).val() < 100){
+                            err = err + 1;
+                            msg += '单笔提现金额不少于100元<br />';
+                        }
+                        if(err>0){
+                            layer.alert(msg, {icon: 5,shade: 0.6}) ;
+                            $('#submit').attr('disabled',true);
+                            return false;
+                        }else{
+                            $("#charge").val(charge.toFixed(2));
+                            $("#overmoney").val(($('#money').val() - $("#charge").val() - 0).toFixed(2));
+                            $('#submit').attr('disabled',false);
+                        }
+                    });
+                    ppAjax.submit("#form", function(data){
+                        ppAjax.alert(data);
+                        if(window.ppData.err==0){
+                            layer.msg(window.ppData.msg, {icon: 1,time: 2000,shade: 0.6}, function(){window.location = 'index.php?u=withdraw-mylist';});
+                        }else{
+                            layer.msg(window.ppData.msg, function(){});
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<footer class="footer mt20">
+    <div class="container">
+        <p class="text-center small">
+            Copyright &copy; 2020 <a href="http://www.wazyb.com/">源码交易平台_www.wazyb.com</a> ALL RIGHT RESERVED
+        </p>
+    </div>
+</footer>
+
+{/block}

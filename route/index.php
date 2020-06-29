@@ -28,6 +28,8 @@ Route::group('index', function(){
         Route::get('logout', 'index.User/logout');
         Route::get('verify', 'index.User/verify');
         Route::any('register', 'index.User/register');
+        Route::any('topUp', 'index.User/topUp'); // 充值
+        Route::any('withdraw', 'index.User/withdraw'); // 提现
 
     });
 
