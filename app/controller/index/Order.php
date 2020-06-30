@@ -13,13 +13,11 @@ class Order extends IndexBase
 
     public function buy()
     {
-//        return failed_response('未发现该账号！');
         if (!session('user_id')) {
             return failed_response('请先登陆！',401);
-            return redirect("/index/user/login");
         }
-        $userId = session('user_id');
-        $goods_id = input('goods_id',3);
+        $userId   = session('user_id');
+        $goods_id = input('goods_id',0);
 
         $user = Db::table("user")->where('id', $userId)->find();
         $goods = Db::table("goods")->where('id', $goods_id)->find();
@@ -28,11 +26,11 @@ class Order extends IndexBase
             return failed_response('该商品已下架！' . $goods_id);
         }
 
-        if ($user["user_monery"] < $goods["goods_price"]) {
+        if ($user["user_money"] < $goods["goods_price"]) {
             return failed_response('账户余额不足，请先充值！', 100);
         }
 
-        $remainMoney = $goods["goods_price"] - $user["user_monery"];
+        $remainMoney =  $user["user_money"] - $goods["goods_price"];
 
         $curDate = date("Y-m-d H:i:s");
 

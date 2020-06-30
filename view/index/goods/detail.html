@@ -76,10 +76,9 @@
                     <tbody>
                     <tr class="active">
                         <td colspan="2" class="text-success text-center">
-                            <strong class="text-warning" style="font-size:1.5em"><small>￥</small>33333.00 </strong>
+                            <strong class="text-warning" style="font-size:1.5em"><small>￥</small>{$goodsData['goods_price']}</strong>
                         </td></tr>
                     <tr><td class="text-right w1">分类</td><td class="text-success">电子商城</td></tr>
-                    <tr><td class="text-right w1">授权</td><td class="text-success">免费版</td></tr>
                     <tr><td class="text-right w1">语言</td><td class="text-success">php + mysql</td></tr>
                     <tr><td class="text-right w1">演示</td><td class="text-success">-</td></tr>
                     <tr><td class="text-right w1">发布于</td><td>1天前</td></tr>
@@ -96,7 +95,7 @@
                             <input type="hidden" name="book[ordernum]" value="1" />
                             <input type="hidden" name="book[pid]" value="2" />
                             <input type="hidden" name="book[cid]" value="15" />
-                            <input type="hidden" id="book_price" value="33333.00" />
+                            <input type="hidden" id="book_price" value="{$goodsData['goods_price']}" />
                             <input type="hidden" id="user_price" value="0.00" />
                             <!--<button type="button" class="btn btn-info btn-block" id="send"><span class="icon-cart"></span> 确认订购</button>-->
                             <button type="button" class="btn btn-info btn-block" id="send_order"><span class="icon-cart"></span> 确认订购</button>
@@ -152,7 +151,7 @@
 
         $("#send_order").on('click', function () {
             var url = "/index/order/buy";
-            var goods_id = goods_id;
+
 
             layer.confirm('确认购买该商品？', {
                 btn: ['购买','取消'] //按钮
