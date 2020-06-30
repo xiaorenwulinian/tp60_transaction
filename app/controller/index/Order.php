@@ -18,8 +18,23 @@ class Order extends IndexBase
             return failed_response('请先登陆！',401);
             return redirect("/index/user/login");
         }
-        $goods_id = input('goods_id');
-        return failed_response('未发现该账号！');
+        $goods_id = input('goods_id',3);
+
+        $user = Db::table("user")->where('id', session('user_id'))->find();
+        $goods = Db::table("goods")->where('id', $goods_id)->find();
+
+        if (!$goods) {
+            return failed_response('该商品已下架！' . $goods_id);
+        }
+
+        if ($user["user_monery"] < $goods["goods_price"]) {
+            return failed_response('账户余额不足，请先充值！', 100);
+        }
+
+        
+
+
+        return success_response();
     }
 
     public function index()

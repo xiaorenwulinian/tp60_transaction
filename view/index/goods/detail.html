@@ -154,39 +154,70 @@
             var url = "/index/order/buy";
             var goods_id = goods_id;
 
-            $.ajax({
-                type: 'post',
-                url:  url,
-                dataType: 'json',
-                // cache : false,
-                data : {
-                    goods_id: goods_id
-                },
-                success : function (ret) {
-                    console.log(ret);
+            layer.confirm('确认购买该商品？', {
+                btn: ['购买','取消'] //按钮
+            }, function(){
+
+                $.ajax({
+                    type: 'post',
+                    url:  url,
+                    dataType: 'json',
+                    data : {
+                        goods_id: goods_id
+                    },
+                    success : function (ret) {
+                        console.log(ret);
+
+                        if (ret.code == 0) {
+                            layer.msg('购买成功',
+                                {icon: 1,time: 2000,shade: 0.6},
+                                function(){
+                                    window.location.href = window.location.href;
+                                }
+                            );
+                        } else if(ret.code == 401) {
+                            window.location = "{:url('/index/user/login',[], false)}";
+                            return false;
+                        } else if(ret.code == 100) {
+
+                            layer.confirm(ret.msg, {
+                                btn: ['去充值','取消'] //按钮
+                            }, function(){
+                                window.location.href	= '/index/user/topUp';
+                            });
+                            // layer.msg(ret.msg);
+                            return false;
+
+                            layer.open({
+                                type: 1,
+                                title: ['友情提醒', 'font-weight:bold;color:green'],
+                                btn: ['去充值', '取消'],
+                                yes: function(index, layero){
+                                    window.location.href	= '/index/user/topUp';
+                                },cancel: function(index){
+                                },
+                                shadeClose: true,
+                                scrollbar: false,
+                                content: "<p class='alert text-danger'> 账户余额不足，请先充值！</p>"
+                            });
+                            return false;
+                        } else {
+                            layer.msg(ret.msg);
+                            return false;
+                        }
 
 
-                    if (ret.code == 0) {
-                        layer.msg('注册成功',
-                            {icon: 1,time: 2000,shade: 0.6},
-                            function(){
-                                window.location = "{:url('/index/user/index',[], false)}";
-                            }
-                        );
-                    } else if(ret.code == 401) {
-                        window.location = "{:url('/index/user/login',[], false)}";
-                        return false;
-                    } else {
-                        layer.msg(ret.msg);
-                        return false;
+                    },
+                    error : function (html) {
+                        layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
                     }
+                });
+            }, function(){
 
-
-                },
-                error : function (html) {
-                    layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
-                }
             });
+
+
+
             return false;
         });
 
