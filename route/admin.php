@@ -46,6 +46,7 @@ Route::group('/admin', function(){
         Route::any('edit', 'admin.User/edit');
         Route::any('changeShow', 'admin.User/changeShow');
         Route::any('editSort', 'admin.User/editSort');
+        Route::any('topUp', 'admin.User/topUp');
 
     });
 

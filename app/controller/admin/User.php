@@ -183,4 +183,64 @@ class User extends AdminBase
         return success_response();
     }
 
+
+    public function topUp()
+    {
+        $userId = $this->request->param('user_id');
+        $money  = $this->request->param('money');
+
+        if (empty($userId) || empty($money)) {
+            return failed_response("缺少参数");
+        }
+
+
+        if (!is_numeric($money)) {
+            return failed_response("充值金额必须是数值类型");
+        }
+        $adminId = session('admin_user_id');
+
+        $user = Db::table('user')
+            ->where('id', $userId)
+            ->find();
+        if (empty($user)) {
+            return failed_response("非法注入");
+        }
+        $curDate = date("Y-m-d H:i:s");
+
+        Db::startTrans();
+        try {
+            // 更改金额
+            Db::table("user")
+                ->where('id','=', $userId)
+                ->update([
+                    'user_money' => ($user['user_money'] + $money),
+                    'update_time' => date("Y-m-d H:i:s"),
+                ]);
+
+            // 操作交易记录 提现
+            Db::table("transaction_record")
+                ->insertGetId([
+                    'user_id'           => $userId,
+                    'admin_id'          => $adminId,
+                    'operator_type'     => 2,
+                    'money'             => $money,
+                    'transaction_type'  => 1,
+//                    'order_id'          => $orderId,
+                    'create_time'       => $curDate,
+                ]);
+
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            return failed_response($e->getMessage());
+        }
+
+        return success_response();
+
+
+
+
+
+    }
+
 }

@@ -64,12 +64,14 @@
                     <h3 class="box-title">
                     </h3>
                 </div>
-                <!-- /.box-header -->
+
                 <div class="box-body">
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th style="text-align: center"> <input type="checkbox" name="is_multi_select"  class="is_multi_select"> </th>
+                            <th style="text-align: center">
+                                <input type="checkbox" name="is_multi_select"  class="is_multi_select">
+                            </th>
                             <th style="text-align: center">ID</th>
                             <th style="text-align: center">账号</th>
                             <th style="text-align: center">余额</th>
@@ -93,17 +95,16 @@
                             <td style="vertical-align: middle">{$v['phone']}</td>
                             <td style="vertical-align: middle">{$v['unique_code']}</td>
                             <td style="vertical-align: middle">{$v['invite_code']}</td>
-、                           <td style="vertical-align: middle">
+                           <td style="vertical-align: middle">
                                 <?php echo $v['vip_level_id'] == 0 ? '普通用户' : 'vip会员'; ?>
                              </td>
                             <td style="vertical-align: middle">{$v['create_time']}</td>
 
                             <td style="vertical-align: middle">
 
-                                <a href="<?php echo url('/admin/user/edit?id='.$v['id'],[], false); ?>" class="btn btn-flat btn-warning btn-xs" title="编辑">
-                                    <i class="fa fa-plus-circle"></i> 充值
+                                <a href="javascript:void(0)" data-id="{$v['id']}" class="cur_top_up btn btn-flat btn-warning btn-xs" title="移除">
+                                    <i class="fa fa-trash-o"></i> 充值
                                 </a>
-
                                 <a href="<?php echo url('/admin/user/edit?id='.$v['id'],[], false); ?>" class="btn btn-flat btn-info btn-xs" title="编辑">
                                     <i class="fa fa-edit"></i> 编辑
                                 </a>
@@ -212,6 +213,69 @@
             var url = "/admin/user/delete";
             delete_one(url, id);
         });
+
+        /**
+         * 充值
+         */
+        $(".cur_top_up").on('click',function () {
+            var id = $(this).attr('data-id');
+            var url = "/admin/user/topUp";
+            layer.prompt({title: '请输入充值金额', formType: 3}, function(money, index){
+                layer.close(index);
+                $.ajax({
+                    type: 'get',
+                    url:  url,
+                    dataType: 'json',
+                    data: {
+                        user_id: id,
+                        money: money,
+                    },
+                    success: function(ret){
+                        console.log(ret);
+                        if(ret.code == 0) {
+                            layer.msg('充值成功！',{
+                                time:1000, icon: 6,
+                                end:function () {
+                                    location.href = location.href;
+                                }
+                            })
+                        } else {
+                            layer.msg(ret.msg, {icon: 5,time:1000,});
+                            return false;
+                        }
+                    }
+                });
+            });
+
+            /*layer.confirm('确定要删除吗？', {
+                btn: ['确定','取消']
+            }, function(){
+                $.ajax({
+                    type: 'get',
+                    url:  url,
+                    dataType: 'json',
+                    data: {id: id},
+                    success: function(ret){
+                        console.log(ret);
+                        if(ret.code == 0) {
+                            layer.msg('删除成功',{
+                                time:1000, icon: 6,
+                                end:function () {
+                                    location.href = location.href;
+                                }
+                            })
+                        } else {
+                            layer.msg(ret.msg, {icon: 5,time:1000,});
+                            return false;
+                        }
+                    }
+                });
+            }, function(){
+            });*/
+            return false;
+        });
+
+
 
         /**
          * 批量删除

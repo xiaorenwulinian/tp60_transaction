@@ -18,9 +18,10 @@ class Order extends IndexBase
             return failed_response('请先登陆！',401);
             return redirect("/index/user/login");
         }
+        $userId = session('user_id');
         $goods_id = input('goods_id',3);
 
-        $user = Db::table("user")->where('id', session('user_id'))->find();
+        $user = Db::table("user")->where('id', $userId)->find();
         $goods = Db::table("goods")->where('id', $goods_id)->find();
 
         if (!$goods) {
@@ -31,7 +32,47 @@ class Order extends IndexBase
             return failed_response('账户余额不足，请先充值！', 100);
         }
 
-        
+        $remainMoney = $goods["goods_price"] - $user["user_monery"];
+
+        $curDate = date("Y-m-d H:i:s");
+
+        Db::startTrans();
+        try {
+            // 更改金额
+            Db::table("user")
+                ->where('id','=', $userId)
+                ->update([
+                    'user_money' => $remainMoney,
+                    'update_time' => $curDate,
+                ]);
+
+            // 订单
+            $orderId = Db::table("order")
+                ->insertGetId([
+                    'order_progress' => 1,
+                    'buy_user_id'    => $userId,
+                    'order_money'    => $goods["goods_price"],
+                    'create_time'    => $curDate,
+                    'unique_code'    => date("ymdHis") . '-' . StringTool::random(6),
+                ]);
+
+            // 操作交易记录
+            Db::table("transaction_record")
+                ->insertGetId([
+                    'user_id'           => $userId,
+                    'operator_type'     => 1,
+                    'money'             => $goods["goods_price"],
+                    'transaction_type'  => 3,
+                    'order_id'          => $orderId,
+                    'create_time'       => $curDate,
+                ]);
+
+            Db::commit();
+        } catch (\Exception $e) {
+
+            Db::rollback();
+            return failed_response($e->getMessage());
+        }
 
 
         return success_response();
