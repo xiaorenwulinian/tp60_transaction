@@ -33,6 +33,12 @@ Route::group('index', function(){
 
     });
 
+    Route::group('goods', function () {
+        Route::any('index', 'index.goods/index'); // 商品列表
+        Route::any('category', 'index.goods/category'); // 商品分类
+        Route::get('detail', 'index.goods/detail');  // 商品详情
+
+    });
 
 
 
