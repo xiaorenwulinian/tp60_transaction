@@ -334,6 +334,69 @@
                  */
                 function up_group(groupid,price){
 
+                    var tip = "价格" + price + ", 确定开通吗？"
+                    layer.confirm(tip, {
+                        btn: ['开通','取消'] //按钮
+                    }, function(){
+
+                        $.ajax({
+                            type: 'post',
+                            url:  "/index/order/openVip",
+                            dataType: 'json',
+                            data : {
+                                group_id: groupid
+                            },
+                            success : function (ret) {
+                                console.log(ret);
+
+                                if (ret.code == 0) {
+                                    layer.msg('购买成功',
+                                        {icon: 1,time: 2000,shade: 0.6},
+                                        function(){
+                                            window.location.href = window.location.href;
+                                        }
+                                    );
+                                } else if(ret.code == 401) {
+                                    window.location = "{:url('/index/user/login',[], false)}";
+                                    return false;
+                                } else if(ret.code == 100) {
+
+                                    layer.confirm(ret.msg, {
+                                        btn: ['去充值','取消'] //按钮
+                                    }, function(){
+                                        window.location.href	= '/index/user/topUp';
+                                    });
+                                    // layer.msg(ret.msg);
+                                    return false;
+
+                                    layer.open({
+                                        type: 1,
+                                        title: ['友情提醒', 'font-weight:bold;color:green'],
+                                        btn: ['去充值', '取消'],
+                                        yes: function(index, layero){
+                                            window.location.href	= '/index/user/topUp';
+                                        },cancel: function(index){
+                                        },
+                                        shadeClose: true,
+                                        scrollbar: false,
+                                        content: "<p class='alert text-danger'> 账户余额不足，请先充值！</p>"
+                                    });
+                                    return false;
+                                } else {
+                                    layer.msg(ret.msg);
+                                    return false;
+                                }
+
+
+                            },
+                            error : function (html) {
+                                layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
+                            }
+                        });
+                    }, function(){
+
+                    });
+
                     return false;
                     if(price > 0.00){
                         layer.open({

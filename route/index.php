@@ -31,6 +31,7 @@ Route::group('index', function(){
         Route::any('topUp', 'index.User/topUp'); // 充值
         Route::any('withdraw', 'index.User/withdraw'); // 提现
 
+
     });
 
     Route::group('goods', function () {
@@ -42,6 +43,8 @@ Route::group('index', function(){
 
     Route::group('order', function () {
         Route::any('buy', 'index.order/buy'); // 下单
+        Route::any('openVip', 'index.order/openVip'); // 下单
+
 
     });
 

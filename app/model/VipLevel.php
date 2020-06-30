@@ -20,6 +20,7 @@ class VipLevel extends Model
         'is_use',
         'vip_welfare',
         'sort_order',
+        'vip_delay_day',
         ];
     protected $disuse = [];
 }

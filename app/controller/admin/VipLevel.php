@@ -59,6 +59,7 @@ class VipLevel extends AdminBase
                 $vip->vip_welfare  =  $reqParam['vip_welfare'];
                 $vip->vip_fee  =  $reqParam['vip_fee'];
                 $vip->is_use  =  $reqParam['is_use'];
+                $vip->vip_delay_day  =  $reqParam['vip_delay_day'];
                 $vip ->save();
             } catch (\Exception $e) {
                 return failed_response($e->getMessage());

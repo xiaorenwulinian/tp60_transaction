@@ -11,6 +11,13 @@ use think\facade\Db;
 class Order extends IndexBase
 {
 
+    /**
+     * 商品下单
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function buy()
     {
         if (!session('user_id')) {
@@ -74,6 +81,21 @@ class Order extends IndexBase
 
 
         return success_response();
+    }
+
+
+    public function openVip()
+    {
+        if (!session('user_id')) {
+            return failed_response('请先登陆！',401);
+        }
+
+        $userId   = session('user_id');
+        $group_id = input('group_id',0);
+
+        $user = Db::table("user")->where('id', $userId)->find();
+        $goods = Db::table("vip_level")->where('id', $group_id)->find();
+// vip_delay_day
     }
 
     public function index()

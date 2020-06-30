@@ -20,6 +20,7 @@ class VipLevelValidate extends Validate
 	    'vip_desc'      => 'require|max:255',
         'is_use'        => 'require|integer',
         'vip_welfare'   => 'require|max:255',
+        'vip_delay_day' => 'require|integer',
     ];
 
     
@@ -38,7 +39,7 @@ class VipLevelValidate extends Validate
         'is_use.integer'          => '是否使用为正整数',
     ];
     protected $scene = [
-        'add'  =>  ['vip_name', 'vip_desc', 'goods_img', 'vip_welfare','vip_desc', 'is_use'],
-        'edit'  =>  ['id','vip_name', 'vip_desc', 'goods_img', 'vip_welfare','vip_desc', 'is_use'],
+        'add'  =>  ['vip_name', 'vip_desc', 'goods_img', 'vip_welfare','vip_desc', 'is_use','vip_delay_day'],
+        'edit'  =>  ['id','vip_name', 'vip_desc', 'goods_img', 'vip_welfare','vip_desc', 'is_use','vip_delay_day'],
     ];
 }
