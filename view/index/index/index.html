@@ -82,33 +82,91 @@
     </script>
     <p><script src="/upload/js/home_top.js"></script></p>
 </div>
+<!--<div class="container mt20">-->
+    <!--<div class="row item_list">-->
+        <!--<div class="col-sm-12">-->
+            <!--<div class="big-tit">-->
+                <!--<h2>影音游戏</h2>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<p class="text-center more clearfix"><a href="/index.php?cate&#45;&#45;cid-16.html"> 查看更多“影音游戏”相关内容 </a></p>-->
+<!--</div>-->
+<!--<div class="container mt20">-->
+    <!--<div class="row item_list">-->
+        <!--<div class="col-sm-12">-->
+            <!--<div class="big-tit">-->
+                <!--<h2>电子商城</h2>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-3">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-body pa_pic">-->
+                    <!--<a href="/index/goods/detail?goods_id=3"><img class="img-responsive center-block" src="/static/index/default/img/grey.gif" data-original="/upload/products/202006/28/1715375ef85fb9e0173GuooV6_thumb.png" alt="cs001" /></a>-->
+                <!--</div>-->
+                <!--<div class="panel-footer">-->
+                    <!--<h4 class="title"><a href="/index/goods/detail?goods_id=3">cs001</a></h4>-->
+                    <!--<div class="clearfix">-->
+                        <!--<div class="pull-left price">-->
+                            <!--<span class="s2">￥</span><span class="s1">2222</span>										</div>-->
+                        <!--<div class="pull-right smgray text-right">-->
+                            <!--<i class="icon-heart text-gray"></i> 1 人喜欢<br />-->
+                            <!--<i class="icon-bubble text-gray"></i> 0 条评论-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-3">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-body pa_pic">-->
+                    <!--<a href="/index/goods/detail?goods_id=3"><img class="img-responsive center-block" src="/static/index/default/img/grey.gif" data-original="/upload/products/202006/28/1715375ef85fb9e0173GuooV6_thumb.png" alt="cs001" /></a>-->
+                <!--</div>-->
+                <!--<div class="panel-footer">-->
+                    <!--<h4 class="title"><a href="/index/goods/detail?goods_id=3">cs001</a></h4>-->
+                    <!--<div class="clearfix">-->
+                        <!--<div class="pull-left price">-->
+                            <!--<span class="s2">￥</span><span class="s1">2222</span>										</div>-->
+                        <!--<div class="pull-right smgray text-right">-->
+                            <!--<i class="icon-heart text-gray"></i> 1 人喜欢<br />-->
+                            <!--<i class="icon-bubble text-gray"></i> 0 条评论-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<p class="text-center more clearfix"><a href="/index/goods/category?id=3"> 查看更多“电子商城”相关内容 </a></p>-->
+<!--</div>-->
+
+
+
+<?php foreach($category as $cate):?>
+
 <div class="container mt20">
     <div class="row item_list">
         <div class="col-sm-12">
             <div class="big-tit">
-                <h2>影音游戏</h2>
+                <h2>{$cate['cate_name']}</h2>
             </div>
         </div>
-    </div>
-    <p class="text-center more clearfix"><a href="/index.php?cate--cid-16.html"> 查看更多“影音游戏”相关内容 </a></p>
-</div>
-<div class="container mt20">
-    <div class="row item_list">
-        <div class="col-sm-12">
-            <div class="big-tit">
-                <h2>电子商城</h2>
-            </div>
-        </div>
+
+        <?php foreach($cate['goods_info'] as $goodsInfo):?>
+
         <div class="col-sm-3">
             <div class="panel panel-default">
                 <div class="panel-body pa_pic">
-                    <a href="/index/goods/detail?goods_id=3"><img class="img-responsive center-block" src="/static/index/default/img/grey.gif" data-original="/upload/products/202006/28/1715375ef85fb9e0173GuooV6_thumb.png" alt="cs001" /></a>
+                    <a href="/index/goods/detail?goods_id={$goodsInfo['id']}">
+                        <!--<img class="img-responsive center-block" src="/static/index/default/img/grey.gif" data-original="/upload/products/202006/28/1715375ef85fb9e0173GuooV6_thumb.png" alt="cs001" />-->
+                        <img class="img-responsive center-block" src="{$goodsInfo['goods_img']}" data-original="{$goodsInfo['goods_img']}" alt="{$goodsInfo['goods_name']}" />
+                    </a>
                 </div>
                 <div class="panel-footer">
-                    <h4 class="title"><a href="/index/goods/detail?goods_id=3">cs001</a></h4>
+                    <h4 class="title"><a href="/index/goods/detail?goods_id={$goodsInfo['id']}">{$goodsInfo['goods_name']}</a></h4>
                     <div class="clearfix">
                         <div class="pull-left price">
-                            <span class="s2">￥</span><span class="s1">2222</span>										</div>
+                            <span class="s2">￥</span><span class="s1">{$goodsInfo['goods_price']}</span>
+                        </div>
                         <div class="pull-right smgray text-right">
                             <i class="icon-heart text-gray"></i> 1 人喜欢<br />
                             <i class="icon-bubble text-gray"></i> 0 条评论
@@ -117,57 +175,45 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
-            <div class="panel panel-default">
-                <div class="panel-body pa_pic">
-                    <a href="/index/goods/detail?goods_id=3"><img class="img-responsive center-block" src="/static/index/default/img/grey.gif" data-original="/upload/products/202006/28/1715375ef85fb9e0173GuooV6_thumb.png" alt="cs001" /></a>
-                </div>
-                <div class="panel-footer">
-                    <h4 class="title"><a href="/index/goods/detail?goods_id=3">cs001</a></h4>
-                    <div class="clearfix">
-                        <div class="pull-left price">
-                            <span class="s2">￥</span><span class="s1">2222</span>										</div>
-                        <div class="pull-right smgray text-right">
-                            <i class="icon-heart text-gray"></i> 1 人喜欢<br />
-                            <i class="icon-bubble text-gray"></i> 0 条评论
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <?php endforeach;?>
+
     </div>
-    <p class="text-center more clearfix"><a href="/index/goods/category?id=3"> 查看更多“电子商城”相关内容 </a></p>
+    <p class="text-center more clearfix"><a href="/index/goods/search?category_id={$cate['id']}"> 查看更多{$cate['cate_name']}相关内容 </a></p>
 </div>
-<div class="container mt20">
-    <div class="row item_list">
-        <div class="col-sm-12">
-            <div class="big-tit">
-                <h2>酒店宾馆</h2>
-            </div>
-        </div>
-    </div>
-    <p class="text-center more clearfix"><a href="/index.php?cate--cid-5.html"> 查看更多“酒店宾馆”相关内容 </a></p>
-</div>
-<div class="container mt20">
-    <div class="row item_list">
-        <div class="col-sm-12">
-            <div class="big-tit">
-                <h2>淘客推广</h2>
-            </div>
-        </div>
-    </div>
-    <p class="text-center more clearfix"><a href="/index.php?cate--cid-2.html"> 查看更多“淘客推广”相关内容 </a></p>
-</div>
-<div class="container mt20">
-    <div class="row item_list">
-        <div class="col-sm-12">
-            <div class="big-tit">
-                <h2>公司企业</h2>
-            </div>
-        </div>
-    </div>
-    <p class="text-center more clearfix"><a href="/index.php?cate--cid-1.html"> 查看更多“公司企业”相关内容 </a></p>
-</div>
+
+<?php endforeach;?>
+
+<!--<div class="container mt20">-->
+    <!--<div class="row item_list">-->
+        <!--<div class="col-sm-12">-->
+            <!--<div class="big-tit">-->
+                <!--<h2>酒店宾馆</h2>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<p class="text-center more clearfix"><a href="/index.php?cate&#45;&#45;cid-5.html"> 查看更多“酒店宾馆”相关内容 </a></p>-->
+<!--</div>-->
+<!--<div class="container mt20">-->
+    <!--<div class="row item_list">-->
+        <!--<div class="col-sm-12">-->
+            <!--<div class="big-tit">-->
+                <!--<h2>淘客推广</h2>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<p class="text-center more clearfix"><a href="/index.php?cate&#45;&#45;cid-2.html"> 查看更多“淘客推广”相关内容 </a></p>-->
+<!--</div>-->
+<!--<div class="container mt20">-->
+    <!--<div class="row item_list">-->
+        <!--<div class="col-sm-12">-->
+            <!--<div class="big-tit">-->
+                <!--<h2>公司企业</h2>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<p class="text-center more clearfix"><a href="/index.php?cate&#45;&#45;cid-1.html"> 查看更多“公司企业”相关内容 </a></p>-->
+<!--</div>-->
 <div class="container mt20">
     <p><script src="/upload/js/home_center.js"></script></p>
     <div class="row">

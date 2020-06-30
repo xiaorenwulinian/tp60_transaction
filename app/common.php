@@ -93,3 +93,17 @@ if (!function_exists('show_image')) {
 
 }
 
+if (!function_exists('default_image')) {
+    /**
+     * 用户默认的图片
+     * @return string
+     */
+    function default_image($type = 'goods') {
+
+        return "/static/index/img/nopic.jpg";
+    }
+
+}
+
+// getDefaultImg
+
