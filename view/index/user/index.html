@@ -91,20 +91,24 @@
                                 </tr>
                                 <tr>
                                     <td class="text-right">上次登录时间</td>
-                                    <td class=""> 2020-06-28 19:12</td>
+                                    <td class="">
+                                        <?php echo date("Y-m-d H:i:s", $user["before_login_time"]);?>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td class="text-right">上次登录IP</td>
-                                    <td class="">127.0.0.1</td>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<td class="text-right">上次登录IP</td>-->
+                                    <!--<td class="">127.0.0.1</td>-->
+                                <!--</tr>-->
                                 <tr>
                                     <td class="text-right">最后登录时间</td>
-                                    <td class="">2020-06-28 20:40</td>
+                                    <td class="">
+                                        <?php echo date("Y-m-d H:i:s", $user["last_login_time"]);?>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td class="text-right">最后登录IP</td>
-                                    <td class="">127.0.0.1</td>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<td class="text-right">最后登录IP</td>-->
+                                    <!--<td class="">127.0.0.1</td>-->
+                                <!--</tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -131,14 +135,14 @@
                                     <td class="text-right">手机号</td>
                                     <td class="">{$user["phone"]}</td>
                                 </tr>
-                                <tr>
-                                    <td class="text-right">QQ</td>
-                                    <td class=""></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">支付宝</td>
-                                    <td class=""> </td>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<td class="text-right">QQ</td>-->
+                                    <!--<td class=""></td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td class="text-right">支付宝</td>-->
+                                    <!--<td class=""> </td>-->
+                                <!--</tr>-->
                                 </tbody>
                             </table>
                         </div>

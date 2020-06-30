@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-md-8">
                 <ul class="list-inline" id="top_notice">
-                    <li>你的位置：<a href="http://www.wazyb.com/">网站首页</a>  &gt; <a href="/index.php?cate--cid-10.html">资源</a> &gt; <a href="/index.php?cate--cid-15.html">电子商城</a></li>
+                    <li>你的位置：<a href="/">网站首页</a>  &gt; <a href="/index.php?cate--cid-10.html">资源</a> &gt; <a href="/index.php?cate--cid-15.html">电子商城</a></li>
                 </ul>
             </div>
             <div class="col-md-4"></div>
@@ -92,13 +92,14 @@
                     <ul class="list-group">
                     </ul>
                     <div class="panel-body">
-                        <form class="form-horizontal mt10" id="order_book" method="post" action="/member/index.php?book-add_ajax">
+                        <form class="form-horizontal mt10" id="order_book" method="post" action="">
                             <input type="hidden" name="book[ordernum]" value="1" />
                             <input type="hidden" name="book[pid]" value="2" />
                             <input type="hidden" name="book[cid]" value="15" />
                             <input type="hidden" id="book_price" value="33333.00" />
                             <input type="hidden" id="user_price" value="0.00" />
-                            <button type="button" class="btn btn-info btn-block" id="send"><span class="icon-cart"></span> 确认订购</button>
+                            <!--<button type="button" class="btn btn-info btn-block" id="send"><span class="icon-cart"></span> 确认订购</button>-->
+                            <button type="button" class="btn btn-info btn-block" id="send_order"><span class="icon-cart"></span> 确认订购</button>
                         </form>
                     </div>
                 </div>
@@ -134,6 +135,9 @@
         }, 1000);
     }
     $(document).ready(function(){
+
+        var goods_id = "<?php echo $goodsData['id']; ?>";
+
         layer.config({extend: 'extend/layer.ext.js'});
         layer.ready(function(){
             layer.photos({photos: '#photosDemo',shift:-1});
@@ -145,8 +149,52 @@
                 layer.open({type: 1,title: result.title,closeBtn: 2,shift: 2,area: '600px',content: '<div style="padding:15px;">'+result.content+'</div>'});
             });
         });
+
+        $("#send_order").on('click', function () {
+            var url = "/index/order/buy";
+            var goods_id = goods_id;
+
+            $.ajax({
+                type: 'post',
+                url:  url,
+                dataType: 'json',
+                // cache : false,
+                data : {
+                    goods_id: goods_id
+                },
+                success : function (ret) {
+                    console.log(ret);
+
+
+                    if (ret.code == 0) {
+                        layer.msg('注册成功',
+                            {icon: 1,time: 2000,shade: 0.6},
+                            function(){
+                                window.location = "{:url('/index/user/index',[], false)}";
+                            }
+                        );
+                    } else if(ret.code == 401) {
+                        window.location = "{:url('/index/user/login',[], false)}";
+                        return false;
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+
+
+                },
+                error : function (html) {
+                    layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
+                }
+            });
+            return false;
+        });
+
+        // 去掉
         $("#send").click(function(){
             var user_price = $('#user_price').val(),totalprice = $('#book_price').val() * 1;
+
+
             if(totalprice*1 > user_price*1){
                 var H = Math.max(350, document.documentElement.clientHeight - 30) + 'px';
                 layer.open({
@@ -154,7 +202,7 @@
                     title: ['友情提醒', 'font-weight:bold;color:green'],
                     btn: ['去充值', '取消'],
                     yes: function(index, layero){
-                        window.location.href	= '/member/index.php?u=record-order-price-' + (totalprice-user_price);
+                        window.location.href	= '/index/user/topUp?price=' + (totalprice-user_price);
                     },cancel: function(index){
                     },
                     shadeClose: true,

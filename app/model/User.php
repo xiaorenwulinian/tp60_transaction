@@ -19,6 +19,7 @@ class User extends Model
         'user_money',
         'create_time', 'update_time',
         'unique_code', 'invite_code',
+        'last_login_time', 'before_login_time',
 
     ];
     protected $disuse = [];

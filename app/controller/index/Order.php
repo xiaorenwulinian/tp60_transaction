@@ -8,8 +8,19 @@ use think\captcha\facade\Captcha;
 use think\facade\Db;
 
 
-class User extends IndexBase
+class Order extends IndexBase
 {
+
+    public function buy()
+    {
+//        return failed_response('未发现该账号！');
+        if (!session('user_id')) {
+            return failed_response('请先登陆！',401);
+            return redirect("/index/user/login");
+        }
+        $goods_id = input('goods_id');
+        return failed_response('未发现该账号！');
+    }
 
     public function index()
     {
@@ -78,10 +89,6 @@ class User extends IndexBase
             }
 
             if ($user['password'] == md5($reqParam['password'])) {
-
-                $user->before_login_time = $user->last_login_time;
-                $user->last_login_time = time();
-                $user->save();
                 session('user_id', $user['id']);
                 return success_response();
             }
@@ -124,15 +131,12 @@ class User extends IndexBase
                     return failed_response("该邀请码不存在！");
                 }
             }
-            $time = time();
             try {
                 $data = [
                     'account'     => $reqParam['account'],
                     'password'    => md5($reqParam['password']),
                     'unique_code' => $uniqueCode,
                     'invite_code' => $reqParam['invite_code'],
-                    'last_login_time' => $time,
-                    'before_login_time' => $time,
                 ];
                 $user = \app\model\User::create($data);
             } catch (\Exception $e) {

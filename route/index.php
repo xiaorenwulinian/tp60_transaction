@@ -40,6 +40,11 @@ Route::group('index', function(){
 
     });
 
+    Route::group('order', function () {
+        Route::any('buy', 'index.order/buy'); // 下单
+
+    });
+
 
 
 
