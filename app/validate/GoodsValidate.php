@@ -48,5 +48,7 @@ class GoodsValidate extends Validate
     protected $scene = [
         'add'  =>  ['goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc'],
         'edit' =>  ['id', 'goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc'],
+        'userAdd' =>  ['id', 'goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc'],
+        'userEdit' =>  ['id', 'goods_name', 'goods_price', 'goods_img', 'goods_category_id','goods_desc'],
     ];
 }

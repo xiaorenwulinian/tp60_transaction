@@ -13,44 +13,57 @@ class Goods extends Model
 {
     protected $name = 'goods';
     protected $table = 'goods';
+/*
 
-//CREATE TABLE `goods` (
-//`id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-//`goods_name` varchar(255) NOT NULL DEFAULT '' COMMENT '商品名称',
-//`goods_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '原价',
-//`discount_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '优惠价',
-//`is_promote` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1不促销，2促销',
-//`promote_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '促销价格',
-//`promote_begin_time` int(10) NOT NULL DEFAULT '0' COMMENT '促销开始时间',
-//`promote_end_time` int(10) NOT NULL DEFAULT '0' COMMENT '促销结束时间',
-//`goods_img` varchar(255) NOT NULL DEFAULT '' COMMENT '商品图片',
-//`goods_img_thumb` varchar(255) NOT NULL DEFAULT '' COMMENT '缩略图',
-//`is_best` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否商户推荐1 否，2.是',
-//`is_hot` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否热卖，1否，2是',
-//`is_new` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否新品，1，否，2是',
-//`is_on_sale` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否上架：1：下架，2：上架',
-//`flower_material` varchar(255) NOT NULL DEFAULT '' COMMENT '花材，如百合',
-//`flower_use` varchar(255) NOT NULL DEFAULT '' COMMENT '用途，如送长辈',
-//`flower_combine` varchar(255) NOT NULL DEFAULT '' COMMENT '组合材料',
-//`flower_moral` varchar(255) NOT NULL DEFAULT '' COMMENT '花语',
-//`remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-//`flower_package` varchar(255) NOT NULL DEFAULT '' COMMENT '包装',
-//`flower_stock` smallint(255) NOT NULL DEFAULT '999' COMMENT '库存量',
-//`has_sale_num` mediumint(9) NOT NULL DEFAULT '0' COMMENT '已售出数量',
-//`sort_id` mediumint(9) NOT NULL DEFAULT '100' COMMENT '排序',
-//`add_time` int(10) NOT NULL COMMENT '添加时间',
-//`is_delete` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否在回收站， 1否，2是',
-//PRIMARY KEY (`id`)
-//) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    CREATE TABLE `goods` (
+    `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+    `goods_name` varchar(255) NOT NULL DEFAULT '' COMMENT '商品名称',
+    `goods_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '原价',
+    `goods_img` varchar(255) NOT NULL DEFAULT '' COMMENT '商品图片',
+    `goods_img_thumb` varchar(255) NOT NULL DEFAULT '' COMMENT '缩略图',
+    `is_on_sale` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否上架：1：下架，2：上架',
+    `goods_category_id` int(11) NOT NULL DEFAULT '0' COMMENT '商品分类ID',
+    `send_info` varchar(255) NOT NULL DEFAULT '' COMMENT '发货信息',
+    `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+    `stock_num` smallint(5) NOT NULL DEFAULT '99' COMMENT '库存量',
+    `has_sale_num` mediumint(5) NOT NULL DEFAULT '0' COMMENT '已售出数量',
+    `sort_id` mediumint(5) NOT NULL DEFAULT '9999' COMMENT '排序',
+
+
+    `goods_desc` longtext COMMENT '商品描述',
+    `seo_keyword` varchar(255) NOT NULL DEFAULT '',
+    `seo_description` varchar(255) NOT NULL DEFAULT '',
+    `add_time` int(10) NOT NULL COMMENT '添加时间',
+    `edit_time` int(10) NOT NULL DEFAULT '0' COMMENT '修改时间',
+    `is_delete` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否在回收站， 1否，2是',
+
+    `publish_id` int(11) NOT NULL DEFAULT '0' COMMENT '发布人',
+    `publish_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1管理员发布，2用户发布',
+    `audit_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态，1审核中，2审核通过，3审核失败',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;*/
     protected $field = [
-        'goods_name', 'goods_price',
-        'goods_img','goods_img_thumb',
-        'is_on_sale', 'goods_category_id',
-        'send_info','remark',
-        'has_sale_num','stock_num',
-        'flower_package', 'sort_id',
-        'goods_desc', 'seo_keyword','seo_description',
-        'add_time', 'is_delete','edit_time',
+        'goods_name',
+        'goods_price',
+        'goods_img',
+        'goods_img_thumb',
+        'is_on_sale',
+        'goods_category_id',
+        'send_info',
+        'remark',
+        'has_sale_num',
+        'stock_num',
+        'flower_package',
+        'sort_id',
+        'goods_desc',
+        'seo_keyword',
+        'seo_description',
+        'add_time',
+        'is_delete',
+        'edit_time',
+        'publish_id',
+        'publish_type',
+        'audit_status',
     ];
     protected $disuse = [];
 

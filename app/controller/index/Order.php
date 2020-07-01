@@ -117,6 +117,7 @@ class Order extends IndexBase
             Db::table("user")
                 ->where('id','=', $userId)
                 ->update([
+                    'vip_level_id' => 1,
                     'user_money'   => $remainMoney,
                     'vip_deadline' => $newDeadline,
                     'update_time'  => $curDate,

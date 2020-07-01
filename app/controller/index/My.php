@@ -88,7 +88,7 @@ class My extends IndexBase
         if (!session('user_id')) {
             return redirect("/index/user/login");
         }
-
+//  seo_keyword seo_description
         $userId = session('user_id');
 
         $publishGoods = Db::table('goods')
@@ -147,5 +147,53 @@ class My extends IndexBase
         return view('index/my/publish_add', $ret);
 
     }
+
+    /**
+     * 发布商品保存
+     */
+    public function publishAddStore()
+    {
+        if (!session('user_id')) {
+            return failed_response("/index/user/login",401);
+        }
+
+        $userId = session('user_id');
+
+        $reqParam = $this->request->param();
+        validate(\app\validate\GoodsValidate::class)->scene('userAdd')->check($reqParam);
+
+        $curDay =  date("Y-m-d");
+        $publish = Db::table("publish_goods_record")
+            ->where('publish_time','=',$curDay)
+            ->find();
+
+        $baseConfig = $this->getBaseConfigInfo();
+
+        $limitNum = $baseConfig['publish_limit_num']; // 每天发布限制的数量
+
+        if (empty($publish)) {
+            $publish_num = 0;
+        } else {
+            $publish_num = $publish['publish_num'];
+        }
+
+        if ($limitNum >= $publish_num) {
+            return failed_response("发布数量超出限制，每天可发布{$limitNum}条！");
+        }
+        Db::startTrans();
+        try {
+            $reqParam['publish_id']   = $userId;
+            $reqParam['publish_type'] = 2;
+            $goods = \app\model\Goods::create($reqParam);
+
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            return failed_response($e->getMessage());
+        }
+        return success_response();
+    }
+
+
 
 }
