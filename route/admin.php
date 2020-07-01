@@ -39,6 +39,16 @@ Route::group('/admin', function(){
 
     });
 
+    // 交易记录
+    Route::group('transactionRecord', function () {
+        Route::get('lst', 'admin.transactionRecord/lst');
+        Route::any('add', 'admin.vipLevel/add');
+        Route::any('edit', 'admin.vipLevel/edit');
+        Route::any('changeShow', 'admin.vipLevel/changeShow');
+        Route::any('editSort', 'admin.vipLevel/editSort');
+
+    });
+
     // vip级别
     Route::group('user', function () {
         Route::get('lst', 'admin.User/lst');
