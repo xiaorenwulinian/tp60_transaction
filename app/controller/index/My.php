@@ -184,6 +184,7 @@ class My extends IndexBase
         try {
             $reqParam['publish_id']   = $userId;
             $reqParam['publish_type'] = 2;
+            $reqParam['audit_status'] = 1;
             $goods = \app\model\Goods::create($reqParam);
 
             Db::commit();

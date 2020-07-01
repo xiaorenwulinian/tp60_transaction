@@ -49,7 +49,7 @@ Route::group('/admin', function(){
 
     });
 
-    // vip级别
+    // 用户
     Route::group('user', function () {
         Route::get('lst', 'admin.User/lst');
         Route::any('add', 'admin.User/add');
@@ -59,6 +59,14 @@ Route::group('/admin', function(){
         Route::any('topUp', 'admin.User/topUp');
 
     });
+
+    // 基本配置
+    Route::group('baseConfig', function () {
+        Route::get('lst', 'admin.BaseConfig/lst');
+        Route::any('edit', 'admin.BaseConfig/edit');
+    });
+
+
 
 
     // 广告分类
