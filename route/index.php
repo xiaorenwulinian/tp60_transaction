@@ -39,6 +39,12 @@ Route::group('index', function(){
         Route::any('category', 'index.goods/category'); // 商品分类
         Route::get('detail', 'index.goods/detail');  // 商品详情
 
+        Route::any('publishLst', 'index.goods/publishLst'); // 发布商品列表
+        Route::any('publishAdd', 'index.goods/publishAdd'); // 发布商品添加
+        Route::post('publishAddStore', 'index.goods/publishAddStore'); // 发布商品添加
+        Route::any('publishEdit', 'index.goods/publishEdit'); // 发布商品修改
+        Route::any('publishEditStore', 'index.goods/publishEditStore'); // 发布商品修改
+
     });
 
     Route::group('order', function () {
@@ -49,10 +55,6 @@ Route::group('index', function(){
     });
 
     Route::group('my', function () {
-        Route::any('publishLst', 'index.my/publishLst'); // 发布商品列表
-        Route::any('publishAdd', 'index.my/publishAdd'); // 发布商品添加
-        Route::any('publishEdit', 'index.my/publishEdit'); // 发布商品修改
-
 
     });
 

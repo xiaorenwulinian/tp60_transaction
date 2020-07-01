@@ -25,8 +25,11 @@ class IndexBase extends BaseController
     public function getBaseConfigInfo()
     {
         $config = cache("base_config_info");
+
         if (empty($config)) {
-            $data = Db::table('base_config')->find();
+            $data = Db::table('base_config')
+                ->where('id',1)
+                ->find();
             $configInfo = serialize($data);
             cache("base_config_info", $configInfo, 3600);
         } else {

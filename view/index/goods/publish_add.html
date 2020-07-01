@@ -43,8 +43,8 @@
                 <a href="#" class="list-group-item active disabled">管理导航</a>
                 <a class="list-group-item  list-group-item-info" href="/index/user/index"><span class="icon-home"></span> 会员首页</a>
                 <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
-                <a class="list-group-item " href="/index/my/publishLst"><span class="icon-list"></span> 我的发布</a>
-                <a class="list-group-item " href="/index/my/publishAdd"><span class="icon-credit-card"></span>  发布商品</a>
+                <a class="list-group-item " href="/index/goods/publishLst"><span class="icon-list"></span> 我的发布</a>
+                <a class="list-group-item " href="/index/goods/publishAdd"><span class="icon-credit-card"></span>  发布商品</a>
                 <!--<a class="list-group-item " href="/index/user/topUp"><span class="icon-coin-yen"></span>  回复</a>-->
                 <!--<a class="list-group-item " href="/index/user/withdraw"><span class="icon-pig"></span>  评价</a>-->
                 <!--<a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>-->
@@ -279,6 +279,46 @@
             }
         });
 
+        //商品图片，多文件上传
+        $('.upload_photo_button_multi').on('click',function(){
+            $('#common_upload_multi_file').click();
+        });
+        $('#common_upload_multi_file').fileupload({
+            autoUpload: true,//是否自动上传
+            url: "{:url('/admin/common/addMultiUpload',[],false)}",
+            dataType: 'json',
+            add: function (e,data) {
+                $("#common_upload_multi_file").fileupload(
+                    'option',
+                    'formData',
+                    {
+                        'second_dir': 'introduce',// 二级文件目录，可不传
+                        'has_thumb' : 1,          // 是否生成缩略图， 1 生成缩略图，2 不生成
+                        'file_type' : 2,          // 1是文件，2 是图片
+                    }
+                ); // 传参不能放在初始化语句中，否则只能传递参数的初始化值
+                data.submit();
+            },
+            done: function (e, data) {
+                var result = data.result;
+                console.log(data);
+                if(result.code == 0) {
+                    var _data = result.payload;
+                    goods_introduce_imgs.push(_data.file_path);
+                    goods_introduce_thumb_imgs.push(_data.file_path_thumb);
+                    var _html ="";
+                    _html +="<div>";
+                    _html +="<a src='javascript:void(0);'data-path='"+_data.file_path+"' data-path-thumb='"+_data.file_path_thumb+"' onclick='delete_multi_file(this);'  >删除</a><br>";
+                    _html +="<img class='thumb_img' src='/uploads/"+_data.file_path+"'/>";
+                    _html +="</div>";
+                    $('.photo_multi_show_content').append(_html);
+
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+
         $('.curSubmit').on('click',function () {
 
 
@@ -316,7 +356,7 @@
                 'goods_introduce_thumb':  goods_introduce_thumb_imgs.join(','),
             });
 
-            var url = "/index/my/publishAddStore";
+            var url = "/index/goods/publishAddStore";
             var form_param = $('#formSubmit').serialize();
             form_param  =  other_param+'&'+form_param;
 
@@ -336,7 +376,7 @@
                             time:1000,
                             icon: 6,
                             end:function () {
-                                location.href = "/index/my/publishLst";
+                                location.href = "/index/goods/publishLst";
                             }
                         })
                     } else {
