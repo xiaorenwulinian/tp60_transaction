@@ -48,6 +48,14 @@ Route::group('index', function(){
 
     });
 
+    Route::group('my', function () {
+        Route::any('publishLst', 'index.my/publishLst'); // 发布商品列表
+        Route::any('publishAdd', 'index.my/publishAdd'); // 发布商品添加
+        Route::any('publishEdit', 'index.my/publishEdit'); // 发布商品修改
+
+
+    });
+
 
 
 

@@ -93,6 +93,32 @@ if (!function_exists('show_image')) {
 
 }
 
+
+if (!function_exists('show_image_full')) {
+    /**
+     * 图片展示
+     * @param string $url
+     * @param string $width
+     * @param string $height
+     * @param string $alt
+     * @return string
+     */
+    function show_image_full($url = '', $width = '', $height ='' , $alt='' ) {
+        if (!empty($width)) {
+            $width = "width = '{$width}'";
+        }
+
+        if (!empty($width)) {
+            $height = "height = '{$height}'";
+        }
+        if (empty($alt)) {
+            $alt  = '图片加载中';
+        }
+        return "<img src='{$url}' $width $height alt='{$alt}' />";
+    }
+
+}
+
 if (!function_exists('default_image')) {
     /**
      * 用户默认的图片
