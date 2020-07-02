@@ -40,6 +40,8 @@ class Goods extends Model
     `publish_id` int(11) NOT NULL DEFAULT '0' COMMENT '发布人',
     `publish_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1管理员发布，2用户发布',
     `audit_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态，1审核中，2审核通过，3审核失败',
+ `audit_time` int(11) NOT NULL DEFAULT '0' COMMENT '审核时间',
+  `audit_admin_id` int(11) NOT NULL DEFAULT '0' COMMENT '审核人，0代表自动审核通过',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;*/
     protected $field = [
@@ -63,7 +65,8 @@ class Goods extends Model
         'edit_time',
         'publish_id',
         'publish_type',
-        'audit_status',
+        'audit_time',
+        'audit_admin_id',
     ];
     protected $disuse = [];
 
