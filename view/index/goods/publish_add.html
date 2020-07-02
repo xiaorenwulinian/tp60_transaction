@@ -341,16 +341,16 @@
                 return  false;
             }
             var goods_img =  $("input[name='goods_img']").val();
-            if (goods_img.length < 1) {
+            /*if (goods_img.length < 1) {
                 alert('请上传商品图片');
                 return  false;
-            }
+            }*/
             // $('#formSubmit').submit();
             // return  true;
-            if (goods_introduce_imgs.length < 1) {
+            /*if (goods_introduce_imgs.length < 1) {
                 alert('请上传商品介绍图片');
                 return  false;
-            }
+            }*/
             var other_param = $.param({
                 'goods_introduce_img':  goods_introduce_imgs.join(','),
                 'goods_introduce_thumb':  goods_introduce_thumb_imgs.join(','),
