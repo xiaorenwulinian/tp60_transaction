@@ -23,31 +23,31 @@ class BaseConfig extends AdminBase
         if ($this->request->isPost()) {
 
             $reqParam = $this->request->param();
-            validate(\app\validate\VipLevelValidate::class)->scene('edit')->check($reqParam);
+            validate(\app\validate\BaseConfigValidate::class)->scene('edit')->check($reqParam);
 
 
             try {
-                $vip  = \app\model\VipLevel::where('id', $id)->find();
+                $config  = \app\model\BaseConfig::where('id', $id)->find();
 
-                $vip->vip_name   =  $reqParam['vip_name'];
-                $vip->vip_desc =  $reqParam['vip_desc'];
-                $vip->vip_welfare  =  $reqParam['vip_welfare'];
-                $vip->vip_fee  =  $reqParam['vip_fee'];
-                $vip->is_use  =  $reqParam['is_use'];
-                $vip->vip_delay_day  =  $reqParam['vip_delay_day'];
-                $vip ->save();
+                $config->user_publish_audit =  $reqParam['user_publish_audit'];
+                $config->upload_limit_size  =  $reqParam['upload_limit_size'];
+                $config->publish_limit_num  =  $reqParam['publish_limit_num'];
+                $config ->save();
+                cache("base_config_info", null);
             } catch (\Exception $e) {
                 return failed_response($e->getMessage());
             }
             return success_response();
         }
 
-        $data = Db::table('vip_level')->where('id', $id)->find();
+        $data = Db::table('base_config')
+            ->where('id','=', 1)
+            ->find();
 
         $ret = [
             'data'       => $data,
         ];
-        return view('admin/vip_level/edit', $ret);
+        return view('admin/base_config/edit', $ret);
     }
 
 

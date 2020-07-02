@@ -63,6 +63,14 @@ Route::group('index', function(){
 
     });
 
+    /**
+     * 测试
+     */
+    Route::group('test', function () {
+        Route::any('index', 'index.test/index'); //
+
+
+    });
 
 
 

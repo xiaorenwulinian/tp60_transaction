@@ -68,7 +68,8 @@ Route::group('/admin', function(){
 
     // 基本配置
     Route::group('baseConfig', function () {
-        Route::get('lst', 'admin.BaseConfig/lst');
+//        Route::get('lst', 'admin.BaseConfig/lst');
+        Route::get('lst', 'admin.BaseConfig/edit');
         Route::any('edit', 'admin.BaseConfig/edit');
     });
 

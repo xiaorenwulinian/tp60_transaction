@@ -6,7 +6,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        基本配置信息
+        配置信息编辑
 
     </h1>
 
@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">每天发布数量：</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" name="publish_limit_num" value="{$data['publish_limit_num']}">
+                                <input type="text" class="form-control" name="vip_name" value="{$data['publish_limit_num']}">
                             </div>
                         </div>
 
@@ -42,18 +42,44 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">vip描述：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="vip_desc" value="{$data['vip_desc']}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">延长时间（天）：</label>
+                            <div class="col-sm-5">
+                                <input type="number" class="form-control" name="vip_delay_day" value="{$data['vip_delay_day']}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">vip费用：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="vip_fee"  value="{$data['vip_fee']}">
+                            </div>
+                        </div>
 
 
 
                         <div class="form-group">
-                            <label for="" class="col-sm-2 control-label">用户发布商品是否需要审核</label>
+                            <label for="" class="col-sm-2 control-label">是否使用</label>
                             <div class="col-sm-8">
                                 <label class="radio-inline">
-                                    <input type="radio" name="user_publish_audit" value="1" <?php echo $data['user_publish_audit'] == 1 ? 'checked="checked"' : '';?>  > 需要
+                                    <input type="radio" name="is_use" value="1" <?php echo $data['is_use'] == 1 ? 'checked="checked"' : '';?>  > 使用
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="user_publish_audit"  value="2"  <?php echo $data['user_publish_audit'] == 2 ? 'checked="checked"' : '';?>  > 不需要
+                                    <input type="radio" name="is_use"  value="2"  <?php echo $data['is_use'] == 2 ? 'checked="checked"' : '';?>  > 废弃
                                 </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sort_order" class="col-sm-2 control-label">排序：<br/> 数字小的排在前面</label>
+                            <div class="col-sm-5">
+                                <input type="number" class="form-control" name="sort_order" id="sort_order" value="{$data['sort_order']}">
                             </div>
                         </div>
 
@@ -83,10 +109,10 @@
         $('.curSubmit').on('click',function () {
 
 
-            var url = "/admin/baseConfig/edit";
-            var form_param = $('#formSubmit').serialize();
 
-            console.log(form_param);
+            // var url = "<?php echo url('add',[],false);?>";
+            var url = "/admin/vipLevel/edit";
+            var form_param = $('#formSubmit').serialize();
             $.ajax({
                 type: 'post',
                 url:  url,
@@ -99,7 +125,7 @@
                             time:1000,
                             icon: 6,
                             end:function () {
-                                window.location.href = window.location.href;
+                                window.location.href = document.referrer;
                             }
                         })
                     } else {
@@ -108,8 +134,15 @@
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                    layer.msg(XMLHttpRequest.responseJSON.msg);
+                    console.log('---error----\n');
+                    console.log(XMLHttpRequest);
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(XMLHttpRequest.responseJSON);
+                    console.log(XMLHttpRequest.responseText);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    layer.msg(XMLHttpRequest.responseJSON.msg, {icon: 5,time:1000,});
                     return false;
 
                 }
