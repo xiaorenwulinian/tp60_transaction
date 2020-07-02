@@ -31,6 +31,11 @@ Route::group('index', function(){
         Route::any('topUp', 'index.User/topUp'); // 充值
         Route::any('withdraw', 'index.User/withdraw'); // 提现
 
+        Route::get('feedbackConsult/index', 'index.User/feedbackConsultIndex'); // 意见反馈列表
+        Route::any('feedbackConsult/add', 'index.User/feedbackConsultAdd'); // 意见反馈列表
+
+
+
 
     });
 

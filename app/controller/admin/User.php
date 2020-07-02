@@ -238,7 +238,113 @@ class User extends AdminBase
         return success_response();
 
 
+    }
 
+
+    /**
+     * 列表
+     * @return \think\response\View
+     */
+    public function feedbackConsultLst()
+    {
+        $pageSize = input('page_size', 10); // 每一页默认显示的条数
+        $pageSizeSelect = page_size_select($pageSize); //生成下拉选择页数框
+
+
+
+        $where = [];
+//        $where[] = ['is_delete', '=', 1];
+
+        $account = input('content', '');
+
+        if (!empty($account)) {
+            $where[] = ['content', 'like', "%{$account}%"];
+        }
+
+        /*$add_begin_time = input('add_begin_time', '');
+        $add_end_time = input('add_end_time', '');
+        if (!empty($add_begin_time)) {
+            $where[] = ['create_time', '>=', "$add_begin_time"];
+        }
+
+        if (!empty($add_begin_time)) {
+            $where[] = ['create_time', '<=', "$add_end_time"];
+        }*/
+
+
+        $data = Db::table("user_feedback_consult")
+            ->field([
+                'user_feedback_consult.id',
+                'user_feedback_consult.admin_id',
+                'user_feedback_consult.is_read',
+                'user_feedback_consult.create_time',
+                'user_feedback_consult.add_type',
+                'user_feedback_consult.content',
+                'user.account as user_name',
+            ])
+            ->leftJoin("user",'user.id = user_feedback_consult.user_id')
+            ->where($where)
+            ->order('id','desc')
+            ->paginate($pageSize);
+//        dd($data);
+
+        $pageShow = $data->render();
+        $category = \app\model\GoodsCategory::where('is_show','=',1)
+            ->column('cate_name','id');
+
+        $ret = [
+            'data'           => $data,
+            'pageSizeSelect' => $pageSizeSelect,
+            'pageSize'       => $pageSize,
+            'pageShow'       => $pageShow,
+            'category'       => $category,
+        ];
+        return view('admin/user/feedback_consult_lst', $ret);
+    }
+
+
+    /**
+     * 添加
+     * @return \think\response\Json|\think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function feedbackConsultAdd()
+    {
+
+        if($this->request->isPost()) {
+
+            $adminId = session('admin_user_id');
+
+            if (!$adminId) {
+                return failed_response("请先登陆!",401);
+            }
+            $reqParam = $this->request->param();
+            if (empty($reqParam["feedback_content"])) {
+                return failed_response("反馈内容不能为空！");
+            }
+
+            $feedback = Db::table("user_feedback_consult")
+                ->where('id', '=', $reqParam['comment_id'])
+                ->find();
+            $userId = $feedback['user_id'];
+
+            Db::table("user_feedback_consult")
+                ->insert([
+                    "user_id" => $userId,
+                    "admin_id" => $adminId,
+                    "is_read" => 1,
+                    "add_type" => 2,
+                    "content" => $reqParam["feedback_content"],
+                    "create_time" => date("Y-m-d H:i:s"),
+                ]);
+
+            return success_response();
+
+        }
+
+        return failed_response("非法攻击");
 
 
     }

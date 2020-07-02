@@ -58,7 +58,13 @@ Route::group('/admin', function(){
         Route::any('editSort', 'admin.User/editSort');
         Route::any('topUp', 'admin.User/topUp');
 
+        // 意见反馈
+        Route::get('feedbackConsult/lst', 'admin.User/feedbackConsultLst');
+        Route::post('feedbackConsult/add', 'admin.User/feedbackConsultAdd');
+
+
     });
+
 
     // 基本配置
     Route::group('baseConfig', function () {

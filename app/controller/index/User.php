@@ -59,6 +59,98 @@ class User extends IndexBase
         return view("index/user/index", $ret);
     }
 
+
+    /**
+     * 用户意见反馈列表
+     * @return \think\response\Redirect|\think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function feedbackConsultIndex()
+    {
+        if (!session('user_id')) {
+            return redirect("/index/user/login");
+        }
+        $userId = session('user_id');
+        $user = Db::table("user")->where('id', session('user_id'))->find();
+        $feedback = Db::table("user_feedback_consult")
+            ->where([
+                ['user_id', '=', $userId]
+            ])
+            ->order('id', 'desc')
+            ->paginate(10);
+
+        $pageShow = $feedback->render();
+
+        $ret = [
+            'feedback' => $feedback,
+            'pageShow' => $pageShow,
+            'user' => $user,
+        ];
+
+        return view("index/user/feedback_consult_index", $ret);
+
+
+    }
+
+
+    /**
+     * 用户意见反馈添加
+     * @return \think\response\Redirect|\think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function feedbackConsultAdd()
+    {
+        if($this->request->isPost()) {
+            $userId = session('user_id');
+            if (!$userId) {
+                return failed_response("请先登陆!",401);
+            }
+            $reqParam = $this->request->param();
+            if (empty($reqParam["feedback_content"])) {
+                return failed_response("反馈内容不能为空！");
+            }
+            Db::table("user_feedback_consult")
+                ->insert([
+                   "user_id" => $userId,
+                   "admin_id" => 0,
+                   "is_read" => 1,
+                   "add_type" => 1,
+                   "content" => $reqParam["feedback_content"],
+                   "create_time" => date("Y-m-d H:i:s"),
+                ]);
+
+            return success_response();
+
+        }
+
+
+
+        if (!session('user_id')) {
+            return failed_response("请先登陆");
+
+        }
+        $userId = session('user_id');
+
+        $feedback = Db::table("user_feedback_consult")
+            ->where([
+                ['user_id', '=', $userId]
+            ])
+            ->order('id', 'desc')
+            ->select();
+
+        $ret = [
+            'feedback' => $feedback,
+        ];
+
+        return view("index/user_feedback_consult/index", $ret);
+
+
+    }
+
     /**
      * 充值
      */
