@@ -183,4 +183,16 @@ class Goods extends AdminBase
         return success_response();
     }
 
+    public function auditChange()
+    {
+        $id = $this->request->param('goods_id');
+        $audit_status = $this->request->param('audit_status');
+        \app\model\Goods::where('id','=', $id)
+            ->update([
+                'audit_status' => $audit_status,
+                'audit_time' => time(),
+            ]);
+        return success_response();
+    }
+
 }

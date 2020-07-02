@@ -28,6 +28,8 @@ class Index extends IndexBase
         foreach ($category as &$v) {
             $goods = DB::table("goods")
                 ->where('goods_category_id','=', $v['id'])
+                ->where('audit_status','=', 2)
+//                ->where('is_on_sale','=', 2)
                 ->limit(4)
                 ->select()
                 ->toArray();

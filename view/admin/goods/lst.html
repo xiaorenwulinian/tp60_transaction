@@ -76,6 +76,7 @@
                             <th style="text-align: center">商品图片</th>
 
                             <th style="text-align: center">是否上架</th>
+                            <th style="text-align: center">审核状态</th>
 
                             <th style="text-align: center; max-width: 40px;">排序</th>
                             <th style="text-align: center">操作</th>
@@ -90,6 +91,17 @@
                             <td style="vertical-align: middle">{$v['goods_price']}</td>
                             <td style="vertical-align: middle"><?php echo  show_image($v['goods_img'], 50);?></td>
                             <td style="vertical-align: middle"><?php echo $v['is_on_sale'] == 1 ? '否' : '是'; ?></td>
+                            <td style="vertical-align: middle">
+
+                                <?php if ($v['audit_status'] == 1) : ?>
+                                    <a href="javascript:void(0)" class="btn btn-flat btn-info btn-xs to_audit" data-id="{$v['id']}">审核中</a>
+                                <?php elseif($v['audit_status'] == 2):?>
+                                    <a href="javascript:void(0)" class="btn btn-flat btn-success btn-xs">审核通过</a>
+                                <?php else:?>
+                                    <a href="javascript:void(0)" class="btn btn-flat btn-warning btn-xs">审核拒绝</a>
+                                <?php endif;?>
+
+                            </td>
 
                             <td style="vertical-align: middle"><input type="text" class="edit_sort_id" data-id="{$v['id']}" value="{$v['sort_id']}" style="text-align: center;width: 40px;"></td>
                             <td style="vertical-align: middle">
@@ -117,6 +129,19 @@
     </div>
     <!-- /.row -->
 </section>
+
+
+
+<!--<div class="col-sm-8">
+    <label class="radio-inline">
+        <input type="radio" name="user_publish_audit" value="1" checked> 审核通过
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="user_publish_audit"  value="2" > 审核拒绝
+    </label>
+</div>-->
+
+
 <!-- /.content -->
 {/block}
 
@@ -125,7 +150,62 @@
 
 <script>
 
+    function audit_submit(id) {
+        var audit_status =  $("input[name='user_publish_audit']:checked").val();
+
+        $.ajax({
+            type: 'post',
+            url:  "/admin/goods/auditChange",
+            dataType: 'json',
+            data: {
+                goods_id: id,
+                audit_status: audit_status,
+            },
+            success: function(ret){
+                console.log(ret);
+                if(ret.code == 0) {
+                    layer.msg('操作成功',{
+                        time:1000,
+                        icon: 6,
+                        end:function () {
+                            window.location.href = window.location.href;
+                        }
+                    })
+                } else {
+                    layer.msg(ret.msg, {icon: 5,time:1000,});
+                    return false;
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                layer.msg(XMLHttpRequest.responseJSON.msg);
+                return false;
+
+            }
+
+        });
+        return false;
+    }
+
     $(function () {
+
+
+        $(".to_audit").on("click", function () {
+            var id = $(this).attr('data-id');
+            var _html = '<div class="col-sm-8" style="margin: 40px auto;">' +
+                '<label class="radio-inline"><input type="radio" name="user_publish_audit" value="2" checked> 审核通过</label>' +
+                '<label class="radio-inline"><input type="radio" name="user_publish_audit"  value="3" > 审核拒绝</label>' +
+                '<div style="text-align: center;margin-top: 50px"><button style="width: 100px;margin: 0 auto" onclick="audit_submit('+ id +')">确定</button></div>' +
+                '</div>';
+            layer.open({
+                type: 1,
+                title: '商品审核',
+                skin: 'layui-layer-demo', //加上边框
+                area: ['420px', '240px'], //宽高
+                content: _html
+            });
+
+        });
 
 
         /**

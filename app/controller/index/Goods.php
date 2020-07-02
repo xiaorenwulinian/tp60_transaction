@@ -4,6 +4,7 @@ namespace app\controller\index;
 
 
 use app\common\tools\StringTool;
+use app\service\CommonService;
 use think\facade\Db;
 
 
@@ -166,7 +167,8 @@ class Goods extends IndexBase
             ->where('publish_time','=',$curDay)
             ->find();
 
-        $baseConfig = $this->getBaseConfigInfo();
+        $commonService = new CommonService();
+        $baseConfig = $commonService->getBaseConfigInfo();
 
         $limitNum = $baseConfig['publish_limit_num']; // 每天发布限制的数量
 
@@ -183,7 +185,19 @@ class Goods extends IndexBase
         try {
             $reqParam['publish_id']   = $userId;
             $reqParam['publish_type'] = 2;
-            $reqParam['audit_status'] = 1;
+
+
+            // 自动审核
+            if ($baseConfig['user_publish_audit'] == 2) {
+                $reqParam['audit_status'] = 2;
+                $reqParam['audit_time']   = time();
+                $reqParam['audit_admin_id'] = 0;
+            } else {
+                $reqParam['audit_status'] = 1;
+                $reqParam['audit_time']   = 0;
+                $reqParam['audit_admin_id'] = 0;
+            }
+
             $goods = \app\model\Goods::create($reqParam);
 
             if (empty($publish)) {

@@ -129,6 +129,8 @@ Route::group('/admin', function(){
         Route::any('editSort', 'admin.Goods/editSort');
         Route::any('exportData', 'admin.Goods/exportData');
         Route::any('editMultiFileDelete', 'admin.Goods/editMultiFileDelete');
+        Route::post('auditChange', 'admin.Goods/auditChange'); // 商品审核
+
     });
 
     Route::group('common', function () {

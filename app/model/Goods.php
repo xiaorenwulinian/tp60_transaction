@@ -65,6 +65,7 @@ class Goods extends Model
         'edit_time',
         'publish_id',
         'publish_type',
+        'audit_status',
         'audit_time',
         'audit_admin_id',
     ];
