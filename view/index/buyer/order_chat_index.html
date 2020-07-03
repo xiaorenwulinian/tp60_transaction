@@ -28,6 +28,7 @@
         <div class="col-sm-2 mt20 mb20">
             <div class="list-group">
                 <a href="#" class="list-group-item active disabled">管理导航</a>
+                <a class="list-group-item " href="/index/buyer/order/index"><span class="icon-list"></span> 我的购买</a>
 
                 <a class="list-group-item " href="/index/user/feedbackConsult/index"><span class="icon-credit-card"></span>意见反馈列表</a>
                 <!--<a class="list-group-item " href="/index/user/feedbackConsult/add"><span class="icon-credit-card"></span>意见反馈添加</a>-->
@@ -47,22 +48,24 @@
                 <div class="col-sm-12">
                     <div class="alert alert-success text-center" role="alert">{$user["account"]}　欢迎回来！</div>
                     <div class="text-center" style="margin-bottom: 30px">
-                        <a href="javascript:void(0)" class="btn-danger btn feedback_content"> 添加评论</a>
+                        <a href="javascript:void(0)" class="btn-danger btn order_chat_content"> 添加评论</a>
                     </div>
                 </div>
 
                 <div class="row item_list mt20">
-                    <?php foreach($feedback as $v):?>
+                    <?php foreach($chatInfo as $v):?>
                     <div class="col-sm-12">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default push_content">
                             <div class="panel-body1 " style="padding: 0px 10px">
-                                <?php if ($v['add_type'] == 1):?>
+                                <?php if ($v['user_type'] == 1):?>
                                     <h4 style="text-align: left">
                                         本人
+                                        <span style="display: inline-block;font-style: normal;font-size: 12px;font-weight: normal">{$v['create_time']}</span>
                                     </h4>
                                 <?php else: ?>
                                     <h4 style="text-align: right">
-                                        管理员
+                                        <span style="display: inline-block;font-style: normal;font-size: 12px;font-weight: normal">{$v['create_time']}</span>
+                                        卖家
                                     </h4>
 
                                 <?php endif;?>
@@ -71,7 +74,7 @@
                             <div class="panel-footer">
                                 <div class="clearfix">
                                     <div class="pull-left">
-                                        {$v['content']}
+                                        {$v['chat_content']}
                                     </div>
 
                                 </div>
@@ -82,10 +85,6 @@
 
                 </div>
 
-
-                <div class="text-center">
-                    {$pageShow | raw}
-                </div>
 
             </div>
 
@@ -115,38 +114,12 @@
 <script>
 
 
+    var order_id = "<?php echo $orderId; ?>";
+
     $(document).ready(function(){
-        //
-        // layer.prompt({title: '请输入充值金额', formType: 3}, function(money, index){
-        //     layer.close(index);
-        //     $.ajax({
-        //         type: 'get',
-        //         url:  url,
-        //         dataType: 'json',
-        //         data: {
-        //             user_id: id,
-        //             money: money,
-        //         },
-        //         success: function(ret){
-        //             console.log(ret);
-        //             if(ret.code == 0) {
-        //                 layer.msg('充值成功！',{
-        //                     time:1000, icon: 6,
-        //                     end:function () {
-        //                         location.href = location.href;
-        //                     }
-        //                 })
-        //             } else {
-        //                 layer.msg(ret.msg, {icon: 5,time:1000,});
-        //                 return false;
-        //             }
-        //         }
-        //     });
-        // });
 
 
-
-        $(".feedback_content").on('click', function () {
+        $(".order_chat_content").on('click', function () {
 
             layer.prompt({title: '请输入反馈内容！', formType: 2}, function(text, index){
                 text = $.trim(text);
@@ -154,15 +127,14 @@
                     layer.alert("内容不能为空！");
                     return false;
                 }
-                console.log(text);
 
                 $.ajax({
                     type: 'post',
-                    url:  "/index/user/feedbackConsult/add",
+                    url:  "/index/buyer/order/chat/add",
                     dataType: 'json',
                     data: {
-                        // user_id: id,
-                        feedback_content: text,
+                        order_id: order_id,
+                        chat_content: text,
                     },
                     success: function(ret){
                         console.log(ret);

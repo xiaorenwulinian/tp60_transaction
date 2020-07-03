@@ -76,6 +76,30 @@ Route::group('/admin', function(){
 
 
 
+
+
+    // 商品
+    Route::group('goods', function () {
+        Route::get('lst', 'admin.Goods/lst');
+//        Route::any('add', 'admin.Goods/add');
+        Route::any('edit', 'admin.Goods/edit');
+        Route::any('changeShow', 'admin.Goods/changeShow');
+        Route::any('delete', 'admin.Goods/delete');
+        Route::any('editSort', 'admin.Goods/editSort');
+        Route::any('exportData', 'admin.Goods/exportData');
+        Route::any('editMultiFileDelete', 'admin.Goods/editMultiFileDelete');
+        Route::post('auditChange', 'admin.Goods/auditChange'); // 商品审核
+
+    });
+
+    Route::group('common', function () {
+        Route::any('addUpload', 'admin.Common/addUpload');  // 添加时上传文件
+        Route::any('addMultiUpload', 'admin.Common/addMultiUpload');  // 添加时上传文件
+        Route::any('editUpload', 'admin.Common/editUpload');  // 修改时上传文件
+        Route::any('addDeleteFile', 'admin.Common/addDeleteFile'); // 添加时删除文件
+    });
+
+
     // 广告分类
     Route::group('advertiseType', function () {
         Route::get('lst', 'admin.AdvertiseType/lst');
@@ -117,27 +141,6 @@ Route::group('/admin', function(){
         Route::any('delete', 'admin.FlowerMaterial/delete');
         Route::any('editSort', 'admin.FlowerMaterial/editSort');
         Route::any('exportData', 'admin.FlowerMaterial/exportData');
-    });
-
-    // 商品
-    Route::group('goods', function () {
-        Route::get('lst', 'admin.Goods/lst');
-        Route::any('add', 'admin.Goods/add');
-        Route::any('edit', 'admin.Goods/edit');
-        Route::any('changeShow', 'admin.Goods/changeShow');
-        Route::any('delete', 'admin.Goods/delete');
-        Route::any('editSort', 'admin.Goods/editSort');
-        Route::any('exportData', 'admin.Goods/exportData');
-        Route::any('editMultiFileDelete', 'admin.Goods/editMultiFileDelete');
-        Route::post('auditChange', 'admin.Goods/auditChange'); // 商品审核
-
-    });
-
-    Route::group('common', function () {
-        Route::any('addUpload', 'admin.Common/addUpload');  // 添加时上传文件
-        Route::any('addMultiUpload', 'admin.Common/addMultiUpload');  // 添加时上传文件
-        Route::any('editUpload', 'admin.Common/editUpload');  // 修改时上传文件
-        Route::any('addDeleteFile', 'admin.Common/addDeleteFile'); // 添加时删除文件
     });
 
 

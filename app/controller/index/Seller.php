@@ -6,7 +6,7 @@ namespace app\controller\index;
 use think\facade\Db;
 
 
-class Buyer extends IndexBase
+class Seller extends IndexBase
 {
 
     /**
@@ -29,7 +29,7 @@ class Buyer extends IndexBase
                 'goods.goods_img',
             ])
             ->leftJoin("goods",'goods.id=order.goods_id')
-            ->where('order.buy_user_id',$userId)
+            ->where('order.sell_user_id',$userId)
             ->select()
             ->toArray();
 
@@ -38,7 +38,7 @@ class Buyer extends IndexBase
             'orderInfo' => $orderInfo,
         ];
 
-        return view("index/buyer/order_index", $ret);
+        return view("index/seller/order_index", $ret);
 
     }
 
@@ -83,7 +83,7 @@ class Buyer extends IndexBase
 //        dump($orderInfo,$goodsInfo,$chatInfo, $orderId);
 
 
-        return view("index/buyer/order_chat_index", $ret);
+        return view("index/seller/order_chat_index", $ret);
 
 
 
@@ -116,11 +116,12 @@ class Buyer extends IndexBase
                 'order_id' => $orderId,
                 'user_id' => $userId,
                 'chat_content' => $chatContent,
-                'user_type' => 1,
+                'user_type' => 2,
                 'create_time' => date("Y-m-d H:i:s"),
             ]);
 
         return success_response();
+
 
 
 
