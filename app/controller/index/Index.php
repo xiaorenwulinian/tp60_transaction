@@ -30,7 +30,7 @@ class Index extends IndexBase
                 ->where('goods_category_id','=', $v['id'])
                 ->where('audit_status','=', 2)
 //                ->where('is_on_sale','=', 2)
-                ->limit(4)
+                ->limit(8)
                 ->select()
                 ->toArray();
             foreach ($goods as &$good) {

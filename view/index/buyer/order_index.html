@@ -1,0 +1,124 @@
+{extend name="index/layout/basic" /}
+
+
+{block name="content"}
+<nav class="navbar mr0 mb0 bg-header" id="navbar">
+    <div class="container">
+        <div class="navbar-header visible-xs">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false"><span class="sr-only">Toggle navigation</span> <span class="icon-circle-down"></span></button>
+            <a class="navbar-brand nopadding" href="/"><img src="/static/index/default/img/logo.png" alt="源码交易平台_www.wazyb.com"/></a>
+        </div>
+        <div class="collapse navbar-collapse" id="topnav">
+            <ul class="nav navbar-nav" id="navbar-nav">
+                <li class="active"><a href="/"><span class="icon-home"></span> 网站首页</a></li>
+            </ul>
+            <form role="search" class="navbar-form navbar-right search hidden-xs" method="GET" action="/index.php" id="search_form">
+                <div class="input-group">
+                    <input class="form-control" id="search_keyword" type="text" name="keyword" value="" aria-describedby="submitso" />
+                    <input type="hidden" name="mid" value="2" />
+                    <input type="hidden" name="u" value="search-index" />
+                    <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="icon-search"></i></button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container mt20">
+    <div class="row clearfix" style="padding-bottom:20px;">
+        <div class="col-sm-2 mt20 mb20">
+            <div class="list-group">
+                <a href="#" class="list-group-item active disabled">管理导航</a>
+                <a class="list-group-item  list-group-item-info" href="/index/user/index"><span class="icon-home"></span> 会员首页</a>
+                <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
+                <a class="list-group-item " href="/index/user/buyer/lst"><span class="icon-list"></span> 我的购买</a>
+
+                <!--<a class="list-group-item " href="/index/user/topUp"><span class="icon-coin-yen"></span>  回复</a>-->
+                <!--<a class="list-group-item " href="/index/user/withdraw"><span class="icon-pig"></span>  评价</a>-->
+                <!--<a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>-->
+                <!--<a class="list-group-item " href="/index/user/changeProfile"><span class="icon-pencil"></span>  1</a>-->
+                <!--<a class="list-group-item " href="/index/user/changePassword"><span class="icon-key"></span>  2</a>-->
+                <!--<a class="list-group-item " href="index.php?u=comment-index"><span class="icon-bubble"></span>  3</a>-->
+
+            </div>
+            <!--<div class="input-group hidden-xs">-->
+                <!--<span class="input-group-addon"><span class="icon-yen text-success"></span></span>-->
+                <!--<input class="form-control" type="text" value="0.00" />-->
+            <!--</div>-->
+        </div>
+        <div class="col-sm-10 mt20">
+            <style>
+                .btn-group{position: relative;}
+                .btn-group #qdfaq{position: absolute;top:11px;right:11px;}
+            </style>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-success text-center" role="alert">{$user["account"]}　欢迎回来！</div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <h4 style="margin-top: 10px; margin-bottom: 10px;">
+                           发布的商品
+                        </h4>
+                        <table class="table table-bordered table-hover">
+
+                            <tr>
+                                <th class="text-center">商品名称</th>
+                                <th class="text-center">价格</th>
+                                <th class="text-center">图片</th>
+                                <th class="text-center">订单编号</th>
+                                <th class="text-center">发货状态</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+
+                            <?php foreach($orderInfo as $v):?>
+                            <tr class="">
+                                <td class="text-center">{$v["goods_name"]}</td>
+                                <td class="text-center">{$v["order_money"]}</td>
+                                <td class="text-center">
+                                    <?php echo show_goods_image_all($v["goods_img"], 50); ?>
+                                </td>
+                                <td class="text-center">{$v["unique_code"]}</td>
+                                <td class="text-center">
+                                    <?php  if($v['order_progress'] == 1): ?>
+                                        未发货
+                                    <?php  elseif($v['order_progress'] == 2): ?>
+                                        运送中
+                                    <?php  elseif($v['order_progress'] == 3): ?>
+                                        已收货
+                                    <?php  endif; ?>
+
+                                </td>
+
+                                <td class="text-center">
+                                    <!--<a class="btn btn-danger btn-xs" href="javascript:;" nclick="up_group();">-->
+                                    <a class="btn btn-danger btn-xs"
+                                       href="<?php echo url('/index/buyer/order/chat',['order_id'=>$v['id'],'goods_id'=>$v['goods_id']], false);?>">
+                                        聊天
+                                    </a>
+
+                                </td>
+                            </tr>
+                            <?php endforeach;?>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+
+            </script>
+        </div>
+    </div>
+</div>
+<footer class="footer mt20">
+    <div class="container">
+        <p class="text-center small">
+            Copyright &copy; 2020 <a href="http://www.wazyb.com/">源码交易平台_www.wazyb.com</a> ALL RIGHT RESERVED
+        </p>
+    </div>
+</footer>
+
+{/block}

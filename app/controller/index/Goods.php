@@ -21,6 +21,8 @@ class Goods extends IndexBase
         $category_id = input('category_id');
 
         $where = [];
+        $where[] = ['audit_status', '=', 2];
+
         if (!empty($category_id)) {
             $where[] = ['goods_category_id', '=', $category_id];
         }
@@ -31,7 +33,7 @@ class Goods extends IndexBase
         $goodsData = Db::table("goods")
             ->where($where)
             ->order('id','desc')
-            ->paginate(1, $count, request()->param())
+            ->paginate(20, $count, request()->param())
             ->each(function($item, $key){
 
                 if (empty($item['goods_img'])) {

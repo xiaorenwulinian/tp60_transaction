@@ -35,9 +35,37 @@ Route::group('index', function(){
         Route::any('feedbackConsult/add', 'index.User/feedbackConsultAdd'); // 意见反馈列表
 
 
+        Route::any('buyer/lst', 'index.User/buyerLst'); // 买家列表
+        Route::any('seller/lst', 'index.User/sellerLst'); // 卖家列表
+
 
 
     });
+
+    /**
+     * 我是买家
+     */
+    Route::group('buyer', function () {
+
+        Route::any('order/index', 'index.buyer/orderIndex'); // 买家订单列表
+
+        Route::any('order/chat', 'index.buyer/orderChat'); // 买家订单聊天
+
+    });
+
+
+    /**
+     * 我是卖家
+     */
+    Route::group('seller', function () {
+
+        Route::any('order/index', 'index.seller/orderIndex'); // 卖家订单列表
+        Route::any('order/chat', 'index.seller/orderChat'); // 卖家订单列表
+
+
+
+    });
+
 
     Route::group('goods', function () {
         Route::any('search', 'index.goods/search'); // 商品列表

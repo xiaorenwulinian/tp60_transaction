@@ -69,10 +69,11 @@ class User extends IndexBase
      */
     public function feedbackConsultIndex()
     {
-        if (!session('user_id')) {
+        $userId = session('user_id');
+        if (!$userId) {
             return redirect("/index/user/login");
         }
-        $userId = session('user_id');
+
         $user = Db::table("user")->where('id', session('user_id'))->find();
         $feedback = Db::table("user_feedback_consult")
             ->where([
@@ -276,4 +277,7 @@ class User extends IndexBase
 
         return Captcha::create('indexlogin');
     }
+
+
+
 }

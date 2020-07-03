@@ -33,6 +33,11 @@ class Order extends IndexBase
             return failed_response('该商品已下架！' . $goods_id);
         }
 
+        // 买家和卖家是同一人
+        if ($goods['publish_type'] == 2 && $goods['publish_id'] == $userId) {
+            return failed_response("你是该商品的发布者，禁止购买！");
+        }
+
         if ($user["user_money"] < $goods["goods_price"]) {
             return failed_response('账户余额不足，请先充值！', 100);
         }
@@ -56,9 +61,10 @@ class Order extends IndexBase
                 ->insertGetId([
                     'order_progress' => 1,
                     'buy_user_id'    => $userId,
+                    'goods_id'       => $goods['id'],
                     'order_money'    => $goods["goods_price"],
                     'create_time'    => $curDate,
-                    'unique_code'    => date("ymdHis") . '-' . StringTool::random(6),
+                    'unique_code'    => date("YmdHis") . '-' . StringTool::random(8),
                 ]);
 
             // 操作交易记录

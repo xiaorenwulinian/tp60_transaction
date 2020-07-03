@@ -131,5 +131,100 @@ if (!function_exists('default_image')) {
 
 }
 
+
+if (!function_exists('show_goods_image_no_upload')) {
+    /**
+     * 图片展示图片上传的路径，不加 /upload
+     * @param string $url
+     * @param string $width
+     * @param string $height
+     * @param string $alt
+     * @return string
+     */
+    function show_goods_image_no_upload($url = '', $width = '', $height ='' , $alt='' ) {
+
+        if (empty($url)) {
+            $url = default_image();
+        } else {
+            $url = "/uploads/" . ltrim($url,'/');
+        }
+
+        if (!empty($width)) {
+            $width = "width = '{$width}'";
+        }
+
+        if (!empty($width)) {
+            $height = "height = '{$height}'";
+        }
+        if (empty($alt)) {
+            $alt  = '图片加载中';
+        }
+        return "<img src='{$url}' $width $height alt='{$alt}' />";
+    }
+
+}
+
+if (!function_exists('show_goods_image_has_upload')) {
+    /**
+     * 图片展示图片上传的路径，加 /upload
+     * @param string $url
+     * @param string $width
+     * @param string $height
+     * @param string $alt
+     * @return string
+     */
+    function show_goods_image_has_upload($url = '', $width = '', $height ='' , $alt='' ) {
+        if (!empty($width)) {
+            $width = "width = '{$width}'";
+        }
+
+        if (!empty($width)) {
+            $height = "height = '{$height}'";
+        }
+        if (empty($alt)) {
+            $alt  = '图片加载中';
+        }
+        return "<img src='{$url}' $width $height alt='{$alt}' />";
+    }
+
+}
+
+if (!function_exists('show_goods_image_all')) {
+    /**
+     * 图片展示图片上传的路径，加 /upload
+     * @param string $url
+     * @param string $width
+     * @param string $height
+     * @param string $alt
+     * @return string
+     */
+    function show_goods_image_all($url = '', $width = '', $height ='' , $alt='' ) {
+
+        if (empty($url)) {
+            $url = default_image();
+        } else {
+            $url = ltrim($url,'/');
+            if (substr($url,0,7) == "uploads") {
+                $url = ltrim(substr($url,7),'/');
+            }
+            $url = "/uploads/" . ltrim($url,'/');
+        }
+
+
+        if (!empty($width)) {
+            $width = "width = '{$width}'";
+        }
+
+        if (!empty($width)) {
+            $height = "height = '{$height}'";
+        }
+        if (empty($alt)) {
+            $alt  = '图片加载中';
+        }
+        return "<img src='{$url}' $width $height alt='{$alt}' />";
+    }
+
+}
+
 // getDefaultImg
 
