@@ -20,10 +20,11 @@ class Order extends IndexBase
      */
     public function buy()
     {
-        if (!session('user_id')) {
+        $userId  = session('user_id');
+        if (!$userId) {
             return failed_response('请先登陆！',401);
         }
-        $userId   = session('user_id');
+
         $goods_id = input('goods_id',0);
 
         $user = Db::table("user")->where('id', $userId)->find();

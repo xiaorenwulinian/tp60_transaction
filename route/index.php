@@ -53,6 +53,16 @@ Route::group('index', function(){
 
     });
 
+    /**
+     * 好友聊天
+     */
+    Route::group('friendChat', function () {
+
+        Route::get('index', 'index.friendChat/index'); //
+        Route::post('addHouse', 'index.friendChat/addHouse'); // 买家开房
+        Route::post('chat/add', 'index.friendChat/addChatContent'); // 买家开房
+    });
+
 
     /**
      * 我是卖家

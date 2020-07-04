@@ -109,8 +109,6 @@ class Buyer extends IndexBase
             return failed_response("非法攻击");
         }
 
-
-
         $chatInfo = Db::table("order_chat")
             ->insert([
                 'order_id' => $orderId,
