@@ -4,6 +4,7 @@ namespace app\controller\index;
 
 
 use app\common\tools\StringTool;
+use app\service\OrderService;
 use think\captcha\facade\Captcha;
 use think\facade\Db;
 
@@ -95,6 +96,26 @@ class Order extends IndexBase
         return success_response();
     }
 
+
+    public function confirmReceiptGoods()
+    {
+        $orderId = input('order_id');
+        $order = Db::table('order')
+            ->where('id',$orderId)
+            ->find();
+        if (!$orderId) {
+            return failed_response("非法攻击");
+        }
+        if ($order['order_progress'] == 3) {
+            return failed_response("重复操作");
+        }
+        $orderService = new OrderService();
+        $ret = $orderService->confirmReceiptGoods($order);
+        if ($ret['code'] != 0) {
+            return failed_response($ret['msg']);
+        }
+        return success_response();
+    }
 
     public function openVip()
     {
