@@ -95,6 +95,174 @@ class FriendChat extends IndexBase
         return view("index/friend_chat/chat_index", $ret);
     }
 
+    public function indexBuyer()
+    {
+
+        $userId = session('user_id');
+//        $userId = 1;
+        if (!$userId) {
+            return redirect("/index/user/login");
+        }
+
+        $user = Db::table("user")->where('id', $userId)->find();
+
+        $curHouseId = input('cur_house_id',0);
+        if ($curHouseId) {
+
+            Db::table('chat_house')
+                ->where('id',$curHouseId)
+                ->update([
+                    'last_chat_time' => time()
+                ]);
+        }
+
+
+        $whereRaw = " FIND_IN_SET('{$userId}', chat_relation) ";
+        $house = Db::table("chat_house")
+            ->whereRaw($whereRaw)
+            ->order('last_chat_time','desc')
+            ->column('min_user_id,max_user_id,chat_relation,id','id');
+//            ->select();
+        $linkUserIdArr = [];
+        $firstHouse = [];
+        $i = 0;
+        foreach ($house as $k => $v) {
+            if ($v['min_user_id'] != $userId) {
+                $linkUserIdArr[] = $v['min_user_id'];
+            }
+            if ($v['max_user_id'] != $userId) {
+                $linkUserIdArr[] = $v['max_user_id'];
+            }
+
+            if ($i == 0) {
+                $firstHouse = $v;
+            }
+            $i++;
+        }
+
+        $linkUserIdArr = array_unique($linkUserIdArr);
+
+
+        $linkUserInfo = Db::table('user')
+            ->whereIn('id',$linkUserIdArr)
+            ->column('account','id');
+
+        foreach ($house as $k => &$v) {
+
+            if (in_array($v['min_user_id'], $linkUserIdArr)) {
+                $v['user_name'] = $linkUserInfo[$v['min_user_id']];
+            }
+            if (in_array($v['max_user_id'], $linkUserIdArr)) {
+                $v['user_name'] = $linkUserInfo[$v['max_user_id']];
+            }
+
+        }
+
+        /*$chatInfo = Db::table('friend_chat')
+            ->where('chat_house_id',$firstHouse['id'])
+            ->order('id','desc')
+            ->limit(0,3)
+            ->select()
+            ->toArray();*/
+//        dump($house,$linkUserIdArr, $linkUserInfo,$firstHouse,$chatInfo);
+
+        $ret = [
+            'user' => $user,
+            'house' => $house,
+            'linkUserIdArr' => $linkUserIdArr,
+            'linkUserInfo' => $linkUserInfo,
+            'firstHouse' => $firstHouse,
+//            'chatInfo' => $chatInfo,
+
+        ];
+
+        return view("index/friend_chat/chat_index_buyer", $ret);
+    }
+
+    public function indexSeller()
+    {
+
+        $userId = session('user_id');
+//        $userId = 1;
+        if (!$userId) {
+            return redirect("/index/user/login");
+        }
+
+        $user = Db::table("user")->where('id', $userId)->find();
+
+        $curHouseId = input('cur_house_id',0);
+        if ($curHouseId) {
+
+            Db::table('chat_house')
+                ->where('id',$curHouseId)
+                ->update([
+                    'last_chat_time' => time()
+                ]);
+        }
+
+
+        $whereRaw = " FIND_IN_SET('{$userId}', chat_relation) ";
+        $house = Db::table("chat_house")
+            ->whereRaw($whereRaw)
+            ->order('last_chat_time','desc')
+            ->column('min_user_id,max_user_id,chat_relation,id','id');
+//            ->select();
+        $linkUserIdArr = [];
+        $firstHouse = [];
+        $i = 0;
+        foreach ($house as $k => $v) {
+            if ($v['min_user_id'] != $userId) {
+                $linkUserIdArr[] = $v['min_user_id'];
+            }
+            if ($v['max_user_id'] != $userId) {
+                $linkUserIdArr[] = $v['max_user_id'];
+            }
+
+            if ($i == 0) {
+                $firstHouse = $v;
+            }
+            $i++;
+        }
+
+        $linkUserIdArr = array_unique($linkUserIdArr);
+
+
+        $linkUserInfo = Db::table('user')
+            ->whereIn('id',$linkUserIdArr)
+            ->column('account','id');
+
+        foreach ($house as $k => &$v) {
+
+            if (in_array($v['min_user_id'], $linkUserIdArr)) {
+                $v['user_name'] = $linkUserInfo[$v['min_user_id']];
+            }
+            if (in_array($v['max_user_id'], $linkUserIdArr)) {
+                $v['user_name'] = $linkUserInfo[$v['max_user_id']];
+            }
+
+        }
+
+        /*$chatInfo = Db::table('friend_chat')
+            ->where('chat_house_id',$firstHouse['id'])
+            ->order('id','desc')
+            ->limit(0,3)
+            ->select()
+            ->toArray();*/
+//        dump($house,$linkUserIdArr, $linkUserInfo,$firstHouse,$chatInfo);
+
+        $ret = [
+            'user' => $user,
+            'house' => $house,
+            'linkUserIdArr' => $linkUserIdArr,
+            'linkUserInfo' => $linkUserInfo,
+            'firstHouse' => $firstHouse,
+//            'chatInfo' => $chatInfo,
+
+        ];
+
+        return view("index/friend_chat/chat_index_seller", $ret);
+    }
+
 
     public function indexMore()
     {
