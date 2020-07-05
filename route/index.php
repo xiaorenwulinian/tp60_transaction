@@ -59,6 +59,7 @@ Route::group('index', function(){
     Route::group('friendChat', function () {
 
         Route::get('index', 'index.friendChat/index'); //
+        Route::get('indexMore', 'index.friendChat/indexMore'); // 加载更多
         Route::post('addHouse', 'index.friendChat/addHouse'); // 买家开房
         Route::post('chat/add', 'index.friendChat/addChatContent'); // 买家开房
     });

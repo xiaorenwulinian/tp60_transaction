@@ -49,6 +49,17 @@ Route::group('/admin', function(){
 
     });
 
+    // 站内聊天
+    Route::group('friendChat', function () {
+        Route::get('houseLst', 'admin.friendChat/houseLst');
+
+        Route::any('chatLst', 'admin.friendChat/chatLst');
+        Route::any('chatLstAjax', 'admin.friendChat/chatLstAjax');
+        Route::any('chatAdd', 'admin.friendChat/chatAdd');
+
+    });
+
+
     // 用户
     Route::group('user', function () {
         Route::get('lst', 'admin.User/lst');

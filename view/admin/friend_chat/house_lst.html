@@ -1,0 +1,278 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}
+<style>
+    .common_search {
+        margin: 10px auto;
+    }
+    .page_size_select{
+        width: 105px;
+        float: right;
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 10px;
+        border-radius: 4px;
+        padding: 6px 12px;
+        /*text-align: right;*/
+    }
+    .common_search input,.common_search select{
+        margin-bottom: 10px;
+    }
+</style>
+{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        商品列表
+        <!--<small> <a href="/admin/goods/add" class="pull-right">商品添加</a></small>-->
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="common_search">
+        <form class="form-inline" action="/admin/goods/lst" id="form_search">
+            <input type="text" class="form-control" name="goods_name" placeholder="商品名称" value="{:input('goods_name')}">
+
+
+            <input  type="hidden" name="page_size" id="cur_show_page" value="{$pageSize}"/>
+            <input class="btn btn-flat btn-primary" type="submit" value="搜索">
+
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" >
+                <div class="box-header">
+                    <h3 class="box-title">
+                    </h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">房间ID</th>
+                            <th style="text-align: center">用户1</th>
+                            <th style="text-align: center">用户2</th>
+
+                            <th style="text-align: center">聊天记录</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($data as $v):?>
+                        <tr style="text-align: center">
+                            <td style="vertical-align: middle">{$v['id']}</td>
+                            <td style="vertical-align: middle">{$v['min_user_name']}</td>
+                            <td style="vertical-align: middle">{$v['max_user_name']}</td>
+
+                            <td style="vertical-align: middle">
+                                <a href="<?php echo url('/admin/friendChat/chatLst?chat_house_id='.$v['id'],[], false); ?>" class="btn btn-flat btn-info btn-xs" title="查看">
+                                    <i class="fa fa-edit"></i> 查看
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach;?>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        {$pageShow|raw}
+                        {$pageSizeSelect|raw}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+
+
+<!--<div class="col-sm-8">
+    <label class="radio-inline">
+        <input type="radio" name="user_publish_audit" value="1" checked> 审核通过
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="user_publish_audit"  value="2" > 审核拒绝
+    </label>
+</div>-->
+
+
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+
+
+<script>
+
+    function audit_submit(id) {
+        var audit_status =  $("input[name='user_publish_audit']:checked").val();
+
+        $.ajax({
+            type: 'post',
+            url:  "/admin/goods/auditChange",
+            dataType: 'json',
+            data: {
+                goods_id: id,
+                audit_status: audit_status,
+            },
+            success: function(ret){
+                console.log(ret);
+                if(ret.code == 0) {
+                    layer.msg('操作成功',{
+                        time:1000,
+                        icon: 6,
+                        end:function () {
+                            window.location.href = window.location.href;
+                        }
+                    })
+                } else {
+                    layer.msg(ret.msg, {icon: 5,time:1000,});
+                    return false;
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                layer.msg(XMLHttpRequest.responseJSON.msg);
+                return false;
+
+            }
+
+        });
+        return false;
+    }
+
+    $(function () {
+
+
+        $(".to_audit").on("click", function () {
+            var id = $(this).attr('data-id');
+            var _html = '<div class="col-sm-8" style="margin: 40px auto;">' +
+                '<label class="radio-inline"><input type="radio" name="user_publish_audit" value="2" checked> 审核通过</label>' +
+                '<label class="radio-inline"><input type="radio" name="user_publish_audit"  value="3" > 审核拒绝</label>' +
+                '<div style="text-align: center;margin-top: 50px"><button style="width: 100px;margin: 0 auto" onclick="audit_submit('+ id +')">确定</button></div>' +
+                '</div>';
+            layer.open({
+                type: 1,
+                title: '商品审核',
+                skin: 'layui-layer-demo', //加上边框
+                area: ['420px', '240px'], //宽高
+                content: _html
+            });
+
+        });
+
+
+        /**
+         * 切换展示状态
+         */
+        $(".change_show").on('click', function () {
+            var id = $(this).attr('data-id');
+            var url = "<?php echo url('/admin/goods/changeShow',[],false);?>";
+            change_show_status(url, id);
+        });
+
+        /**
+         * 导出
+         */
+        $("select[name='export_data_change']").on('change', function () {
+            var export_type = parseInt($(this).val());
+            var url = "/admin/goods/exportData?";
+            switch (export_type) {
+                case 0 :
+                  break;
+                case 1 :
+                    var has_checked  = [];
+                    $("input[name='multi_select[]']:checked").each(function () {
+                        has_checked.push($(this).val());
+                    });
+                    var has_checked_str = has_checked.join(',');
+                    if (has_checked_str == '' || has_checked_str.length == 0) {
+                        alert('请勾选导出项！');
+                        return false;
+                    }
+                    url = url + 'exportType=1&id=' + has_checked_str;
+                    window.open(url);
+                    break;
+                case 2 :
+                    var params = "<?php echo http_build_query(array_merge(request()->param(),['exportType' => 2]),'', '&'); ?>";
+                    url = url + params;
+                    window.open(url);
+                    break;
+            }
+            $("select[name='export_data_change']").val(0);
+            // $("select[name='export_data_change']").find("option[value='0']").attr('selected','selected');
+            return false;
+        });
+
+
+        /**
+         * 全选或全不选
+         */
+        $('.is_multi_select').on('click',function () {
+            if ($(this).is(':checked')) {
+                $("input[name='multi_select[]']").each(function () {
+                    $(this).prop("checked","checked");
+                });
+            } else {
+                $("input[name='multi_select[]']").each(function () {
+                    $(this).prop('checked',false);
+                });
+            }
+        });
+        /**
+         * 修改排序
+         */
+        $('.edit_sort_id').on('blur',function () {
+            var id = $(this).attr('data-id');
+            var sort_id = $.trim($(this).val());
+            var url = '/admin/goods/editSort';
+            edit_sort(url, id, sort_id);
+        });
+
+        /**
+         * 删除单个
+         */
+        $(".cur_del").on('click',function () {
+            var id = $(this).attr('data-id');
+            var url = "/admin/goods/delete";
+            delete_one(url, id);
+        });
+
+        /**
+         * 批量删除
+         */
+        $('.multi_del').on('click',function () {
+            var has_checked  = [];
+            $("input[name='multi_select[]']:checked").each(function () {
+                has_checked.push($(this).val());
+            });
+            var has_checked_str = has_checked.join(',');
+            if (has_checked_str == '' || has_checked_str.length == 0) {
+                alert('请勾选删除项！');
+                return false;
+            }
+            var url = "/admin/goods/delete";
+            delete_multiply(url, has_checked_str);
+        });
+
+        // 修改每页显示数量
+        $(".page_size_select").on('change',function() {
+            var page_size = $(this).val();
+            $('#cur_show_page').val(page_size);
+            $('#form_search').trigger('submit');
+            return false;
+        });
+
+    });
+
+
+
+</script>
+{/block}
