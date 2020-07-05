@@ -18,6 +18,7 @@ class BaseConfigValidate extends Validate
 	    'publish_limit_num'    => 'require|integer|max:255',
 	    'upload_limit_size'    => 'require|integer|max:100',
         'user_publish_audit'   => 'require|integer',
+        'auto_goods_day'   => 'require|integer',
     ];
 
     
@@ -39,7 +40,7 @@ class BaseConfigValidate extends Validate
 //        'sort_id.integer'             => '排序为正整数',
     ];
     protected $scene = [
-        'edit' =>  ['id', 'publish_limit_num', 'upload_limit_size', 'user_publish_audit'],
+        'edit' =>  ['id', 'publish_limit_num', 'upload_limit_size', 'user_publish_audit','auto_goods_day'],
 
     ];
 }

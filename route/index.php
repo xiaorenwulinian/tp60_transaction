@@ -98,6 +98,13 @@ Route::group('index', function(){
     Route::group('order', function () {
         Route::any('buy', 'index.order/buy'); // 下单
         Route::any('openVip', 'index.order/openVip'); // 下单
+    });
+
+    /**
+     * 定时任务
+     */
+    Route::group('crontab', function () {
+        Route::any('autoConfirmGoods', 'index.crontab/autoConfirmGoods'); // 自动收货
 
 
     });

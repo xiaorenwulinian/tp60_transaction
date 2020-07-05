@@ -17,6 +17,7 @@ class BaseConfig extends Model
         'publish_limit_num',
         'upload_limit_size',
         'user_publish_audit',
+        'auto_goods_day',
         ];
     protected $disuse = [];
 }

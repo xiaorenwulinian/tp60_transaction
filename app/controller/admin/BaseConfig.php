@@ -8,14 +8,7 @@ use think\facade\Db;
 
 class BaseConfig extends AdminBase
 {
-    public function lst()
-    {
-        $data = Db::table('base_config')
-            ->select()
-            ->toArray();
 
-        return view('admin/base_config/lst',['data' => $data]);
-    }
 
     public function edit()
     {
@@ -32,6 +25,7 @@ class BaseConfig extends AdminBase
                 $config->user_publish_audit =  $reqParam['user_publish_audit'];
                 $config->upload_limit_size  =  $reqParam['upload_limit_size'];
                 $config->publish_limit_num  =  $reqParam['publish_limit_num'];
+                $config->auto_goods_day  =  $reqParam['auto_goods_day'];
                 $config ->save();
                 cache("base_config_info", null);
             } catch (\Exception $e) {
