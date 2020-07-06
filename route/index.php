@@ -97,7 +97,8 @@ Route::group('index', function(){
 
     Route::group('order', function () {
         Route::any('buy', 'index.order/buy'); // 下单
-        Route::any('openVip', 'index.order/openVip'); // 下单
+        Route::any('confirmReceiptGoods', 'index.order/confirmReceiptGoods'); // 确定收货
+        Route::any('openVip', 'index.order/openVip'); // 开通VIP
     });
 
     /**
