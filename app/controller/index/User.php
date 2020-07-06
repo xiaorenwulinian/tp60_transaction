@@ -128,13 +128,13 @@ class User extends IndexBase
 
         }
 
+        $userId = session('user_id');
 
-
-        if (!session('user_id')) {
+        if (!$userId) {
             return failed_response("请先登陆");
 
         }
-        $userId = session('user_id');
+
 
         $feedback = Db::table("user_feedback_consult")
             ->where([
@@ -157,10 +157,18 @@ class User extends IndexBase
      */
     public function topUp()
     {
-        if (!session('user_id')) {
-            return redirect("/index/user/login");
+        $userId = session('user_id');
+
+        if (!$userId) {
+            return failed_response("请先登陆");
+
         }
-        return view("index/user/top_up");
+
+        $userInfo = Db::table('user')->find($userId);
+        $ret = [
+            'userInfo' => $userInfo
+        ];
+        return view("index/user/top_up", $ret);
     }
 
     /**
@@ -168,10 +176,19 @@ class User extends IndexBase
      */
     public function withdraw()
     {
-        if (!session('user_id')) {
-            return redirect("/index/user/login");
+        $userId = session('user_id');
+
+        if (!$userId) {
+            return failed_response("请先登陆");
+
         }
-        return view("index/user/withdraw");
+
+        $userInfo = Db::table('user')->find($userId);
+        $ret = [
+            'userInfo' => $userInfo
+        ];
+        return view("index/user/withdraw", $ret);
+
     }
 
     /**
