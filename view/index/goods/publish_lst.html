@@ -74,7 +74,11 @@
 
                             <?php foreach($publishGoods as $v):?>
                             <tr class="">
-                                <td class="text-center">{$v["goods_name"]}</td>
+                                <td class="text-center">
+                                    <a style="color: red" href="<?php echo url('/index/goods/detail',['goods_id'=>$v['id']], false); ?>" >
+                                        {$v["goods_name"]}
+                                    </a>
+                                </td>
                                 <td class="text-center">{$v["goods_price"]}</td>
                                 <td class="text-center">
                                     <?php echo show_image_full($v["goods_img"], 50); ?>

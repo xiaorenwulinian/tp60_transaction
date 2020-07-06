@@ -202,6 +202,13 @@ class Goods extends IndexBase
 
             $goods = \app\model\Goods::create($reqParam);
 
+            $uniqueCode = $goods['id'] . '-' . date("Ymd") . '-' . StringTool::random(4);
+            Db::table('goods')
+                ->where('id',$goods['id'])
+                ->update([
+                    'goods_unique' => $uniqueCode
+                ]);
+
             if (empty($publish)) {
                 Db::table("publish_goods_record")
                     ->insert([
