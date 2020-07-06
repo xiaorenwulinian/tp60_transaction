@@ -91,6 +91,12 @@
                                         已收货
                                     <?php  endif; ?>
 
+                                    <br/>
+
+                                    <?php  if($v['order_progress'] == 1) : ?>
+                                    <a href="javascript:void(0)" class="btn btn-info confirm_send_goods" data-order-id="{$v['id']}" >  发货中 </a>
+                                    <?php  endif; ?>
+
                                 </td>
 
                                 <td class="text-center">
@@ -122,5 +128,65 @@
         </p>
     </div>
 </footer>
+
+
+<script>
+    $(document).ready(function(){
+
+
+
+
+        $("#confirm_send_goods").on('click', function () {
+
+            var url = "/index/order/confirmSendGoods";
+
+            var order_id = $(this).attr('data-order-id');
+            layer.confirm('确认收货吗？', {
+                btn: ['确认','取消'] //按钮
+            }, function(){
+
+                $.ajax({
+                    type: 'post',
+                    url:  url,
+                    dataType: 'json',
+                    data : {
+                        order_id: order_id
+                    },
+                    success : function (ret) {
+                        console.log(ret);
+
+                        if (ret.code == 0) {
+                            layer.msg('收货成功',
+                                {icon: 1,time: 2000,shade: 0.6},
+                                function(){
+                                    window.location.href = window.location.href;
+                                }
+                            );
+                        } else if(ret.code == 401) {
+                            window.location = "{:url('/index/user/login',[], false)}";
+                            return false;
+                        }  else {
+                            layer.msg(ret.msg);
+                            return false;
+                        }
+
+
+                    },
+                    error : function (html) {
+                        layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
+                    }
+                });
+            }, function(){
+
+            });
+
+            return false;
+        });
+
+
+
+
+    });
+</script>
 
 {/block}

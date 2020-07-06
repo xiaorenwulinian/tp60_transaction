@@ -97,6 +97,13 @@ class Order extends IndexBase
     }
 
 
+    /**
+     * 确认收货
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function confirmReceiptGoods()
     {
         $orderId = input('order_id');
@@ -114,6 +121,36 @@ class Order extends IndexBase
         if ($ret['code'] != 0) {
             return failed_response($ret['msg']);
         }
+        return success_response();
+    }
+
+    /**
+     * 确认发货
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function confirmSendGoods()
+    {
+        $orderId = input('order_id');
+        $order = Db::table('order')
+            ->where('id',$orderId)
+            ->find();
+        if (!$orderId) {
+            return failed_response("非法攻击");
+        }
+        if ($order['order_progress'] == 1) {
+
+            Db::table('order')
+                ->where('id' ,'=', $order['id'])
+                ->update([
+                    'order_progress' => 2,
+//                    'confirm_goods_time' => time(),
+                ]);
+
+        }
+
         return success_response();
     }
 
