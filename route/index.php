@@ -91,7 +91,7 @@ Route::group('index', function(){
         Route::any('publishAdd', 'index.goods/publishAdd'); // 发布商品添加
         Route::post('publishAddStore', 'index.goods/publishAddStore'); // 发布商品添加
         Route::any('publishEdit', 'index.goods/publishEdit'); // 发布商品修改
-        Route::any('publishEditStore', 'index.goods/publishEditStore'); // 发布商品修改
+        Route::post('publishEditStore', 'index.goods/publishEditStore'); // 发布商品修改
 
     });
 

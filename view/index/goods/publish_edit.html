@@ -75,12 +75,14 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <form class="form-horizontal" id="formSubmit" method="post" action="/admin/goods/add">
+                            <form class="form-horizontal" id="formSubmit" method="post" action="">
+
+                                <input type="hidden" name="id" data-id="{$data['id']}" value="{$data['id']}">
 
                                 <div class="form-group">
                                     <label for="" class="col-sm-2 control-label">商品名称：</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="goods_name" >
+                                        <input type="text" class="form-control" name="goods_name" value="{$data['goods_name']}" >
                                     </div>
                                 </div>
 
@@ -90,7 +92,8 @@
                                         <select name="goods_category_id" class="form-control goods_category_id">
                                             <option value="0">请选择商品分类</option>
                                             <?php foreach($category as $k => $v): ?>
-                                            <option value="{$k}">
+                                            <?php $selected = $k == $data['goods_category_id'] ? "selected='selected'": '';?>
+                                            <option value="{$k}" {$selected}>
                                                 {$v}
                                             </option>
                                             <?php endforeach;?>
@@ -104,10 +107,13 @@
                                     <div class="col-sm-5" >
                                         <button type="button" class="btn btn-primary upload_logo_button "> 上传图片 </button>
                                         <div class="img_show_content" style="margin-top: 10px;">
-
+                                            <div>
+                                                <a src="javascript:void(0);" data-id="{$data['id']}" onclick="delete_file(this);">删除</a><br>
+                                                <img class="thumb_img" src="/uploads/{$data['goods_img']}" alt="loading"/>
+                                            </div>
                                         </div>
-                                        <input name="goods_img" type="text" style="display: none">
-                                        <input name="goods_img_thumb"  type="text" style="display: none">
+                                        <input name="goods_img" type="text" style="display: none" value="{$data['goods_img']}">
+                                        <input name="goods_img_thumb"  type="text" style="display: none" value="{$data['goods_img_thumb']}">
                                         <input id="common_upload_file" name="common_upload_file" class="common_upload_file" type="file" style="display: none">
                                     </div>
                                 </div>
@@ -115,7 +121,7 @@
                                 <div class="form-group">
                                     <label for="" class="col-sm-2 control-label">商品价格：</label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="goods_price"  class="form-control goods_price" value="0.00"  >
+                                        <input type="text" name="goods_price"  class="form-control goods_price" value="{$data['goods_price']}"  >
                                     </div>
 
                                 </div>
@@ -123,26 +129,17 @@
                                 <div class="form-group">
                                     <label for="" class="col-sm-2 control-label">发货信息：</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="send_info" class="form-control send_info" value=""  >
+                                        <input type="text" name="send_info" class="form-control send_info" value="{$data['send_info']}"  >
                                     </div>
                                 </div>
 
-                                <!--                        <div class="form-group">-->
-                                <!--                            <label for="" class="col-sm-2 control-label">备注：</label>-->
-                                <!--                            <div class="col-sm-8">-->
-                                <!--                                <input type="text" name="remark" class="form-control " value=""  placeholder="提交订单时可填写备注" >-->
-                                <!--                            </div>-->
-                                <!--                        </div>-->
 
 
                                 <div class="form-group">
-                                    <!--                            <label for="" class="col-sm-2 control-label">排序：</label>-->
-                                    <!--                            <div class="col-sm-3">-->
-                                    <!--                                <input type="text" class="form-control" name="sort_id" value="9999">-->
-                                    <!--                            </div>-->
+
                                     <label for="" class="col-sm-2 control-label">库存量</label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="stock_num" class="form-control stock_num" value="99"  >
+                                        <input type="text" name="stock_num" class="form-control stock_num" value="{$data['stock_num']}"  >
                                     </div>
                                 </div>
 
@@ -151,7 +148,14 @@
                                     <div class="col-sm-5" >
                                         <button type="button" class="btn btn-primary upload_photo_button_multi "> 上传图片 </button>
                                         <div class="photo_multi_show_content" style="margin-top: 10px;">
-
+                                            <?php foreach($introduceImg as $k => $v):?>
+                                            <div>
+                                                <a src="javascript:void(0);" data-id="{$v.id}"  onclick='delete_multi_file(this);'  >
+                                                    删除
+                                                </a><br>
+                                                <img class="thumb_img"  src="/uploads/{$v.introduce_img} "/>
+                                            </div>
+                                            <?php endforeach;?>
                                         </div>
                                         <input id="common_upload_multi_file" name="common_upload_multi_file" class="common_upload_multi_file" type="file" style="display: none">
                                     </div>
@@ -165,7 +169,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-1 col-sm-10">
-                                        <textarea id="goods_desc" class="goods_desc" name="goods_desc"></textarea>
+                                        <textarea id="goods_desc" class="goods_desc" name="goods_desc">{$data['goods_desc']}</textarea>
                                     </div>
                                 </div>
 
@@ -356,7 +360,7 @@
                 'goods_introduce_thumb':  goods_introduce_thumb_imgs.join(','),
             });
 
-            var url = "/index/goods/publishAddStore";
+            var url = "/index/goods/publishEditStore";
             var form_param = $('#formSubmit').serialize();
             form_param  =  other_param+'&'+form_param;
 
@@ -372,7 +376,7 @@
                 success: function(ret){
                     console.log(ret);
                     if(ret.code == 0) {
-                        layer.msg('添加成功',{
+                        layer.msg('编辑成功',{
                             time:1000,
                             icon: 6,
                             end:function () {
@@ -391,42 +395,48 @@
 
 
 
+
+
     });
 
     //删除单 图片
     function delete_file(cur_this){
-        var cur_file_path = $(cur_this).attr('data-path');
-        var cur_file_path_thumb = $(cur_this).attr('data-path-thumb');
-        var url = "<?php echo url('/admin/common/addDeleteFile',[],false);?>";
         var _this = cur_this;
         if(confirm('确定要删除吗?')) {
-            // 清空本地被遗弃的文件，防止占用资源
+            $(_this).parent().remove();
+            $("input[name='goods_img']").val('');
+            $("input[name='goods_img_thumb']").val('');
+        }
+        return false;
+    }
+
+    function delete_multi_file(cur_this) {
+        var multi_img_id = $(cur_this).attr('data-id');
+
+        var url = "<?php echo url('/admin/goods/editMultiFileDelete',[],false);?>";
+        var _this = cur_this;
+        if(confirm('确定要删除吗?')) {
+            // 直接从数据库中删除
             $.ajax({
                 type: 'get',
                 url:  url,
                 dataType: 'json',
                 data: {
-                    file_path : cur_file_path,
-                    file_path_thumb : cur_file_path_thumb,
+                    multi_img_id : multi_img_id,
                 },
                 success: function(ret){
                     console.log(ret);
                     if(ret.code == 0) {
                         $(_this).parent().remove();
-                        $("input[name='goods_img']").val('');
-                        $("input[name='goods_img_thumb']").val('');
                     } else {
                         alert(ret.msg);
                         return false;
                     }
                 }
-
             });
         }
         return false;
     }
-
-
 
 </script>
 

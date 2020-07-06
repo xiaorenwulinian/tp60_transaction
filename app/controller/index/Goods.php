@@ -226,4 +226,91 @@ class Goods extends IndexBase
         return success_response();
     }
 
+    /**
+     * 我发布的商品
+     * @return \think\response\Redirect|\think\response\View
+     */
+    public function publishEdit()
+    {
+        $userId = session('user_id');
+
+        if (!$userId) {
+            return redirect("/index/user/login");
+        }
+
+        $goodsId = input('goods_id');
+
+        $user = Db::table("user")->where('id', $userId)->find();
+
+        $category = \app\model\GoodsCategory::where('is_show','=',1)
+            ->column('cate_name','id');
+
+        $data = Db::table('goods')->find($goodsId);
+
+        $introduceImg = \app\model\GoodsIntroduceImg::where(['goods_id' => $goodsId, 'is_delete' => 1])->select();
+
+        $ret = [
+            'user' => $user,
+            'data'               => $data,
+            'introduceImg'       => $introduceImg,
+            'category'           => $category,
+        ];
+
+        return view('index/goods/publish_edit', $ret);
+    }
+
+    /**
+     * 我发布的商品
+     * @return \think\response\Redirect|\think\response\View
+     */
+    public function publishEditStore()
+    {
+        $userId = session('user_id');
+
+        if (!$userId) {
+            return redirect("/index/user/login");
+        }
+
+        $id = input('id');
+
+        $reqParam = $this->request->param();
+        validate(\app\validate\GoodsValidate::class)->scene('userEdit')->check($reqParam);
+
+        $commonService = new CommonService();
+        $baseConfig = $commonService->getBaseConfigInfo();
+
+        Db::startTrans();
+        try {
+
+            $goods = \app\model\Goods::find($id);
+
+            $goods->goods_name          = $reqParam['goods_name'];
+            $goods->goods_price         = $reqParam['goods_price'];
+            $goods->goods_img           = $reqParam['goods_img'];
+            $goods->goods_img_thumb     = $reqParam['goods_img_thumb'];
+
+            $goods->stock_num           = $reqParam['stock_num'];
+            $goods->goods_category_id   = $reqParam['goods_category_id'];
+            $goods->goods_desc          = $reqParam['goods_desc'];
+
+            // 自动审核
+            if ($baseConfig['user_publish_audit'] == 2) {
+                $goods->audit_status  = 2;
+                $goods->audit_time  = time();
+                $goods->audit_admin_id  = 0;
+            } else {
+                $goods->audit_status  = 2;
+                $goods->audit_time  = 0;
+                $goods->audit_admin_id  = 0;
+            }
+
+            $goods->save();
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            return failed_response($e->getMessage());
+        }
+        return success_response();
+    }
+
 }
