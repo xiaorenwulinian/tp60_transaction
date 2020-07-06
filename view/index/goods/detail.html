@@ -54,13 +54,7 @@
                     <div role="tabpanel" class="tab-pane active" id="about">
                         {$goodsData['goods_desc'] | raw}
                          <div class="clearfix">
-                            <div class="btn-group clearfix btn-group-sm" role="toolbar">
-                                <button type="button" class="btn btn-success" disabled="disabled">&gt;&gt;</button>
-                                <a href="/index.php?show--cid-15-id-1.html" class="btn btn-default" role="group">cs001</a>							</div>
-                            <br />
-                            <div class="btn-group mt10 btn-group-sm" role="toolbar">
-                                <button type="button" class="btn btn-success" disabled="disabled">&lt;&lt;</button>
-                                <a href="javascript:;" class="btn btn-default" role="group">没有了</a>							</div>
+
                         </div>
                     </div>
 
@@ -78,15 +72,15 @@
                         </td></tr>
                     <tr>
                         <td class="text-right w1">分类</td>
-                        <td class="text-success">电子商城</td>
+                        <td class="text-success">{$goodsData['cate_name']}</td>
                     </tr>
                     <tr>
                         <td class="text-right w1">编号</td>
                         <td class="text-success">{$goodsData['goods_unique']}</td>
                     </tr>
                     <tr>
-                        <td class="text-right w1">发货信息</td>
-                        <td class="text-success">{$goodsData['send_info']}</td>
+                        <td class="text-right w1">商家</td>
+                        <td class="text-success">{$sellerInfo['account']}</td>
                     </tr>
                     <tr>
                         <td class="text-right w1">库存</td>

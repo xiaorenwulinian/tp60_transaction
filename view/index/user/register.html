@@ -130,12 +130,13 @@
                 success : function (ret) {
                     console.log(ret);
                     if (ret.code == 0) {
-                        layer.msg('注册成功',
-                            {icon: 1,time: 2000,shade: 0.6},
-                            function(){
-                                window.location = "{:url('/index/user/index',[], false)}";
-                            }
-                        );
+                        window.location = "{:url('/index/user/index',[], false)}";
+                        // layer.msg('注册成功',
+                        //     {icon: 1,time: 2000,shade: 0.6},
+                        //     function(){
+                        //
+                        //     }
+                        // );
                     } else {
                         layer.msg(ret.msg);
                         return false;
@@ -150,14 +151,6 @@
             return false;
         });
 
-        // ppAjax.submit("#regform", function(data){
-        //     ppAjax.alert(data);
-        //     if(window.ppData.err==0) {
-        //         layer.msg(window.ppData.msg, {icon: 1,time: 2000,shade: 0.6}, function(){window.location = memurl;});
-        //     }else{
-        //         layer.msg(window.ppData.msg, function(){});
-        //     }
-        // });
     });
 </script>
 

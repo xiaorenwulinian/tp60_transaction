@@ -120,12 +120,7 @@
                 success : function (ret) {
                     console.log(ret);
                     if (ret.code == 0) {
-                        layer.msg('登录成功',
-                            {icon: 1,time: 2000,shade: 0.6},
-                            function(){
-                                window.location = "{:url('/index/user/index',[], false)}";
-                            }
-                        );
+                        window.location = "{:url('/index/user/index',[], false)}";
                     } else {
                         layer.msg(ret.msg);
                         return false;

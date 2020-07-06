@@ -63,12 +63,16 @@ class Goods extends IndexBase
         $goodsId = input('goods_id');
 
         $goodsData = Db::table("goods")
-            ->where('id', '=', $goodsId)
+            ->field('goods.*,goods_category.cate_name')
+            ->leftJoin('goods_category','goods.goods_category_id=goods_category.id')
+            ->where('goods.id', '=', $goodsId)
             ->find();
+        $sellerInfo = Db::table('user')->find($goodsData['publish_id']);
 
 //        dump($goodsData);
         $ret = [
-            'goodsData' => $goodsData
+            'goodsData' => $goodsData,
+            'sellerInfo' => $sellerInfo
         ];
         return view("index/goods/detail", $ret);
     }
