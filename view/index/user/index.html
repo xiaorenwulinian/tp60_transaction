@@ -35,13 +35,12 @@
                 <a class="list-group-item " href="/index/user/topUp"><span class="icon-coin-yen"></span>  在线充值</a>
                 <a class="list-group-item " href="/index/user/withdraw"><span class="icon-pig"></span>  快速提现</a>
                 <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
-                <a class="list-group-item " href="/index/user/changeProfile"><span class="icon-pencil"></span>  修改资料</a>
+<!--                <a class="list-group-item " href="/index/user/changeProfile"><span class="icon-pencil"></span>  修改资料</a>-->
                 <a class="list-group-item " href="/index/user/changePassword"><span class="icon-key"></span>  修改密码</a>
-                <a class="list-group-item " href="index.php?u=comment-index"><span class="icon-bubble"></span>  我的评价</a>
                 <a class="list-group-item" href="javascript:;" style="display:;height:5px;padding:0;background:#eee">&nbsp;</a>
-                <a class="list-group-item" href="index.php?u=public-logout"><span class="icon-exit"></span> 安全退出</a>
+                <a class="list-group-item" href="/index/user/logout"><span class="icon-exit"></span> 安全退出</a>
             </div>
-            <div class="input-group hidden-xs">
+            <div class="input-group hidden-xs" style="display: none">
                 <span class="input-group-addon"><span class="icon-yen text-success"></span></span>
                 <input class="form-control" type="text" value="0.00" />
             </div>
@@ -107,6 +106,10 @@
                                 </tr>
                                 <tr>
                                     <td class="text-right">邀请码</td>
+                                    <td class="">{$user['invite_code']}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">识别码（好友注册时输入）</td>
                                     <td class="">{$user['unique_code']}</td>
                                 </tr>
                                 </tbody>
@@ -118,7 +121,7 @@
                     <div class="alert alert-info text-center" role="alert">
                         当前可用金额：￥{$user["user_money"]}
                     </div>
-                    <div class="panel panel-default">
+                    <div class="panel panel-default"  style="display: none">
                         <div class="panel-body">
                             <table class="table no-margin">
                                 <thead>
@@ -135,14 +138,7 @@
                                     <td class="text-right">手机号</td>
                                     <td class="">{$user["phone"]}</td>
                                 </tr>
-                                <!--<tr>-->
-                                    <!--<td class="text-right">QQ</td>-->
-                                    <!--<td class=""></td>-->
-                                <!--</tr>-->
-                                <!--<tr>-->
-                                    <!--<td class="text-right">支付宝</td>-->
-                                    <!--<td class=""> </td>-->
-                                <!--</tr>-->
+
                                 </tbody>
                             </table>
                         </div>
@@ -171,7 +167,7 @@
                                     {$v["vip_welfare"]}
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-danger btn-xs" href="javascript:;"
+                                    <a class="btn btn-danger btn-xs" href="javascript:void(0);"
                                                            onclick="up_group({$v['id']},{$v['vip_fee']});">
                                         {$v["vip_fee"]}元 开通
                                     </a>
@@ -219,111 +215,8 @@
             </div>
             <script>
                 $(document).ready(function(){
-                    $('#sms_btn').click(function (){
-                        layer.open({
-                            type: 1,
-                            title: ['绑定手机号码', 'font-weight:bold;color:green'],
-                            area: '500px',
-                            btn: ['提交验证', '取消'],
-                            yes: function(index, layero){
-                                if($('#code').val().length == '') {
-                                    layer.msg('验证码不能为空', function(){});
-                                    return false;
-                                }
-                                $.ajax({
-                                    url: '/member/index.php?u=public-sms_active',
-                                    type: 'POST',
-                                    data:{'code':$('#code').val(),'mobile':$('#mobile').val(),'rnum':Math.random()},
-                                    dataType: 'json',
-                                    success: function(res){
-                                        if(res.err==0){
-                                            layer.msg(res.msg, {icon: 1,time: 2000,shade: 0.6}, function(){window.location.reload();});
-                                        }else{
-                                            layer.msg(res.msg, function(){});
-                                        }
-                                    }
-                                });
-                            },cancel: function(index){
-                            },
-                            shadeClose: true,
-                            scrollbar: false,
-                            content: $('#active_sms')
-                        });
-                    });
-                    $('#email_btn').click(function (){
-                        layer.open({
-                            type: 1,
-                            title: ['绑定电子邮箱', 'font-weight:bold;color:green'],
-                            area: '500px',
-                            shadeClose: true,
-                            scrollbar: false,
-                            content: $('#active_email')
-                        });
-                    });
-                    $('#submit_email').click(function (){
-                        if($('#email').val().length == '') {
-                            layer.msg('邮箱地址不能为空', function(){});
-                            return false;
-                        }
-                        $.ajax({
-                            url: '/member/index.php?u=public-send_email_code',
-                            type: 'POST',
-                            data:{'email':$('#email').val(),'username':'aaaaaa','rnum':Math.random()},
-                            dataType: 'json',
-                            success: function(res){
-                                if(res.err==0){
-                                    layer.msg(res.msg);
-                                }else{
-                                    layer.msg(res.msg);
-                                }
-                            }
-                        });
-                        var count = 60;
-                        var countemail = setInterval(CountDown_email, 1000);
-                        function CountDown_email() {
-                            $("#submit_email").attr("disabled", true);
-                            $("#submit_email").val(count + " 秒后可重发");
-                            if (count == 0) {
-                                $("#submit_email").val("重新发送").removeAttr("disabled");
-                                clearInterval(countemail);
-                            }
-                            count--;
-                        }
-                    });
-                    $('#sendcode').click(function (){
-                        if($('#mobile').val().length == '') {
-                            layer.msg('手机号码不能为空', function(){});
-                            return false;
-                        }
-                        $.ajax({
-                            url: '/member/index.php?u=public-send_sms_code',
-                            type: 'POST',
-                            data:{'mobile':$('#mobile').val(),'username':'aaaaaa','rnum':Math.random()},
-                            dataType: 'json',
-                            success: function(res){
-                                if(res.err>1){
-                                    $("#mobile").attr("readonly", true);
-                                    layer.msg(res.msg);
-                                }else{
-                                    layer.msg(res.msg);
-                                    return false;
-                                }
-                            }
-                        });
-                        $("#sendcode").attr("disabled", true);
-                        var count = 60;
-                        var countdown = setInterval(CountDown_sms, 1000);
-                        function CountDown_sms(){
-                            $("#sendcode").attr("disabled", true);
-                            $("#sendcode").val(count + " 秒后可重发");
-                            if (count == 0) {
-                                $("#sendcode").val("重新发送").removeAttr("disabled");
-                                $("#mobile").removeAttr("readonly");
-                                clearInterval(countdown);
-                            }
-                            count--;
-                        }
-                    });
+
+
                 });
 
                 /**
@@ -334,99 +227,59 @@
                  */
                 function up_group(groupid,price){
 
-                    var tip = "价格" + price + ", 确定开通吗？"
+
+                    $.ajax({
+                        type: 'post',
+                        url:  "/index/order/openVip",
+                        dataType: 'json',
+                        data : {
+                            group_id: groupid
+                        },
+                        success : function (ret) {
+                            console.log(ret);
+
+                            if (ret.code == 0) {
+                                window.location.href = window.location.href;
+                                /*layer.msg('购买成功',
+                                    {icon: 1,time: 2000,shade: 0.6},
+                                    function(){
+
+                                    }
+                                );*/
+                            } else if(ret.code == 401) {
+                                window.location = "{:url('/index/user/login',[], false)}";
+                                return false;
+                            } else if(ret.code == 100) {
+
+                                layer.confirm(ret.msg, {
+                                    btn: ['去充值','取消'] //按钮
+                                }, function(){
+                                    window.location.href	= '/index/user/topUp';
+                                });
+                                // layer.msg(ret.msg);
+                                return false;
+                            } else {
+                                layer.msg(ret.msg);
+                                return false;
+                            }
+
+
+                        },
+                        error : function (html) {
+                            layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
+                        }
+                    });
+
+                    /*var tip = "价格" + price + ", 确定开通吗？"
                     layer.confirm(tip, {
                         btn: ['开通','取消'] //按钮
                     }, function(){
-
-                        $.ajax({
-                            type: 'post',
-                            url:  "/index/order/openVip",
-                            dataType: 'json',
-                            data : {
-                                group_id: groupid
-                            },
-                            success : function (ret) {
-                                console.log(ret);
-
-                                if (ret.code == 0) {
-                                    layer.msg('购买成功',
-                                        {icon: 1,time: 2000,shade: 0.6},
-                                        function(){
-                                            window.location.href = window.location.href;
-                                        }
-                                    );
-                                } else if(ret.code == 401) {
-                                    window.location = "{:url('/index/user/login',[], false)}";
-                                    return false;
-                                } else if(ret.code == 100) {
-
-                                    layer.confirm(ret.msg, {
-                                        btn: ['去充值','取消'] //按钮
-                                    }, function(){
-                                        window.location.href	= '/index/user/topUp';
-                                    });
-                                    // layer.msg(ret.msg);
-                                    return false;
-                                } else {
-                                    layer.msg(ret.msg);
-                                    return false;
-                                }
-
-
-                            },
-                            error : function (html) {
-                                layer.alert("提交数据失败，代码:" + html.status + "，请稍候再试", {icon : 0,shade : 0.6});
-                            }
-                        });
                     }, function(){
 
-                    });
+                    });*/
 
                     return false;
-                    if(price > 0.00){
-                        layer.open({
-                            type: 1,
-                            title: ['友情提醒', 'font-weight:bold;color:green'],
-                            btn: ['去充值', '取消'],
-                            yes: function(index, layero){
-                                window.location.href	= '/index/user/openVip?level_id' + groupid;
-                            },cancel: function(index){
-                            },
-                            shadeClose: true,
-                            content: "<p class='alert text-danger'>余额不足！您至少需要充值："+(price-0.00)+"</p>"
-                        });
-                        return false;
-                    }else{
-                        layer.open({
-                            title: ['友情提醒', 'font-weight:bold;color:green'],
-                            btn:['确认','取消'],
-                            yes:function(index,layero){
-                                $.ajax({
-                                    type	: "POST",
-                                    cache	: false,
-                                    url		: "/index/user/openVip?level_id' + groupid",
-                                    data	: {"groupid":groupid,"price":price},
-                                    success	: function(data){
-                                        ppAjax.alert(data);
-                                        if(window.ppData.err==0){
-                                            layer.msg('会员组升级成功，请稍后！', {icon: 1,time: 2000,shade: 0.6}, function(){window.location.reload();});
-                                        }else{
-                                            layer.alert(window.ppData.msg, {icon: 5,shade: 0.6}) ;
-                                        }
-                                    },
-                                    error : function(html){
-                                        layer.alert("提交数据失败，代码:"+ html.status +"，请稍候再试", {icon: 0,shade: 0.6}) ;
-                                    }
-                                });
-                            },
-                            cancel:function(index){
-                                layer.close(index);
-                            },
-                            shadeClose: true,
-                            content: "您确定要升级吗？此操作将扣除您<strong class='text-danger'>"+price+"元！"
-                        });
-                    }
+
                 }
             </script>
         </div>

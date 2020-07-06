@@ -21,18 +21,20 @@ class Goods extends IndexBase
         $category_id = input('category_id');
 
         $where = [];
-        $where[] = ['audit_status', '=', 2];
+        $where[] = ['goods.audit_status', '=', 2];
 
         if (!empty($category_id)) {
-            $where[] = ['goods_category_id', '=', $category_id];
+            $where[] = ['goods.goods_category_id', '=', $category_id];
         }
         $count =  Db::table("goods")
             ->where($where)
             ->count();
 
         $goodsData = Db::table("goods")
+            ->leftJoin('user','goods.publish_id=user.id')
+            ->field('goods.*,user.account as user_account')
             ->where($where)
-            ->order('id','desc')
+            ->order('goods.id','desc')
             ->paginate(20, $count, request()->param())
             ->each(function($item, $key){
 
@@ -45,6 +47,7 @@ class Goods extends IndexBase
                 $item['nickname'] = 'think';
                 return $item;
             });
+
 
         $pageShow = $goodsData->render();
         $ret = [

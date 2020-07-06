@@ -27,8 +27,10 @@ class Index extends IndexBase
 
         foreach ($category as &$v) {
             $goods = DB::table("goods")
-                ->where('goods_category_id','=', $v['id'])
-                ->where('audit_status','=', 2)
+                ->leftJoin('user','goods.publish_id=user.id')
+                ->field('goods.*,user.account as user_account')
+                ->where('goods.goods_category_id','=', $v['id'])
+                ->where('goods.audit_status','=', 2)
 //                ->where('is_on_sale','=', 2)
                 ->limit(8)
                 ->select()

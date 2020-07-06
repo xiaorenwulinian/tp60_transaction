@@ -71,11 +71,12 @@
                             <h4 class="title"><a href="//index/goods/detail?goods_id={$v['id']}">{$v['goods_name']}</a></h4>
                             <div class="clearfix">
                                 <div class="pull-left price">
-                                    <span class="s1">free</span>
+                                    <span class="s1">{$v['goods_price']}</span>
                                 </div>
+
                                 <div class="pull-right smgray text-right">
-                                    <i class="icon-heart text-gray"></i> 0 人喜欢<br />
-                                    <i class="icon-bubble text-gray"></i> 0 条评论
+                                    商家： {$v['user_account']}<br />
+                                    已卖 {$v['has_sale_num']} 件
                                 </div>
                             </div>
                         </div>

@@ -17,7 +17,8 @@
         display: inline-block;
         font-style: normal;
         font-size: 12px;
-        font-weight: normal
+        font-weight: normal;
+        padding: 0 5px;
     }
     .body_content {
         padding: 0 30px;
@@ -78,7 +79,7 @@
 
                 <?php foreach($house as $h):?>
 
-                <a class="list-group-item" data-houseid="{$h['id']}" href="/index/friendChat/index?cur_house_id={$h['id']}">
+                <a class="list-group-item" data-houseid="{$h['id']}" href="/index/friendChat/indexBuyer?cur_house_id={$h['id']}">
                     {$h['user_name']}
                 </a>
 
@@ -96,7 +97,19 @@
                 <div class="col-sm-12">
                     <div class="alert alert-success text-center" role="alert">{$user["account"]}　欢迎回来！</div>
                     <div class="text-center" style="margin-bottom: 30px">
-                        <a href="javascript:void(0)" class="btn-danger btn communicate_chat_content"> 添加评论</a>
+                        <div>
+
+                                <div class="col-sm-offset-1 col-sm-10">
+
+                                </div>
+
+                            <div class="form-group">
+                                <textarea class="form-control chat_content" name="chat_content" rows="4"></textarea>
+                            </div>
+
+
+                        </div>
+                        <a href="javascript:void(0)" class="btn-info btn  communicate_chat_content">发表</a>
                     </div>
                 </div>
 
@@ -221,39 +234,31 @@
 
 
         $(".communicate_chat_content").on('click', function () {
+            var chat_content  = $(".chat_content").val();
 
-            layer.prompt({title: '请输入反馈内容！', formType: 2}, function(text, index){
-                text = $.trim(text);
-                if (text == '') {
-                    layer.alert("内容不能为空！");
-                    return false;
-                }
-
-                $.ajax({
-                    type: 'post',
-                    url:  "/index/friendChat/chat/add",
-                    dataType: 'json',
-                    data: {
-                        chat_house_id: chat_house_id,
-                        chat_content: text,
-                    },
-                    success: function(ret){
-                        console.log(ret);
-                        if(ret.code == 0) {
-                            layer.msg('提交成功！',{
-                                time:1000, icon: 6,
-                                end:function () {
-                                    location.href = location.href;
-                                }
-                            })
-                        } else {
-                            layer.msg(ret.msg, {icon: 5,time:1000,});
-                            return false;
-                        }
+            if (chat_content == '') {
+                layer.alert("内容不能为空！");
+                return false;
+            }
+            $.ajax({
+                type: 'post',
+                url:  "/index/friendChat/chat/add",
+                dataType: 'json',
+                data: {
+                    chat_house_id: chat_house_id,
+                    chat_content: chat_content,
+                },
+                success: function(ret){
+                    console.log(ret);
+                    if(ret.code == 0) {
+                        location.href = location.href;
+                    } else {
+                        layer.msg(ret.msg, {icon: 5,time:1000,});
+                        return false;
                     }
-                });
-                // layer.msg('演示完毕！您最后写下了：'+text);
+                }
             });
+
         });
 
     });

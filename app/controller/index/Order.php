@@ -74,6 +74,21 @@ class Order extends IndexBase
                     'unique_code'    => date("YmdHis") . '-' . StringTool::random(8),
                 ]);
 
+            $sendGoodsInfo = $goods['send_info']??'商品正在发货中';
+            // 发送发货信息给买家
+             Db::table("order_chat")
+                ->insert([
+                    'order_id' => $orderId,
+                    'user_id' => $goods['publish_id'],
+                    'chat_content' => $sendGoodsInfo,
+                    'user_type' => 1,
+                    'create_time' => $curDate,
+                ]);
+            // 商品卖出数量+1
+            Db::table('goods')
+                ->where('id',$goods_id)
+                ->inc('has_sale_num',1);
+
             // 操作交易记录
             Db::table("transaction_record")
                 ->insertGetId([
