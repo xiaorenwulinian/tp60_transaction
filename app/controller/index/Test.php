@@ -16,7 +16,19 @@ class Test extends IndexBase
     {
         $commonService = new CommonService();
         $a = $commonService->getBaseConfigInfo();
-        dd($a);
+//        dd($a);
+        $goods = Db::table('goods')
+            ->where('id','=',1)
+            ->find();
+        dump($goods);
+        Db::table('goods')
+            ->where('id','=',1)
+            ->inc('has_sale_num',1)
+            ->update();
+        $goods = Db::table('goods')
+            ->where('id','=',1)
+            ->find();
+        dump($goods);
         return 'tt';
     }
 

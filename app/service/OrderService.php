@@ -40,7 +40,8 @@ class OrderService
 
             Db::table('user')
                 ->where('id' ,'=', $order['sell_user_id'])
-                ->inc('user_money',$order['order_money']);
+                ->inc('user_money',$order['order_money'])
+                ->update();;
 
             // 操作交易记录
             Db::table("transaction_record")

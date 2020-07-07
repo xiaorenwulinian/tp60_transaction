@@ -229,7 +229,8 @@ class Goods extends IndexBase
                 Db::table("publish_goods_record")
                     ->where('publish_id','=',$userId)
                     ->where('publish_time','=',$curDay)
-                    ->inc("publish_num",1);
+                    ->inc("publish_num",1)
+                    ->update();;
             }
 
             Db::commit();

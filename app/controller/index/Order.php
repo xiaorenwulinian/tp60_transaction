@@ -87,7 +87,8 @@ class Order extends IndexBase
             // 商品卖出数量+1
             Db::table('goods')
                 ->where('id',$goods_id)
-                ->inc('has_sale_num',1);
+                ->inc('has_sale_num',1)
+                ->update();;
 
             // 操作交易记录
             Db::table("transaction_record")
