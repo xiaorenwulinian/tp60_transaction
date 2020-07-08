@@ -52,42 +52,80 @@ class Seller extends IndexBase
         $user = Db::table("user")->where('id', $userId)->find();
 
         $orderId = $this->request->param('order_id');
-        $goodsId = $this->request->param('goods_id');
+//        $goodsId = $this->request->param('goods_id');
+//
+//        $orderInfo = Db::table('order')
+//           ->where('id',$orderId)
+//            ->find();
+//
+//        if ($goodsId != $orderInfo['goods_id']) {
+//            return failed_response("非法攻击");
+//        }
+
+
+
+
+        $ret = [
+            'user' => $user,
+            'orderId' => $orderId,
+        ];
+
+
+        return view("index/seller/order_chat_index", $ret);
+        
+    }
+
+    /**
+     *
+     * 卖家获取更多的聊天记录
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderChatIndexMore()
+    {
+
+        $orderId = $this->request->param('order_id');
 
         $orderInfo = Db::table('order')
-           ->where('id',$orderId)
+            ->where('id',$orderId)
             ->find();
 
-        if ($goodsId != $orderInfo['goods_id']) {
-            return failed_response("非法攻击");
-        }
+        $pageSize = input('page_size',10);
+        $curPage  = input('cur_page',1);
+        $offset = ($curPage - 1) * $pageSize;
 
-        $goodsInfo = Db::table('goods')
-            ->where('id',$orderInfo['goods_id'])
-            ->find();
-
+        $userBuySell = Db::table('user')
+            ->whereIn('id',[$orderInfo['buy_user_id'],$orderInfo['sell_user_id']])
+            ->column('account','id');
 
         $chatInfo = Db::table("order_chat")
             ->where([
                 'order_id' => $orderId,
             ])
             ->order('id','desc')
+            ->limit($offset,$pageSize)
             ->select()
             ->toArray();
 
+        foreach ($chatInfo as &$v) {
+            if ($v['user_id'] == $orderInfo['buy_user_id']) {
+                $v['position'] = 1; // ，买家
+            } else {
+                $v['position'] = 2; // 卖家
+            }
+            $v['add_username'] = $userBuySell[$v['user_id']];
+        }
+
+
         $ret = [
-            'user' => $user,
             'chatInfo' => $chatInfo,
             'orderId' => $orderId,
         ];
-//        dump($orderInfo,$goodsInfo,$chatInfo, $orderId);
 
+        return success_response($ret);
 
-        return view("index/seller/order_chat_index", $ret);
-
-
-
-        
     }
 
     public function orderChatAdd()

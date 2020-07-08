@@ -91,16 +91,19 @@
                                         已收货
                                     <?php  endif; ?>
 
-                                    <br/>
-
-                                    <?php  if($v['order_progress'] == 1) : ?>
-                                    <a href="javascript:void(0)" class="btn btn-info confirm_send_goods" data-order-id="{$v['id']}" >  发货中 </a>
-                                    <?php  endif; ?>
 
                                 </td>
 
                                 <td class="text-center">
                                     <!--<a class="btn btn-danger btn-xs" href="javascript:;" nclick="up_group();">-->
+
+                                    <?php  if($v['order_progress'] == 3) : ?>
+                                    <a href="javascript:void(0)" class="btn btn-info btn-xs withdraw" data-order-id="{$v['id']}" >
+                                        退款
+                                    </a>
+                                    <?php  endif; ?>
+                                    <a href="javascript:void(0)" class="btn btn-success btn-xs complaint" data-order-id="{$v['id']}" >  投诉 </a>
+
                                     <a class="btn btn-danger btn-xs"
                                        href="<?php echo url('/index/seller/order/chat/index',['order_id'=>$v['id'],'goods_id'=>$v['goods_id']], false);?>">
                                         聊天

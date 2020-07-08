@@ -104,6 +104,10 @@ class Buyer extends IndexBase
             ->where('id',$orderId)
             ->find();
 
+        $pageSize = input('page_size',10);
+        $curPage  = input('cur_page',1);
+        $offset = ($curPage - 1) * $pageSize;
+
 
         $userBuySell = Db::table('user')
             ->whereIn('id',[$orderInfo['buy_user_id'],$orderInfo['sell_user_id']])
@@ -114,6 +118,7 @@ class Buyer extends IndexBase
                 'order_id' => $orderId,
             ])
             ->order('id','desc')
+            ->limit($offset,$pageSize)
             ->select()
             ->toArray();
 

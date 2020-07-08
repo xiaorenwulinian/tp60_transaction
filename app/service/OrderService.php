@@ -35,6 +35,7 @@ class OrderService
                 ->where('id' ,'=', $order['id'])
                 ->update([
                     'order_progress' => 3,
+                    'transaction_status' => 3,
                     'confirm_goods_time' => time(),
                 ]);
 

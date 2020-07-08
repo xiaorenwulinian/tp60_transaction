@@ -109,6 +109,9 @@ Route::group('/admin', function(){
     Route::group('order', function () {
         Route::get('lst', 'admin.order/lst');
 
+        Route::get('chatLst', 'admin.order/chatLst');
+        Route::get('chatLstMore', 'admin.order/chatLstMore');
+
     });
 
     Route::group('common', function () {

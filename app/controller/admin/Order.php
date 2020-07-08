@@ -68,9 +68,60 @@ class Order extends AdminBase
         return view('admin/order/lst', $ret);
     }
 
-    public function orderChat()
+    public function chatLst()
     {
+        $orderId = input('order_id');
 
+        $ret = [
+            'orderId' => $orderId
+        ];
+        return view('admin/order/chat_lst', $ret);
+    }
+
+    public function chatLstMore()
+    {
+        $orderId = $this->request->param('order_id');
+
+        $orderInfo = Db::table('order')
+            ->where('id',$orderId)
+            ->find();
+
+        $pageSize = input('page_size',10);
+        $curPage  = input('cur_page',1);
+        $offset = ($curPage - 1) * $pageSize;
+
+
+        $userBuySell = Db::table('user')
+            ->whereIn('id',[$orderInfo['buy_user_id'],$orderInfo['sell_user_id']])
+            ->column('account','id');
+
+        $chatInfo = Db::table("order_chat")
+            ->where([
+                'order_id' => $orderId,
+            ])
+            ->order('id','desc')
+            ->limit($offset,$pageSize)
+            ->select()
+            ->toArray();
+
+        foreach ($chatInfo as &$v) {
+            if ($v['user_id'] == $orderInfo['buy_user_id']) {
+                $v['add_username'] = $userBuySell[$v['user_id']] . "(买家)";
+                $v['position'] = 1; // ，买家
+            } else {
+                $v['add_username'] = $userBuySell[$v['user_id']] . "(卖家)";
+                $v['position'] = 2; // 卖家
+            }
+
+        }
+
+
+        $ret = [
+            'chatInfo' => $chatInfo,
+            'orderId' => $orderId,
+        ];
+
+        return success_response($ret);
     }
 
 

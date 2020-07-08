@@ -1,0 +1,242 @@
+{extend name="admin/layout/basic" /}
+
+{block name="style"}
+<style>
+    .common_search {
+        margin: 10px auto;
+    }
+    .page_size_select{
+        width: 105px;
+        float: right;
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 10px;
+        border-radius: 4px;
+        padding: 6px 12px;
+        /*text-align: right;*/
+    }
+    .common_search input,.common_search select{
+        margin-bottom: 10px;
+    }
+
+    .load_content .title_name {
+        padding: 0px 10px;
+    }
+    .text_left {
+        text-align: left
+    }
+    .text_right {
+        text-align: right;
+    }
+    .date_decorate {
+        display: inline-block;
+        font-style: normal;
+        font-size: 12px;
+        font-weight: normal
+    }
+    .body_content {
+        padding: 0 30px;
+    }
+    .bg_white {
+        background-color: #fff!important;
+    }
+</style>
+{/block}
+
+{block name="content"}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        聊天列表
+        <!--<small> <a href="/admin/goods/add" class="pull-right">商品添加</a></small>-->
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="common_search">
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" >
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <!--<div class="col-sm-12">-->
+                            <!--<div class="text-center" style="margin-bottom: 30px">-->
+                                <!--<a href="javascript:void(0)" class="btn-danger btn communicate_chat_content"> 添加评论</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <div class="row item_list mt20 load_content">
+
+
+                        </div>
+
+
+                        <div class="col-sm-12 has_more_chat">
+                            <div class="text-center" style="margin: 30px">
+                                <a href="javascript:void(0)" class="btn-success btn load_more">加载更多</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+
+
+<!--<div class="col-sm-8">
+    <label class="radio-inline">
+        <input type="radio" name="user_publish_audit" value="1" checked> 审核通过
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="user_publish_audit"  value="2" > 审核拒绝
+    </label>
+</div>-->
+
+
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+
+
+<script>
+
+
+
+
+
+    // 当前房间
+    var order_id = "<?php echo $orderId; ?>";
+    var cur_page = 1;
+    var page_size = 10;
+
+    // 加载更多聊天
+    function load_chat() {
+        $.ajax({
+            type: 'get',
+            url:  "/admin/order/chatLstMore",
+            // url:  "/index/buyer/order/chat/indexMore",
+            dataType: 'json',
+            data: {
+                order_id: order_id,
+                page_size: page_size,
+                cur_page: cur_page,
+            },
+            success: function(ret){
+                console.log(ret);
+                if(ret.code == 0) {
+                    var _data = ret.payload;
+                    var _chatInfo = _data.chatInfo;
+
+                    var _html = "";
+                    var length = _chatInfo.length;
+
+
+                    if (length > 0) {
+                        for (var i = 0; i < length; i++) {
+                            _html += '<div class="col-sm-12">';
+                            _html +=     '<div class="panel panel-default push_content">';
+                            _html +=           '<div class="panel-body1 title_name " >';
+                            if (_chatInfo[i].position == 1) {
+                                _html +=        '<h4 class="text_left">';
+                                _html +=            _chatInfo[i].add_username ;
+                                _html +=            '<span class="date_decorate">'+_chatInfo[i].create_time+'</span>';
+                                _html +=        '</h4>';
+                            } else {
+                                _html +=        '<h4 class="text_right">';
+                                _html +=            _chatInfo[i].add_username ;
+                                _html +=            '<span class="date_decorate">'+_chatInfo[i].create_time+'</span>';
+                                _html +=        '</h4>';
+                            }
+                            _html +=             '</div>';
+                            _html +=             '<div class="panel-footer">';
+                            _html +=             '<div class="clearfix">';
+                            _html +=                '<div class="pull-left body_content">';
+                            _html +=                   _chatInfo[i].chat_content ;
+                            _html +=                '</div>';
+                            _html +=             '</div>';
+                            _html +=             '</div>';
+                            _html +=             '</div>';
+                            _html +=             '</div>';
+
+                        }
+
+                        $(".load_content").append(_html);
+                    } else {
+                        $(".has_more_chat").css('display','none');
+                        layer.msg("暂无更多");
+                    }
+
+                } else {
+                    layer.msg(ret.msg, {icon: 5,time:1000,});
+                    return false;
+                }
+
+            }
+        });
+    }
+
+    $(function () {
+        load_chat();
+
+        $('.load_more').on('click', function () {
+
+            cur_page++;
+            load_chat();
+        })
+
+
+        $(".communicate_chat_content").on('click', function () {
+
+            layer.prompt({title: '请输入反馈内容！', formType: 2}, function(text, index){
+                text = $.trim(text);
+                if (text == '') {
+                    layer.alert("内容不能为空！");
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url:  "/admin/friendChat/chatAdd",
+                    dataType: 'json',
+                    data: {
+                        chat_house_id: chat_house_id,
+                        chat_content: text,
+                    },
+                    success: function(ret){
+                        console.log(ret);
+                        if(ret.code == 0) {
+                            layer.msg('提交成功！',{
+                                time:1000, icon: 6,
+                                end:function () {
+                                    location.href = location.href;
+                                }
+                            })
+                        } else {
+                            layer.msg(ret.msg, {icon: 5,time:1000,});
+                            return false;
+                        }
+                    }
+                });
+            });
+        });
+
+
+
+
+
+    });
+
+
+
+</script>
+{/block}
