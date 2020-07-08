@@ -51,11 +51,18 @@ class Goods extends IndexBase
                 return $item;
             });
 
+        $category = Db::table('goods_category')
+            ->where('is_show', '=', 1)
+            ->select()
+            ->toArray();
+//        dump($category);
 
         $pageShow = $goodsData->render();
         $ret = [
             'goodsData' => $goodsData,
             'pageShow' => $pageShow,
+            'category' => $category,
+            'category_id' => $category_id,
         ];
         return view("index/goods/search", $ret);
     }

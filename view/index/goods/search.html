@@ -15,8 +15,6 @@
             <ul class="nav navbar-nav" id="navbar-nav">
                 <li class=""><a href="http://www.wazyb.com/"><span class="icon-home"></span> 网站首页</a></li>
                 <li class=""><a href="/index.php?cate--cid-16.html" target="_self">影音游戏</a></li>
-                <li class="active"><a href="/index.php?cate--cid-15.html" target="_self">电子商城</a></li>
-                <li class=""><a href="/index.php?cate--cid-2.html" target="_self">淘客推广</a></li>
                 <li class="active"><a href="/index.php?cate--cid-10.html" target="_self">资源</a></li>
             </ul>
             <form role="search" class="navbar-form navbar-right search hidden-xs" method="GET" action="/index.php" id="search_form">
@@ -308,31 +306,37 @@
         <div class="col-sm-3">
             <div class="list-group">
                 <a class="list-group-item active disabled " href="javascript:;">资源分类</a>
-                <a class="list-group-item " href="/index.php?cate--cid-16.html"><span class="icon-list text-gray"></span> 影音游戏</a>
-                <a class="list-group-item  list-group-item-success" href="/index.php?cate--cid-15.html"><span class="icon-list text-gray"></span> 电子商城</a>
-                <a class="list-group-item " href="/index.php?cate--cid-5.html"><span class="icon-list text-gray"></span> 酒店宾馆</a>
-                <a class="list-group-item " href="/index.php?cate--cid-2.html"><span class="icon-list text-gray"></span> 淘客推广</a>
-                <a class="list-group-item " href="/index.php?cate--cid-1.html"><span class="icon-list text-gray"></span> 公司企业</a>
+
+                <?php foreach($category as $v):?>
+                <a class="list-group-item <?php echo $v['id']==$category_id ? 'list-group-item-success' : ''?>"
+                   href="<?php echo url('/index/goods/search',['category_id' => $v['id']],false)?> ">
+
+                    <span class="icon-list text-gray"></span>
+
+                    {$v['cate_name']}
+                </a>
+
+                <?php endforeach;?>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">赞助资源</div>
-                <ul class="list-group"><script src="/upload/js/list_zanzhu.js"></script></ul>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">热门下载</div>
-                <ul class="list-group">
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-25.html" >bbb</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-10.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-9.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-8.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-7.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-6.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-5.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-4.html" >q</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-3.html" >qqq</a></li>
-                    <li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show--cid-15-id-2.html" >cs002</a></li>
-                </ul>
-            </div>
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">赞助资源</div>-->
+                <!--<ul class="list-group"><script src="/upload/js/list_zanzhu.js"></script></ul>-->
+            <!--</div>-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">热门下载</div>-->
+                <!--<ul class="list-group">-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-25.html" >bbb</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-10.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-9.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-8.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-7.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-6.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-5.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-4.html" >q</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-3.html" >qqq</a></li>-->
+                    <!--<li class="list-group-item"><span class="icon-circle-right text-gray"></span> <a href="/index.php?show&#45;&#45;cid-15-id-2.html" >cs002</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
         </div>
     </div>
 </div>
