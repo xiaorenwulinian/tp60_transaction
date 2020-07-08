@@ -103,6 +103,14 @@ Route::group('/admin', function(){
 
     });
 
+    /**
+     * 订单
+     */
+    Route::group('order', function () {
+        Route::get('lst', 'admin.order/lst');
+
+    });
+
     Route::group('common', function () {
         Route::any('addUpload', 'admin.Common/addUpload');  // 添加时上传文件
         Route::any('addMultiUpload', 'admin.Common/addMultiUpload');  // 添加时上传文件

@@ -32,6 +32,7 @@ Route::group('index', function(){
         Route::any('withdraw', 'index.User/withdraw'); // 提现
 
         Route::get('feedbackConsult/index', 'index.User/feedbackConsultIndex'); // 意见反馈列表
+        Route::get('feedbackConsult/indexMore', 'index.User/feedbackConsultIndexMore'); // 意见反馈更多数据
         Route::any('feedbackConsult/add', 'index.User/feedbackConsultAdd'); // 意见反馈列表
 
 

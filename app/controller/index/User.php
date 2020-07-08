@@ -74,25 +74,56 @@ class User extends IndexBase
             return redirect("/index/user/login");
         }
 
-        $user = Db::table("user")->where('id', session('user_id'))->find();
-        $feedback = Db::table("user_feedback_consult")
-            ->where([
-                ['user_id', '=', $userId]
-            ])
-            ->order('id', 'desc')
-            ->paginate(10);
 
-        $pageShow = $feedback->render();
+        $user = Db::table("user")->where('id', session('user_id'))->find();
+
 
         $ret = [
-            'feedback' => $feedback,
-            'pageShow' => $pageShow,
+            'feedback' => [],
             'user' => $user,
         ];
 
         return view("index/user/feedback_consult_index", $ret);
 
 
+    }
+
+    public function feedbackConsultIndexMore()
+    {
+        $userId = input('user_id');
+
+        $user = Db::table("user")->where('id', session('user_id'))->find();
+
+        $pageSize = input('page_size',10);
+        $curPage  = input('cur_page',1);
+        $offset = ($curPage - 1) * $pageSize;
+
+        $feedback = Db::table("user_feedback_consult")
+            ->where([
+                ['user_id', '=', $userId]
+            ])
+            ->order('id', 'desc')
+            ->limit($offset,$pageSize)
+            ->select()
+            ->toArray();
+
+        foreach ($feedback as &$v) {
+            if ($v['add_type'] == 1) {
+                $v['add_username'] = $user['account'];
+                $v['position'] = 1; // 本人
+            } else {
+                $v['add_username'] = '管理员';
+                $v['position'] = 2; // 对方
+            }
+        }
+
+
+        $ret = [
+            'feedback' => $feedback,
+            'user' => $user,
+        ];
+
+        return success_response($ret);
     }
 
 
