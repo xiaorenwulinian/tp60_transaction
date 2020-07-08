@@ -2,6 +2,34 @@
 
 
 {block name="content"}
+
+<style>
+    .load_content .title_name {
+        padding: 0px 10px;
+    }
+    .text_left {
+        text-align: left
+    }
+    .text_right {
+        text-align: right;
+    }
+    .date_decorate {
+        display: inline-block;
+        font-style: normal;
+        font-size: 12px;
+        font-weight: normal;
+        padding: 0 5px;
+    }
+    .body_content {
+        padding: 0 30px;
+    }
+    .bg_white {
+        background-color: #fff!important;
+    }
+</style>
+
+
+
 <nav class="navbar mr0 mb0 bg-header" id="navbar">
     <div class="container">
         <div class="navbar-header visible-xs">
@@ -48,41 +76,27 @@
                 <div class="col-sm-12">
                     <div class="alert alert-success text-center" role="alert">{$user["account"]}　欢迎回来！</div>
                     <div class="text-center" style="margin-bottom: 30px">
+                        <div>
+
+                            <div class="form-group">
+                                <textarea class="form-control chat_content" name="chat_content" rows="4"></textarea>
+                            </div>
+
+                        </div>
                         <a href="javascript:void(0)" class="btn-danger btn order_chat_content"> 添加评论</a>
                     </div>
                 </div>
 
-                <div class="row item_list mt20">
-                    <?php foreach($chatInfo as $v):?>
-                    <div class="col-sm-12">
-                        <div class="panel panel-default push_content">
-                            <div class="panel-body1 " style="padding: 0px 10px">
-                                <?php if ($v['user_type'] == 1):?>
-                                    <h4 style="text-align: left">
-                                        本人
-                                        <span style="display: inline-block;font-style: normal;font-size: 12px;font-weight: normal">{$v['create_time']}</span>
-                                    </h4>
-                                <?php else: ?>
-                                    <h4 style="text-align: right">
-                                        <span style="display: inline-block;font-style: normal;font-size: 12px;font-weight: normal">{$v['create_time']}</span>
-                                        卖家
-                                    </h4>
+                <div class="row item_list mt20 load_content">
 
-                                <?php endif;?>
 
-                            </div>
-                            <div class="panel-footer">
-                                <div class="clearfix">
-                                    <div class="pull-left">
-                                        {$v['chat_content']}
-                                    </div>
+                </div>
 
-                                </div>
-                            </div>
-                        </div>
+
+                <div class="col-sm-12 has_more_chat">
+                    <div class="text-center" style="margin: 30px">
+                        <a href="javascript:void(0)" class="btn-success btn load_more">加载更多</a>
                     </div>
-                    <?php endforeach;?>
-
                 </div>
 
 
@@ -116,43 +130,113 @@
 
     var order_id = "<?php echo $orderId; ?>";
 
-    $(document).ready(function(){
+
+    var cur_page = 1;
+    var page_size = 10;
+
+    function load_chat() {
+        $.ajax({
+            type: 'get',
+            url:  "/index/buyer/order/chat/indexMore",
+            dataType: 'json',
+            data: {
+                order_id: order_id,
+                page_size: page_size,
+                cur_page: cur_page,
+            },
+            success: function(ret){
+                console.log(ret);
+                if(ret.code == 0) {
+                    var _data = ret.payload;
+                    var _chatInfo = _data.chatInfo;
+
+                    var _html = "";
+                    var length = _chatInfo.length;
 
 
-        $(".order_chat_content").on('click', function () {
+                    if (length > 0) {
+                        for (var i = 0; i < length; i++) {
+                            _html += '<div class="col-sm-12">';
+                            _html +=     '<div class="panel panel-default push_content">';
+                            _html +=           '<div class="panel-body1 title_name " >';
+                            if (_chatInfo[i].position == 1) {
+                                _html +=        '<h4 class="text_left">';
+                                _html +=            _chatInfo[i].add_username ;
+                                _html +=            '<span class="date_decorate">'+_chatInfo[i].create_time+'</span>';
+                                _html +=        '</h4>';
+                            } else {
+                                _html +=        '<h4 class="text_right">';
+                                _html +=            _chatInfo[i].add_username ;
+                                _html +=            '<span class="date_decorate">'+_chatInfo[i].create_time+'</span>';
+                                _html +=        '</h4>';
+                            }
+                            _html +=             '</div>';
+                            _html +=             '<div class="panel-footer">';
+                            _html +=             '<div class="clearfix">';
+                            _html +=                '<div class="pull-left body_content">';
+                            _html +=                   _chatInfo[i].chat_content ;
+                            _html +=                '</div>';
+                            _html +=             '</div>';
+                            _html +=             '</div>';
+                            _html +=             '</div>';
+                            _html +=             '</div>';
 
-            layer.prompt({title: '请输入反馈内容！', formType: 2}, function(text, index){
-                text = $.trim(text);
-                if (text == '') {
-                    layer.alert("内容不能为空！");
+                        }
+
+                        $(".load_content").append(_html);
+                    } else {
+                        $(".has_more_chat").css('display','none');
+                        layer.msg("暂无更多");
+                    }
+
+                } else {
+                    layer.msg(ret.msg, {icon: 5,time:1000,});
                     return false;
                 }
 
-                $.ajax({
-                    type: 'post',
-                    url:  "/index/buyer/order/chat/add",
-                    dataType: 'json',
-                    data: {
-                        order_id: order_id,
-                        chat_content: text,
-                    },
-                    success: function(ret){
-                        console.log(ret);
-                        if(ret.code == 0) {
-                            layer.msg('提交成功！',{
-                                time:1000, icon: 6,
-                                end:function () {
-                                    location.href = location.href;
-                                }
-                            })
-                        } else {
-                            layer.msg(ret.msg, {icon: 5,time:1000,});
-                            return false;
-                        }
+            }
+        });
+    }
+
+    $(document).ready(function(){
+
+        load_chat();
+
+        $('.load_more').on('click', function () {
+
+            cur_page++;
+            load_chat();
+        })
+
+        $(".order_chat_content").on('click', function () {
+
+            var chat_content  = $(".chat_content").val();
+
+            if (chat_content == '') {
+                layer.alert("内容不能为空！");
+                return false;
+            }
+
+            $.ajax({
+                type: 'post',
+                url:  "/index/buyer/order/chat/add",
+                dataType: 'json',
+                data: {
+                    order_id: order_id,
+                    chat_content: chat_content,
+                },
+                success: function(ret){
+                    console.log(ret);
+                    if(ret.code == 0) {
+                        location.href = location.href;
+                    } else {
+                        layer.msg(ret.msg, {icon: 5,time:1000,});
+                        return false;
                     }
-                });
-                // layer.msg('演示完毕！您最后写下了：'+text);
+                }
             });
+
+
         });
 
         $('#sms_btn').click(function (){

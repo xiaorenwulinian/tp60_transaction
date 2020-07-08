@@ -50,6 +50,7 @@ Route::group('index', function(){
 
         Route::get('order/index', 'index.buyer/orderIndex'); // 买家订单列表
         Route::get('order/chat/index', 'index.buyer/orderChatIndex'); // 买家订单聊天列表
+        Route::get('order/chat/indexMore', 'index.buyer/orderChatIndexMore'); // 买家订单聊天列表
         Route::post('order/chat/add', 'index.buyer/orderChatAdd'); // 买家订单聊天添加
 
     });
@@ -76,6 +77,8 @@ Route::group('index', function(){
 
         Route::get('order/index', 'index.seller/orderIndex'); // 卖家订单列表
         Route::get('order/chat/index', 'index.seller/orderChatIndex'); // 卖家订单聊天列表
+        Route::get('order/chat/indexMore', 'index.seller/orderChatIndexMore'); // 买家订单聊天列表
+
         Route::post('order/chat/add', 'index.seller/orderChatAdd'); // 卖家订单聊天添加
 
 

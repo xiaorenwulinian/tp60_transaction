@@ -84,10 +84,56 @@ class Buyer extends IndexBase
 
 
         return view("index/buyer/order_chat_index", $ret);
-
-
-
         
+    }
+
+    /**
+     *
+     * 买家获取更多的聊天记录
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderChatIndexMore()
+    {
+
+        $orderId = $this->request->param('order_id');
+
+        $orderInfo = Db::table('order')
+            ->where('id',$orderId)
+            ->find();
+
+
+        $userBuySell = Db::table('user')
+            ->whereIn('id',[$orderInfo['buy_user_id'],$orderInfo['sell_user_id']])
+            ->column('account','id');
+
+        $chatInfo = Db::table("order_chat")
+            ->where([
+                'order_id' => $orderId,
+            ])
+            ->order('id','desc')
+            ->select()
+            ->toArray();
+
+        foreach ($chatInfo as &$v) {
+            if ($v['user_id'] == $orderInfo['buy_user_id']) {
+                $v['position'] = 1; // ，买家
+            } else {
+                $v['position'] = 2; // 卖家
+            }
+            $v['add_username'] = $userBuySell[$v['user_id']];
+        }
+
+
+        $ret = [
+            'chatInfo' => $chatInfo,
+            'orderId' => $orderId,
+        ];
+
+        return success_response($ret);
+
     }
 
     public function orderChatAdd()

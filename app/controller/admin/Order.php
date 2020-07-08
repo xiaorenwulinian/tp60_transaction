@@ -68,6 +68,11 @@ class Order extends AdminBase
         return view('admin/order/lst', $ret);
     }
 
+    public function orderChat()
+    {
+
+    }
+
 
 
 }
