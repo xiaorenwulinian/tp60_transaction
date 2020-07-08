@@ -46,10 +46,12 @@ class User extends Model
             $where[] = ['create_time', '<=', "$add_end_time"];
         }
 
-
         $data = self::where($where)
             ->order('id','desc')
-            ->paginate($pageSize);
+            ->paginate([
+                'query'     => request()->param(),
+                'list_rows' => $pageSize, //每页数量
+            ],false);
         return $data;
     }
     

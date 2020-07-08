@@ -16,6 +16,7 @@ class User extends AdminBase
     public function lst()
     {
         $pageSize = input('page_size', 10); // 每一页默认显示的条数
+        $curPage = input('page',1);
         $pageSizeSelect = page_size_select($pageSize); //生成下拉选择页数框
         $data = \app\model\User::search($pageSize);
         $pageShow = $data->render();
@@ -28,6 +29,7 @@ class User extends AdminBase
             'pageSize'       => $pageSize,
             'pageShow'       => $pageShow,
             'category'       => $category,
+            'page'           => $curPage
         ];
         return view('admin/user/lst', $ret);
     }

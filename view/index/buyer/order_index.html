@@ -71,6 +71,7 @@
                                 <th class="text-center">图片</th>
                                 <th class="text-center">订单编号</th>
                                 <th class="text-center">发货状态</th>
+                                <th class="text-center">交易状态</th>
                                 <th class="text-center">操作</th>
                             </tr>
 
@@ -90,16 +91,30 @@
                                     <?php  elseif($v['order_progress'] == 3): ?>
                                         已收货
                                     <?php  endif; ?>
-                                    <br/>
 
-                                    <?php  if($v['order_progress'] == 1 || $v['order_progress'] == 2) : ?>
-                                    <a href="javascript:void(0)" class="btn btn-info confirm_receipt_goods" data-order-id="{$v['id']}" >  确认收货 </a>
+
+                                </td>
+                                <td class="text-center">
+                                    <?php  if($v['transaction_status'] == 1): ?>
+                                    交易中
+                                    <?php  elseif($v['transaction_status'] == 2): ?>
+                                    投诉中
+                                    <?php  elseif($v['transaction_status'] == 3): ?>
+                                    已完成
                                     <?php  endif; ?>
+
 
                                 </td>
 
                                 <td class="text-center">
                                     <!--<a class="btn btn-danger btn-xs" href="javascript:;" nclick="up_group();">-->
+
+                                    <?php  if($v['order_progress'] == 1 || $v['order_progress'] == 2) : ?>
+                                    <a href="javascript:void(0)" class="btn btn-info btn-xs confirm_receipt_goods" data-order-id="{$v['id']}" >  确认收货 </a>
+                                    <?php  endif; ?>
+
+                                    <a href="javascript:void(0)" class="btn btn-success btn-xs complaint" data-order-id="{$v['id']}" >  投诉 </a>
+
                                     <a class="btn btn-danger btn-xs"
                                        href="<?php echo url('/index/buyer/order/chat/index',['order_id'=>$v['id'],'goods_id'=>$v['goods_id']], false);?>">
                                         聊天

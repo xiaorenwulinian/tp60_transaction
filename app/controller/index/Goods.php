@@ -35,7 +35,10 @@ class Goods extends IndexBase
             ->field('goods.*,user.account as user_account')
             ->where($where)
             ->order('goods.id','desc')
-            ->paginate(20, $count, request()->param())
+            ->paginate([
+                'query'     => request()->param(),
+                'list_rows' => 20, //每页数量
+            ],false)
             ->each(function($item, $key){
 
                 if (empty($item['goods_img'])) {

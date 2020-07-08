@@ -26,34 +26,25 @@
 <section class="content-header">
     <h1>
         用户列表
-        <small> <a href="/admin/goods/add" class="pull-right">用户添加</a></small>
+        <!--<small> <a href="/admin/goods/add" class="pull-right">用户添加</a></small>-->
     </h1>
 </section>
 
 <!-- Main content -->
 <section class="content">
     <div class="common_search">
-        <form class="form-inline" action="/admin/goods/lst" id="form_search">
-            <input type="text" class="form-control" name="goods_name" placeholder="用户名称" value="{:input('goods_name')}">
-            <select name="goods_category_id" class="form-control">
-                <option value="">请选择用户分类</option>
-                <?php foreach($category as $k => $v): ?>
-                    <?php $selected = $k == input('goods_category_id','') ? 'selected="selected"': ''; ?>
-                    <option value="{$k}" {$selected}>
-                        {$v}
-                    </option>
-                <?php endforeach;?>
-            </select>
+        <form class="form-inline" action="/admin/user/lst" id="form_search">
+            <input type="text" class="form-control" name="account" placeholder="用户名称" value="{:input('account')}">
 
             <input  type="hidden" name="page_size" id="cur_show_page" value="{$pageSize}"/>
             <input class="btn btn-flat btn-primary" type="submit" value="搜索">
             <!--<input class="btn btn-flat btn-primary m_10" onclick="location.href='{:url(\'lst\')}'" type="button" value="显示全部">-->
-            <input class="btn btn-flat btn-warning multi_del" type="button" value="批量删除">
-            <select name="export_data_change"  class="form-control  btn-info">
-                <option value='0'>导出数据</option>
-                <option value='1'>导出选中数据</option>
-                <option value='2'>导出全部数据</option>
-            </select>
+            <!--<input class="btn btn-flat btn-warning multi_del" type="button" value="批量删除">-->
+            <!--<select name="export_data_change"  class="form-control  btn-info">-->
+                <!--<option value='0'>导出数据</option>-->
+                <!--<option value='1'>导出选中数据</option>-->
+                <!--<option value='2'>导出全部数据</option>-->
+            <!--</select>-->
 <!--            <a class="btn btn-flat btn-success m_10 f_r" href="/admin/goods/add"><i class="fa fa-plus m-r-10"></i>添 加</a>-->
         </form>
     </div>
@@ -69,13 +60,13 @@
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th style="text-align: center">
-                                <input type="checkbox" name="is_multi_select"  class="is_multi_select">
-                            </th>
+                            <!--<th style="text-align: center">-->
+                                <!--<input type="checkbox" name="is_multi_select"  class="is_multi_select">-->
+                            <!--</th>-->
                             <th style="text-align: center">ID</th>
                             <th style="text-align: center">账号</th>
                             <th style="text-align: center">余额</th>
-                            <th style="text-align: center">手机</th>
+                            <!--<th style="text-align: center">手机</th>-->
                             <th style="text-align: center">唯一码</th>
                             <th style="text-align: center">邀请码</th>
 
@@ -88,11 +79,11 @@
                         <tbody>
                         <?php foreach($data as $v):?>
                         <tr style="text-align: center">
-                            <td style="vertical-align: middle"><input type="checkbox" class="multi_select_input" name="multi_select[]" value="{$v['id']}"/></td>
+                            <!--<td style="vertical-align: middle"><input type="checkbox" class="multi_select_input" name="multi_select[]" value="{$v['id']}"/></td>-->
                             <td style="vertical-align: middle">{$v['id']}</td>
                             <td style="vertical-align: middle">{$v['account']}</td>
                             <td style="vertical-align: middle">{$v['user_money']}</td>
-                            <td style="vertical-align: middle">{$v['phone']}</td>
+                            <!--<td style="vertical-align: middle">{$v['phone']}</td>-->
                             <td style="vertical-align: middle">{$v['unique_code']}</td>
                             <td style="vertical-align: middle">{$v['invite_code']}</td>
                            <td style="vertical-align: middle">
@@ -103,11 +94,11 @@
                             <td style="vertical-align: middle">
 
                                 <a href="javascript:void(0)" data-id="{$v['id']}" class="cur_top_up btn btn-flat btn-warning btn-xs" title="移除">
-                                    <i class="fa fa-trash-o"></i> 充值
+                                    充值
                                 </a>
-                                <a href="<?php echo url('/admin/user/edit?id='.$v['id'],[], false); ?>" class="btn btn-flat btn-info btn-xs" title="编辑">
-                                    <i class="fa fa-edit"></i> 编辑
-                                </a>
+                                <!--<a href="<?php echo url('/admin/user/edit?id='.$v['id'],[], false); ?>" class="btn btn-flat btn-info btn-xs" title="编辑">-->
+                                    <!--<i class="fa fa-edit"></i> 编辑-->
+                                <!--</a>-->
 
                             </td>
                         </tr>
